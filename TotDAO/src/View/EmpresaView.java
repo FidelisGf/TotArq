@@ -1,11 +1,14 @@
 package View;
 
 import Controller.EmpresaController;
+import Model.Cargos;
 import Model.Empresa;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class EmpresaView {
     Menu menu = new Menu();
@@ -62,13 +65,25 @@ public class EmpresaView {
         }
     }
     public int escolherEmpresa(int id){
-        List<Empresa>lista = new ArrayList<>();
-        lista = listarEmpresa();
-        for(Empresa empresa : lista){
-            System.out.printf("ID :  %d  || Nome : %s \n", empresa.getId(), empresa.getNome());
+        List<Empresa>list = new ArrayList<>();
+        list = listarEmpresa();
+        String[] object = new String[list.size()];
+        JFrame frame = new JFrame();
+        frame.setAlwaysOnTop(true);
+        int i = 0;
+        System.out.printf("Escolha uma empresa\n");
+        try {
+            for (Empresa empresa : list) {
+                object[i] = String.valueOf(empresa.getId()) + "|" + empresa.getNome().toString();
+                i++;
+            }
+            Object selectionObject = (String) JOptionPane.showInputDialog(frame, "Choose", "Empresa", JOptionPane.QUESTION_MESSAGE, null, object, object[0]);
+            String tmp = selectionObject.toString();
+            StringTokenizer st = new StringTokenizer(tmp);
+            id = Integer.valueOf(st.nextToken("|"));
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        System.out.println("Selecione a empresa a partir do seu id :");
-        id = le.nextInt();
         return id;
     }
 }

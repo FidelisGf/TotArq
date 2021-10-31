@@ -23,10 +23,6 @@ public class CategoriaView {
     public List<Categoria> listartodos(int id){
         int i = 0;
         List<Categoria> list = categoriaController.listartodos(id);
-        for (Categoria categoria : list){
-            System.out.println(i + " " +categoria);
-            i++;
-        }
         return list;
     }
     public void Menu(int id){

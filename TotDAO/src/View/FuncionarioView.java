@@ -59,7 +59,7 @@ public class FuncionarioView {
         String op = "";
         Menu menu = new Menu();
         while (true){
-            op = exibeMenu();
+            op = exibeMenuFuncionario();
             switch (op){
                 case "1":
                     cadastraFuncionario(id);
@@ -73,7 +73,7 @@ public class FuncionarioView {
             }
         }
     }
-    public String exibeMenu(){
+    public String exibeMenuFuncionario(){
         String[] escolhas = {"1", "2", "3"};
         String menuTexto = "1 | Inserir Novo Funcionario | " + "\n2 | Listar todos os funcionarios |" + "\n3 | Sair |";
         return (String) JOptionPane.showInputDialog(null,"Selecione uma opção :\n" + menuTexto,"MenuFuncionario", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]);
@@ -88,7 +88,7 @@ public class FuncionarioView {
             JOptionPane.showMessageDialog(null, "Login Realizado com sucesso !");
             menu.menu_Principal();
 
-        }else if(!verifica){
+        }else {
             JOptionPane.showMessageDialog(null, "Usuario Não Cadastrado !");
         }
     }

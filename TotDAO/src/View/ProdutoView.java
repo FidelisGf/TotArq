@@ -2,10 +2,14 @@ package View;
 
 import Controller.ProdutoController;
 import Model.Categoria;
+import Model.Empresa;
+import Model.Funcionario;
 import Model.Produto;
 
+import javax.swing.*;
 import java.util.List;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class ProdutoView {
     Menu menu = new Menu();
@@ -13,34 +17,22 @@ public class ProdutoView {
     ProdutoController produtoController = new ProdutoController();
     public void menu(int id){
         while(true){
-            System.out.printf("------------------------------------------------------\n");
-            System.out.printf("|||  (1) Criar novo produto                      |||\n");
-            System.out.printf("|||  (2) Listar Todos os produtos                |||\n");
-            System.out.printf("|||  (3) Listar Produtos Por Categoria           |||\n");
-            System.out.printf("|||  (4) Editar Um Produto                       |||\n");
-            System.out.printf("|||  (5) Sair                                    |||\n");
-            System.out.printf("------------------------------------------------------\n");
-            int op;
-            op = le.nextInt();
-            le.nextLine();
+            String op = exibeMenuProdutos();
             switch (op){
-                case 1:
+                case "1":
                     insereProduto(id);
-                    menu.espera_Enter();
                     break;
-                case 2:
+                case "2":
                     listarTodosProdutos(id);
-                    menu.espera_Enter();
                     break;
-                case 3:
+                case "3":
                     listarProdutoporCategoria(id);
-                    menu.espera_Enter();
                     break;
-                case 4:
+                case "4":
                     editarProduto(id);
                     menu.espera_Enter();
                     break;
-                case 5:
+                case "5":
                     menu.menu_Principal();
                     break;
             }
@@ -48,71 +40,99 @@ public class ProdutoView {
     }
     public void insereProduto(int id){
         CategoriaView categoriaView = new CategoriaView();
-        String tmp;
-        float tmp1;
-        int tmp2;
-        System.out.printf("Digite um nome para o produto : \n");
-        tmp = le.nextLine();
-        System.out.printf("Digite um valor para o produto : \n");
-        tmp1 = le.nextFloat();
-        le.nextLine();
-        System.out.printf("Digite o ID da categoria desse produto : \n");
-        categoriaView.listartodos(id);
-        tmp2 = le.nextInt();
-        le.nextLine();
-        Produto produto = new Produto(tmp ,tmp1, tmp2);
-        produtoController.insereProduto(produto);
+        String nome = "";
+        float tmp1 = 0;
+        int tmp2 = 0;
+        nome = (String) JOptionPane.showInputDialog(null, "Nome do Produto:");
+        tmp1 = Float.parseFloat(JOptionPane.showInputDialog(null, "Valor do Produto : "));
+        List<Categoria> list = categoriaView.listartodos(id);
+        String[] object = new String[list.size()];
+        JFrame frame = new JFrame();
+        frame.setAlwaysOnTop(true);
+        int i = 0;
+        try {
+            for (Categoria categoria : list) {
+                object[i] = String.valueOf(categoria.getId()) + "|" + categoria.getNome().toString();
+                i++;
+            }
+            Object selectionObject = (String) JOptionPane.showInputDialog(frame, "Escolha a categoria do produto", "Categorias", JOptionPane.QUESTION_MESSAGE, null, object, object[0]);
+            String tmp3 = selectionObject.toString();
+            StringTokenizer st = new StringTokenizer(tmp3);
+            tmp2 = Integer.valueOf(st.nextToken("|"));
+            Produto produto = new Produto(nome ,tmp1, tmp2);
+            produtoController.insereProduto(produto);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    public String exibeMenuProdutos(){
+        String[] escolhas = {"1", "2", "3", "4", "5"};
+        String menuTexto = "1 | Inserir Produto | " + "\n\n2 | Listar Todos os Produtos |" + "\n\n3 | Listar Produto por Categoria |\n\n4 | Editar Produto |\n\n5 | Sair |\n";
+        return (String) JOptionPane.showInputDialog(null,"Selecione uma opção :\n\n" + menuTexto,"MenuProdutos", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]);
     }
     public void listarProdutoporCategoria(int id2){
-        System.out.printf("Qual a Categoria do produto ?");
-        int op = le.nextInt();
-        le.nextLine();
+        int op = Integer.parseInt(JOptionPane.showInputDialog(null,"Digite o Id da Categoria :"));
         List<Produto> list = produtoController.listaProdutoporCategoria(op, id2);
-        for (Produto Produto : list){
-            System.out.printf("Id : %d   |||  Nome : %s     |||  Valor : %.2f  ||| Categoria : %d \n",Produto.getId(), Produto.getNome(), Produto.getPreco(), Produto.getIdCategoria());
+        if(list.isEmpty()){
+            JOptionPane.showInternalMessageDialog(null, "Categoria Vazia");
+        }else{
+            JFrame frame = new JFrame();
+            frame.setAlwaysOnTop(true);
+            String output = "";
+            for (Produto produto : list) {
+                String tmp = "NOME : " + produto.getNome() + " Com o VALOR de : R$" + String.valueOf(produto.getPreco());
+                output += tmp + " \n\n";
+            }
+            JOptionPane.showMessageDialog(frame,output);
         }
     }
     public void listarTodosProdutos(int id){
-        System.out.println("Os produtos Cadastrados no sistema são : ");
         List<Produto> list = produtoController.listarTodosProdutos(id);
-        for (Produto Produto : list){
-            System.out.printf("Id : %d   |||  Nome : %s     |||  Valor : %.2f  ||| Categoria : %d\n",Produto.getId(), Produto.getNome(), Produto.getPreco(), Produto.getIdCategoria());
+        JFrame frame = new JFrame();
+        frame.setAlwaysOnTop(true);
+        String output = "";
+        for (Produto produto : list) {
+            String tmp = "NOME : " + produto.getNome() + " Com o VALOR de : R$" + String.valueOf(produto.getPreco());
+            output += tmp + " \n\n";
         }
+        JOptionPane.showMessageDialog(frame,output);
     }
     public void editarProduto(int id){
         int i = 0;
         List<Produto> list = produtoController.listarTodosProdutos(id);
-        for (Produto Produto : list){
-            System.out.printf("%d  ||| Id : %d   |||  Nome : %s     |||  Valor : %.2f  ||| Categoria : %d \n", i ,Produto.getId(), Produto.getNome(), Produto.getPreco(), Produto.getIdCategoria());
+        JFrame frame = new JFrame();
+        frame.setAlwaysOnTop(true);
+        String[] tmp = new String[list.size()];
+        String opc = "";
+        String output = "";
+        for (Produto produto : list) {
+            tmp[i] =  i + "| " + "NOME : " + produto.getNome() + " Com o VALOR de : R$" + String.valueOf(produto.getPreco());
             i++;
         }
-        System.out.println("Qual produto voce deseja editar ? ");
-        int tmp = le.nextInt();
-        le.nextLine();
+        Object selectionObject = (String) JOptionPane.showInputDialog(frame,"Select Product","Produtos",JOptionPane.QUESTION_MESSAGE,null, tmp, tmp[0]);
         Produto produto = new Produto();
-        produto.setId(list.get(tmp).getId());
+        String pegaop = selectionObject.toString();
+        StringTokenizer st = new StringTokenizer(pegaop);
+        int id1 = Integer.parseInt(st.nextToken("|"));
+        produto.setId(list.get(id1).getId());
+        produto.setNome(list.get(id1).getNome());
         int op = 0;
-        System.out.println("O que voce deseja alterar no produto : ");
-        System.out.printf("|| (1) Editar nome                   ||\n");
-        System.out.printf("|| (2) Editar Valor                  ||\n");
-        System.out.printf("|| (3) Editar Categoria do produto : ||\n");
-        op = le.nextInt();
-        le.nextLine();
+        String[] escolhas = {"1", "2", "3"};
+        String menuTexto = "1 | Editar Nome| " + "\n\n2 | Editar Valor |" + "\n\n3 | Edidar Categoria do Produto |\n\n";
+        opc = (String) (JOptionPane.showInputDialog(null,"Selecione uma opção :\n\n" + menuTexto,"EditarProdutos", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]));
+        op = Integer.parseInt(opc);
         switch (op){
             case 1:
-                System.out.println("Digite um novo nome para o produto : ");
-                String tmp1 = le.nextLine();
+
+                String tmp1 = (String) JOptionPane.showInputDialog(null, "Novo Nome para o Produto : " + produto.getNome());
                 produto.setNome(tmp1);
                 produtoController.editarProduto(produto, op);
-                System.out.println("Produto Editado com sucesso !");
                 break;
             case 2:
-                System.out.println("Digite um novo valor para o produto :");
-                float valor = le.nextFloat();
-                le.nextLine();
+
+                float valor = Float.parseFloat(JOptionPane.showInputDialog(null,"Novo valor para o Produto " + produto.getNome()));
                 produto.setPreco(valor);
                 produtoController.editarProduto(produto, op);
-                System.out.println("Produto Editado com sucesso !");
                 break;
             case 3:
                 i = 0;
@@ -128,7 +148,6 @@ public class ProdutoView {
                 break;
 
         }
-
 
     }
 }
