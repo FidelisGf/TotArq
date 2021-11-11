@@ -14,7 +14,6 @@ public class CarrinhoDAO {
     File file = new File("carrinho.txt");
     public void Adiciona_Carrinho(Carrinho carrinho){
         try {
-
             FileWriter fileWriter = new FileWriter(file);
             PrintWriter printWriter = new PrintWriter(fileWriter);
             if(!file.exists()){
@@ -28,6 +27,7 @@ public class CarrinhoDAO {
             e.printStackTrace();
         }
     }
+
     public Carrinho finalizar_compra(){
         try {
             Carrinho carrinho = new Carrinho();
@@ -60,6 +60,7 @@ public class CarrinhoDAO {
         }
 
     }
+
     public int set_N_Pedido(){
         int id = get_N_Pedido();
         try {
@@ -111,7 +112,12 @@ public class CarrinhoDAO {
         }catch (IOException e){
 
         }
-
-
     }
+    public void excluir_do_Carrinho(int op){
+        Carrinho carrinho = new Carrinho();
+        carrinho.setLista_do_Carrinho(finalizar_compra().getLista_do_Carrinho());
+        carrinho.getLista_do_Carrinho().remove(op);
+        Adiciona_Carrinho(carrinho);
+    }
+
 }

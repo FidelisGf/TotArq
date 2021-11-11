@@ -5,7 +5,7 @@ import View.*;
 import java.io.*;
 
 public class EmpresaController {
-    File caminhoEmpresa = new File("./config/empresa");
+    File caminhoEmpresa = new File("../TotArq/ArqTOT/Config/empresa.txt");
     EmpresaDAO empresaDao = new EmpresaDAO();
 
     public void menuEmpresaController(String option) throws IOException{

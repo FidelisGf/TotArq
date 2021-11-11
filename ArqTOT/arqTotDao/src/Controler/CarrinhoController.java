@@ -18,4 +18,8 @@ public class CarrinhoController {
         CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
         carrinhoDAO.log_Pedidos(carrinho,avaliacao,pagamento);
     }
+    public void excluir_do_Carrinho(int op){
+        CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
+        carrinhoDAO.excluir_do_Carrinho(op);
+    }
 }

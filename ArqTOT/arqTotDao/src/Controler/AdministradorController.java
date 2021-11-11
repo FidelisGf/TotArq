@@ -1,4 +1,5 @@
 package Controler;
+import Model.Categoria;
 import View.*;
 
 import java.io.IOException;
@@ -10,7 +11,7 @@ public class AdministradorController {
         EmpresaView empresa = new EmpresaView();
         UsuarioView usuario = new UsuarioView();
         UnidadeView unidade = new UnidadeView();
-
+        Menu menu = new Menu();
 
         if (option.equals("1")) {  // empresa
             empresa.menuEmpresaView();
@@ -22,6 +23,10 @@ public class AdministradorController {
         }
         else if (option.equals("3")) {  // funcionarios
             usuario.funcionarioView();
+            adm.menuAdministradorView();
+        }
+        else if (option.equals("4")) {  // categorias
+            menu.Menu_Principal();
             adm.menuAdministradorView();
         }
     }

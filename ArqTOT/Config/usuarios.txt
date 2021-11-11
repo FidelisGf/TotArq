@@ -1,0 +1,2 @@
+1 | admin | admin | administrador | admin
+2 | usuario | usuario | funcionario | teste

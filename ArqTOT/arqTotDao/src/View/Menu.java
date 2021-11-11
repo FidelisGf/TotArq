@@ -2,17 +2,18 @@ package View;
 
 import Model.Categoria;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Menu {
     Scanner scanner = new Scanner(System.in);
-    public void Menu_Principal(){
+    public void Menu_Principal() throws IOException {
         String op = "";
         while (true){
             System.out.println("-----------------------------------");
             System.out.printf(" | (1) Menu Produtos             |\n");
             System.out.printf(" | (2) Menu Categorias           |\n");
-            System.out.printf(" | (3) Sair                      |\n");
+            System.out.printf(" | (3) Voltar                    |\n");
             System.out.println("-----------------------------------");
             op = scanner.nextLine();
             switch (op){
@@ -25,8 +26,8 @@ public class Menu {
                     categoriaView.menuCategoria();
                     break;
                 case "3":
-                    TotFast totFast = new TotFast();
-                    totFast.MenuTotem();
+                    AdministradorView administradorView = new AdministradorView();
+                    administradorView.menuAdministradorView();
                     break;
                 default:
                     System.out.println("Opção Invalida !");
@@ -38,5 +39,8 @@ public class Menu {
         String op = "";
         System.out.printf("Pressione ENTER para Continuar");
         op = scanner.nextLine();
+    }
+    public void pula_linha(){
+        System.out.println("\n\n\n\n\n");
     }
 }

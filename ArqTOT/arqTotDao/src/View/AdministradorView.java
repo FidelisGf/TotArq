@@ -21,6 +21,7 @@ public class AdministradorView {
         System.out.println("1 - Empresa");
         System.out.println("2 - Unidades");
         System.out.println("3 - Funcionarios");
+        System.out.println("4 - Controle de Categoria e Produtos");
         System.out.println("outro - Sair");
         System.out.println("*****************************");
         controleAdm.menuAdmistradorController(scan.nextLine().trim());

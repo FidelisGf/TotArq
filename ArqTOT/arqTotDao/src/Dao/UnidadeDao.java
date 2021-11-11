@@ -11,19 +11,24 @@ public class UnidadeDao {
 
     public void gravarUnidade(Unidade uni) throws IOException{
         try{
-            FileWriter fwg = new FileWriter("Unidades/manusUnid.txt", true);
+            FileWriter fwg = new FileWriter("./Config/manusUnid.txt", true);
             PrintWriter bwg = new PrintWriter(fwg);
+            FileWriter fw = new FileWriter("./Config/getIdNick.txt", true);
+            PrintWriter bw = new PrintWriter(fw);
+            bw.print("Nome: " + uni.getNomeUnidade() + "\n");
             bwg.println(uni.toString());
             bwg.close();
             fwg.close();
-            
+            fw.close();
+            bw.close();
+
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
     }
 
     public void buscarUnidade(String idSelecionado) throws IOException {
-        Path path = Paths.get("Unidades/manusUnid.txt");
+        Path path = Paths.get("./Config/manusUnid.txt");
         listAux = Files.readAllLines(path);
         for (int i = 0; i < listAux.size(); i++){
             if (idSelecionado.equals(listAux.get(i))) {
@@ -37,7 +42,7 @@ public class UnidadeDao {
     }
 
     public void buscarUnidadeByName(String nome) throws IOException {
-        Path path = Paths.get("Unidades/manusUnid.txt");
+        Path path = Paths.get("./Config/manusUnid.txt");
         listAux = Files.readAllLines(path);
         for (int i = 0; i < listAux.size(); i++){
             if (nome.equals(listAux.get(i))) {
@@ -48,9 +53,9 @@ public class UnidadeDao {
     }
 
     public void editarUnidade(String idSelec, Unidade unidEd) throws IOException {
-        Path path = Paths.get("Unidades/manusUnid.txt");
+        Path path = Paths.get("./Config/manusUnid.txt");
         listAux = Files.readAllLines(path);
-        FileWriter fwg = new FileWriter("Unidades/manusUnid.txt");
+        FileWriter fwg = new FileWriter("../TotArq/ArqTOT/Config/manusUnid.txt");
         PrintWriter bwg = new PrintWriter(fwg);
 
         for (int i = 0; i < listAux.size(); i++){
@@ -66,9 +71,9 @@ public class UnidadeDao {
     }
 
     public void excluirUnidade(String idEscolhido) throws IOException {
-        Path path = Paths.get("Unidades/manusUnid.txt");
+        Path path = Paths.get("./Config/manusUnid.txt");
         listAux = Files.readAllLines(path);
-        FileWriter fwg = new FileWriter("Unidades/manusUnid.txt");
+        FileWriter fwg = new FileWriter("./Config/manusUnid.txt");
         PrintWriter bwg = new PrintWriter(fwg);
 
         for (int i = 0; i < listAux.size(); i++){
@@ -87,7 +92,7 @@ public class UnidadeDao {
     }
 
     public boolean idExiste(String idEscolhido) throws IOException {
-        Path path = Paths.get("Unidades/manusUnid.txt");
+        Path path = Paths.get("./Config/manusUnid.txt");
         listAux = Files.readAllLines(path);
         if (listAux.contains(idEscolhido)) {
             return true;
@@ -97,7 +102,7 @@ public class UnidadeDao {
     }
 
     public void escreveId(int cont) throws IOException{
-        File file = new File("guarda_ID.txt");
+        File file = new File("./Config/guarda_ID.txt");
         FileWriter fwid = new FileWriter(file);
         PrintWriter bwid = new PrintWriter(fwid);
         try {
@@ -111,7 +116,7 @@ public class UnidadeDao {
 
     public void leId() throws IOException {
         Unidade unid = new Unidade();
-        FileReader arquivo = new FileReader("guarda_ID.txt");
+        FileReader arquivo = new FileReader("./Config/guarda_ID.txt");
         BufferedReader arquivoR = new BufferedReader(arquivo);
         String line;
         line = arquivoR.readLine();
@@ -122,18 +127,24 @@ public class UnidadeDao {
         arquivo.close();
         arquivoR.close();
         try {
-            FileWriter fwg = new FileWriter("Unidades/manusUnid.txt", true);
+            FileWriter fwg = new FileWriter("./Config/manusUnid.txt", true);
             PrintWriter bwg = new PrintWriter(fwg);
             bwg.print("\n" + pegaid + "\n");
+            FileWriter fw = new FileWriter("./Config/getIdNick.txt", true);
+            PrintWriter bw = new PrintWriter(fw);
+            bwg.print("\n" + pegaid + "\n");
+            bw.print("ID: " + pegaid + " | ");
             fwg.close();
             bwg.close();
+            bw.close();
+            fw.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
     public void listarUnidade() throws IOException{
-        FileReader arquivo = new FileReader("./Unidades/manusUnid.txt");
+        FileReader arquivo = new FileReader("./Config/manusUnid.txt");
         BufferedReader arquivoR = new BufferedReader(arquivo);
         String linha;
 
@@ -146,7 +157,7 @@ public class UnidadeDao {
     }
 
     public void limparArquivo() throws IOException {
-        FileWriter fwg = new FileWriter("Unidades/manusUnid.txt");
+        FileWriter fwg = new FileWriter("./Config/manusUnid.txt");
         BufferedWriter bwg = new BufferedWriter(fwg);
         bwg.write("");
         bwg.write("");
@@ -154,4 +165,27 @@ public class UnidadeDao {
         fwg.close();
     }
 
+    public void listarCategoriasUnidade(long idSelecionado) throws IOException {
+        Path path = Paths.get("./Config/listaCategoriasUnidade.txt");
+        listAux = Files.readAllLines(path);
+        String convertLong = Long.toString(idSelecionado);
+        for (int i = 0; i < listAux.size(); i++){
+            if (convertLong.equals(listAux.get(i))) {
+                System.out.println(listAux.get(i+1).toUpperCase());
+            }
+        }
+    }
+
+    public void listaNomeIdUnidade() throws IOException {
+        FileReader arquivo = new FileReader("./Config/getIdNick.txt");
+        BufferedReader arquivoR = new BufferedReader(arquivo);
+        String linha;
+
+        linha = arquivoR.readLine();
+        while (linha != null) {
+            System.out.println(linha);
+            linha = arquivoR.readLine();
+        }
+        arquivo.close();
+    }
 }

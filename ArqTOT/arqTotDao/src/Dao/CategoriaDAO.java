@@ -47,17 +47,26 @@ public class CategoriaDAO {
         List<String> list = listar_Categorias();
         list.remove(op);
         try {
-            File file = new File("./Config/" + categoria.getNomeCategoria() + ".txt");
             FileWriter fileWriter = new FileWriter(lista);
             PrintWriter printWriter = new PrintWriter(fileWriter);
             for(String s : list){
                 printWriter.println(s);
             }
-            file.delete();
             printWriter.close();
             fileWriter.close();
+
+            File file = new File("./Config/" + categoria.getNomeCategoria());
         }catch (IOException e){
             e.printStackTrace();
         }
+    }
+    public void salvaCategoriaUnidade(String nomeCategoria, Long idUnidade) throws IOException {
+        File listaCatUnd = new File("./Config/listaCategoriasUnidade.txt");
+        FileWriter fw = new FileWriter(listaCatUnd, true);
+        PrintWriter pw = new PrintWriter(fw);
+        pw.println(idUnidade);
+        pw.println(nomeCategoria);
+        fw.close();
+        pw.close();
     }
 }

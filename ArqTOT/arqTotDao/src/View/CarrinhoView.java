@@ -29,24 +29,29 @@ public class CarrinhoView {
     }
     public void finalizar_Compra(){
         PagamentoView pagamentoView = new PagamentoView();
-        listar_Carrinho();
+        System.out.println("Sua compra :");
+        for(Produto produto : carrinhoController.finalizar_pedido().getLista_do_Carrinho()){
+            System.out.println(produto.getNomeProduto() + "  R$:  " + produto.getValorProduto());
+        }
+        System.out.println("Valor total : " + carrinhoController.finalizar_pedido().getValor_Total_Carrinho());
         System.out.println("Deseja Finalizar o Pedido ? (1) Sim (2) Nao");
         if(le.nextLine().contains("1")){
             pagamentoView.menuPagamento(carrinhoController.finalizar_pedido());
         }else{
-            System.out.println("Cancelado com sucesso !");
+            System.out.println("Operação cancelada com sucesso");
         }
     }
     public void listar_Carrinho(){
-        System.out.println("Carrinho :");
-        System.out.println("-----------------------------------------------");
+        int i = 0;
+        System.out.println("Carrinho atual :");
         for(Produto produto : carrinhoController.finalizar_pedido().getLista_do_Carrinho()){
-            System.out.println("Produto - > " + produto.getNomeProduto() + "  R$:  " + produto.getValorProduto());
+            System.out.println(produto.getNomeProduto() + "  R$:  " + produto.getValorProduto());
         }
-        System.out.println("-----------------------------------------------");
-        System.out.println("Valor total :  R$ " +  carrinhoController.finalizar_pedido().getValor_Total_Carrinho());
-        System.out.println("--------------------");
-
     }
-
+    public void excluir_do_Carrinho(){
+        System.out.println("Escolha o item a ser excluido do carrinho : ");
+        listar_Carrinho();
+        carrinhoController.excluir_do_Carrinho(le.nextInt());
+        le.nextLine();
+    }
 }

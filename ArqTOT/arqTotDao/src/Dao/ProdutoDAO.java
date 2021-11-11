@@ -121,7 +121,7 @@ public class ProdutoDAO {
     }
     public void insere_edicao(Produto produto, Categoria categoria){
         try{
-            File file = new File("./Config/" + categoria.getNomeCategoria() + ".txt");
+            File file = new File("C:\\Users\\Fifo\\Desktop\\ArqTOT\\Config\\" + categoria.getNomeCategoria() + ".txt");
             FileWriter fileWriter = new FileWriter(file, true);
             PrintWriter printWriter = new PrintWriter(fileWriter);
             printWriter.println(produto.getIdProduto() + "|" + produto.getNomeProduto() + "|" + produto.getValorProduto());

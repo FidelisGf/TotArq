@@ -1,8 +1,10 @@
 package Controler;
 
 import Dao.CategoriaDAO;
+import Dao.UnidadeDao;
 import Model.Categoria;
 
+import java.io.IOException;
 import java.util.List;
 
 public class CategoriaController {
@@ -14,8 +16,14 @@ public class CategoriaController {
         CategoriaDAO categoriaDAO = new CategoriaDAO();
         return  categoriaDAO.listar_Categorias();
     }
-    public void excluirCategoria(Categoria categoria, int op){
+    public void salvaCatUnid(String nomeCat, Long idUnd) throws IOException {
         CategoriaDAO categoriaDAO = new CategoriaDAO();
-        categoriaDAO.excluirCategoria(categoria, op);
+        UnidadeDao undDao = new UnidadeDao();
+        String convertUnid = Long.toString(idUnd);
+        if(undDao.idExiste(convertUnid)){
+            categoriaDAO.salvaCategoriaUnidade(nomeCat, idUnd);
+        }else{
+            System.out.println("Id inexistente ou não encontrado");
+        }
     }
 }
