@@ -15,7 +15,8 @@ public class CategoriaView {
             System.out.printf("--------------------------------------\n");
             System.out.printf("|  (1) Inserir Nova Categoria        |\n");
             System.out.printf("|  (2) Listar Todas as Categorias    |\n");
-            System.out.printf("|  (3) Sair                          |\n");
+            System.out.printf("|  (3) Excluir Categoria             |\n");
+            System.out.printf("|  (4) Sair                          |\n");
             System.out.printf("--------------------------------------\n");
             switch (scanner.nextLine()){
                 case "1":
@@ -26,6 +27,10 @@ public class CategoriaView {
                     menu.esperaENTER();
                     break;
                 case "3":
+                    excluirCategoria();
+                    menu.esperaENTER();
+                    break;
+                case "4":
                     menu.Menu_Principal();
                     break;
                 default:
@@ -53,7 +58,7 @@ public class CategoriaView {
         return categoriaController.listar_Categorias();
     }
     public Categoria escolher_Categoria_PorNome(){
-        System.out.println("Selecione a Categoria dos Produtos desejados");
+        System.out.println("Selecione a Categoria desejada");
         Scanner le = new Scanner(System.in);
         CategoriaView categoriaView = new CategoriaView();
         categoriaView.listar_Categorias();
@@ -61,9 +66,13 @@ public class CategoriaView {
         le.nextLine();
         Categoria categoria = new Categoria();
         categoria.setNomeCategoria(categoriaView.escolher_Categoria().get(op));
+        categoria.setIdCategoria(op);// pega a opção
         return categoria;
     }
     public void excluirCategoria(){
+        Categoria categoria = escolher_Categoria_PorNome();
+        int op = categoria.getIdCategoria();
+        categoriaController.excluirCategoria(categoria, op);
 
     }
 
