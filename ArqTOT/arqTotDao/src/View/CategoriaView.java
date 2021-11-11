@@ -49,16 +49,18 @@ public class CategoriaView {
     }
     public void listar_Categorias(){
         int i = 0;
+        System.out.println("------------------------------------------------");
         for(String list : categoriaController.listar_Categorias()){
-            System.out.println(i + " " + list);
+            System.out.println("    |   Opção : " + i + " -> " + list + "              |");
             i++;
         }
+        System.out.println("------------------------------------------------");
     }
     public List<String> escolher_Categoria(){
         return categoriaController.listar_Categorias();
     }
     public Categoria escolher_Categoria_PorNome(){
-        System.out.println("Selecione a Categoria desejada");
+        System.out.println("Digite a Opção desejada : ");
         Scanner le = new Scanner(System.in);
         CategoriaView categoriaView = new CategoriaView();
         categoriaView.listar_Categorias();
