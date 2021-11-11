@@ -1,6 +1,8 @@
 package Dao;
 
+import Model.Avaliacao;
 import Model.Carrinho;
+import Model.Pagamento;
 import Model.Produto;
 
 import java.io.*;
@@ -56,6 +58,60 @@ public class CarrinhoDAO {
         }catch (IOException e){
             throw new RuntimeException();
         }
+
+    }
+    public int set_N_Pedido(){
+        int id = get_N_Pedido();
+        try {
+            File file = new File("./Config/pedido.txt");
+            FileWriter fw = new FileWriter(file);
+            PrintWriter pw = new PrintWriter(fw);
+            pw.println(id + 1);
+            pw.close();
+            fw.close();
+        }catch (IOException e){
+        }
+        return id;
+    }
+    public int get_N_Pedido(){
+        int id = 0;
+        try {
+            File file = new File("./Config/pedido.txt");
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            if(!file.exists()){
+                file.createNewFile();
+                FileWriter fw = new FileWriter(file);
+                PrintWriter pw = new PrintWriter(fw);
+                pw.println("1");
+                pw.close();
+                fw.close();
+            }
+            while (bufferedReader.ready()){
+                id = Integer.valueOf(bufferedReader.readLine());
+            }
+            fileReader.close();
+        }catch (IOException e){
+
+        }
+        return id;
+    }
+    public void log_Pedidos(Carrinho carrinho, Avaliacao avaliacao, Pagamento pagamento){
+        int id = set_N_Pedido();
+        try {
+            File file = new File("./Config/LogPedidos");
+            FileWriter fileWriter  = new FileWriter(file, true);
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+            if(!file.exists()){
+                file.createNewFile();
+            }
+            printWriter.println("Pedido Nº " + id + "  No Valor de R$ : " + carrinho.getValor_Total_Carrinho() + "  Avalido como : " + avaliacao.getTpAvaliacao() + "  Pago por : " + pagamento.getFormaPagamento() );
+            printWriter.close();
+            fileWriter.close();
+        }catch (IOException e){
+
+        }
+
 
     }
 }

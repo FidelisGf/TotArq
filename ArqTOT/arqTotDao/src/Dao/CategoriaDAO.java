@@ -43,5 +43,21 @@ public class CategoriaDAO {
         }
         return lista_Categorias;
     }
+    public void excluirCategoria(Categoria categoria, int op){
+        List<String> list = listar_Categorias();
+        list.remove(op);
+        try {
+            FileWriter fileWriter = new FileWriter(lista);
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+            for(String s : list){
+                printWriter.println(s);
+            }
+            printWriter.close();
+            fileWriter.close();
 
+            File file = new File("./Config/" + categoria.getNomeCategoria());
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 }

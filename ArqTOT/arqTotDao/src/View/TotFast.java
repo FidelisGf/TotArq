@@ -35,6 +35,22 @@ public class TotFast {
             }
             i = 0;
         }
+    }
+    public void MenuTotem(){
+        while (true){
+            System.out.printf(" _________________________________\n");
+            System.out.printf(" |   (1) Modulo de Venda         |\n");
+            System.out.printf(" |   (2) Configurações Gerais    |\n");
+            System.out.printf(" _________________________________\n");
+            switch (le.nextLine()){
+                case "1":
+                    break;
+                case "2":
+                    Menu menu = new Menu();
+                    menu.Menu_Principal();
+                    break;
+            }
+        }
 
     }
 }

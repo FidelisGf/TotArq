@@ -1,7 +1,11 @@
 package View;
 
 import Controler.AvaliacaoController;
+import Controler.CarrinhoController;
 import Controler.PagamentoController;
+import Model.Avaliacao;
+import Model.Carrinho;
+import Model.Pagamento;
 
 import java.util.Scanner;
 
@@ -9,24 +13,34 @@ public class AvaliacaoView {
     Scanner scan = new Scanner(System.in);
     AvaliacaoController ac = new AvaliacaoController();
 
-    public void menuAvaliacao(){
+    public void menuAvaliacao(Carrinho carrinho, Pagamento pagamento){
+        CarrinhoController carrinhoController = new CarrinhoController();
         System.out.println("AVALIE O ATENDIMENTO\n\n");
         System.out.println("1 - Atendimento Ótimo");
         System.out.println("2 - Atendimento Bom");
         System.out.println("3 - Atendimento Ruim");
         System.out.println("4 - Não avaliar");
+        Avaliacao avaliacao = new Avaliacao();
         String escolha = scan.nextLine();
         switch (escolha){
             case "1":
                 System.out.println("Obrigado pela sua avaliação!\n");
+                avaliacao.setTpAvaliacao("Otimo");
+                carrinhoController.log_Pedidos(carrinho, avaliacao, pagamento);
                 break;
             case "2":
                 System.out.println("Obrigado pela sua avaliação!\n");
+                avaliacao.setTpAvaliacao("Bom");
+                carrinhoController.log_Pedidos(carrinho, avaliacao, pagamento);
                 break;
             case "3":
                 contestResp();
+                avaliacao.setTpAvaliacao("Ruim");
+                carrinhoController.log_Pedidos(carrinho, avaliacao, pagamento);
                 break;
             case "4":
+                avaliacao.setTpAvaliacao("Nao Avaliado");
+                carrinhoController.log_Pedidos(carrinho, avaliacao, pagamento);
                 break;
             default:
                 System.out.println("Opção Inválida!");

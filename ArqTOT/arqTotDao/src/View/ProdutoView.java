@@ -18,7 +18,7 @@ public class ProdutoView {
             System.out.printf(" | 1 Criar Novo Produto |\n");
             System.out.printf(" | 2 Listar Produtos    |\n");
             System.out.printf(" | 3 Excluir Produto    |\n");
-            System.out.printf(" | 4 Editar Produto    |\n");
+            System.out.printf(" | 4 Editar Produto     |\n");
             System.out.printf(" | 5 Voltar             |\n");
             System.out.println("_________________________");
             op = le.nextLine();

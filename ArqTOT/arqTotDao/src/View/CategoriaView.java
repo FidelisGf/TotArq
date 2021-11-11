@@ -9,6 +9,31 @@ import java.util.Scanner;
 public class CategoriaView {
     CategoriaController categoriaController = new CategoriaController();
     Scanner scanner = new Scanner(System.in);
+    public void menuCategoria(){
+        Menu menu = new Menu();
+        while (true){
+            System.out.printf("--------------------------------------\n");
+            System.out.printf("|  (1) Inserir Nova Categoria        |\n");
+            System.out.printf("|  (2) Listar Todas as Categorias    |\n");
+            System.out.printf("|  (3) Sair                          |\n");
+            System.out.printf("--------------------------------------\n");
+            switch (scanner.nextLine()){
+                case "1":
+                    Registrar_Categoria();
+                    break;
+                case "2":
+                    listar_Categorias();
+                    menu.esperaENTER();
+                    break;
+                case "3":
+                    menu.Menu_Principal();
+                    break;
+                default:
+                    System.out.println("Opção Invalida !");
+                    break;
+            }
+        }
+    }
     public void Registrar_Categoria(){
         String nome;
         System.out.println("Digite o nome da nova categoria : ");
