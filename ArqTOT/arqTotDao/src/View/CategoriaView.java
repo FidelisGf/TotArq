@@ -3,13 +3,14 @@ package View;
 import Controler.CategoriaController;
 import Model.Categoria;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
 public class CategoriaView {
     CategoriaController categoriaController = new CategoriaController();
     Scanner scanner = new Scanner(System.in);
-    public void menuCategoria(){
+    public void menuCategoria() throws IOException {
         Menu menu = new Menu();
         while (true){
             System.out.printf("--------------------------------------\n");

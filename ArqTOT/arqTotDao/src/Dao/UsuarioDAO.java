@@ -9,8 +9,8 @@ import java.util.StringTokenizer;
 
 public class UsuarioDAO {
     private long idUsuario;
-    private File caminhoUsuarios = new File("./config/usuarios.txt");
-    private File caminhoIdUsuario = new File("./config/idUsuarios.txt");
+    private File caminhoUsuarios = new File("../TotArq/ArqTOT/Config/usuarios.txt");
+    private File caminhoIdUsuario = new File("../TotArq/ArqTOT/Config/idUsuarios.txt");
 
     public long getIdUsuario() throws IOException {
         if (caminhoIdUsuario.exists()) {  // se ja tiver alguem cadastrado
@@ -166,7 +166,6 @@ public class UsuarioDAO {
             String texto;
             List<String> linha;
             String acesso = null;
-
             while (true) {
                 linha = new ArrayList<>();
                 texto = fileR.readLine();

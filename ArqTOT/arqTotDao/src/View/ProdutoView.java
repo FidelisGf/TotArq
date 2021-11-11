@@ -4,6 +4,7 @@ import Controler.ProdutoController;
 import Model.Categoria;
 import Model.Produto;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class ProdutoView {
@@ -11,7 +12,7 @@ public class ProdutoView {
     Produto produto = new Produto();
     Scanner le = new Scanner(System.in);
     Menu menu = new Menu();
-    public void MenuProdutos(){
+    public void MenuProdutos() throws IOException {
         String op = "";
         while (true){
             System.out.println("_________________________");

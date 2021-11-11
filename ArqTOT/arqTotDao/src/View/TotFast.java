@@ -4,6 +4,7 @@ import Controler.ProdutoController;
 import Model.Categoria;
 import Model.Produto;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -36,7 +37,7 @@ public class TotFast {
             i = 0;
         }
     }
-    public void MenuTotem(){
+    public void MenuTotem() throws IOException {
         while (true){
             System.out.printf(" _________________________________\n");
             System.out.printf(" |   (1) Modulo de Venda         |\n");
@@ -46,8 +47,10 @@ public class TotFast {
                 case "1":
                     break;
                 case "2":
-                    Menu menu = new Menu();
-                    menu.Menu_Principal();
+//                    Menu menu = new Menu();
+//                    menu.Menu_Principal();
+                    UsuarioView usuario = new UsuarioView();
+                    usuario.loginUsuarioView();
                     break;
             }
         }

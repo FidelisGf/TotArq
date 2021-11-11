@@ -5,7 +5,7 @@ import Model.Empresa;
 import java.io.*;
 
 public class EmpresaDAO {
-    private File caminhoEmpresa = new File("./config/empresa.txt");
+    private File caminhoEmpresa = new File("./Config/empresa.txt");
 
     public String cadastrarEmpresaDAO(Empresa empresa) throws IOException {
         if (! caminhoEmpresa.exists() && empresa.getNomeEmpresa() != null && empresa.getEnderecoEmpresa() != null && empresa.getCnpjEmpresa() != null) {
