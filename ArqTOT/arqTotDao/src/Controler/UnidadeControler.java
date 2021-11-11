@@ -63,4 +63,12 @@ public class UnidadeControler {
             return false;
         }
     }
+
+    public void listarCatUnid(long idUnd) throws IOException {
+        undDAO.listarCategoriasUnidade(idUnd);
+    }
+
+    public void listaNomeIdUnid() throws IOException {
+        undDAO.listaNomeIdUnidade();
+    }
 }

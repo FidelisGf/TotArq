@@ -1,6 +1,7 @@
 package View;
 
 import Controler.CategoriaController;
+import Controler.UnidadeControler;
 import Model.Categoria;
 
 import java.io.IOException;
@@ -35,14 +36,25 @@ public class CategoriaView {
             }
         }
     }
-    public void Registrar_Categoria(){
+    public void Registrar_Categoria() throws IOException {
         String nome;
+        long idUnidadeCategoria;
         System.out.println("Digite o nome da nova categoria : ");
         nome = scanner.nextLine();
+        UnidadeControler uc1 = new UnidadeControler();
+        System.out.println("Unidades disponíveis: ");
+        uc1.listaNomeIdUnid();
+        System.out.println("Insira o id da Unidade que terá essa categoria");
+        idUnidadeCategoria = scanner.nextLong();
+        scanner.nextLine();
+        categoriaController.salvaCatUnid(nome, idUnidadeCategoria);
+
         Categoria categoria = new Categoria(nome);
+
 
         categoriaController.Registrar_Categoria(categoria);
     }
+
     public void listar_Categorias(){
         int i = 0;
         for(String list : categoriaController.listar_Categorias()){

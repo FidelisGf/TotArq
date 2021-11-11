@@ -60,4 +60,13 @@ public class CategoriaDAO {
             e.printStackTrace();
         }
     }
+    public void salvaCategoriaUnidade(String nomeCategoria, Long idUnidade) throws IOException {
+        File listaCatUnd = new File("listaCategoriasUnidade.txt");
+        FileWriter fw = new FileWriter(listaCatUnd, true);
+        PrintWriter pw = new PrintWriter(fw);
+        pw.println(idUnidade);
+        pw.println(nomeCategoria);
+        fw.close();
+        pw.close();
+    }
 }
