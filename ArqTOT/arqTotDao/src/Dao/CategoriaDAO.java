@@ -55,7 +55,8 @@ public class CategoriaDAO {
             printWriter.close();
             fileWriter.close();
 
-            File file = new File("./Config/" + categoria.getNomeCategoria());
+            File file = new File("../Config/" + categoria.getNomeCategoria());
+            file.delete();
         }catch (IOException e){
             e.printStackTrace();
         }

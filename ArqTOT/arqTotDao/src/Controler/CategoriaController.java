@@ -14,4 +14,8 @@ public class CategoriaController {
         CategoriaDAO categoriaDAO = new CategoriaDAO();
         return  categoriaDAO.listar_Categorias();
     }
+    public void excluirCategoria(Categoria categoria, int op){
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        categoriaDAO.excluirCategoria(categoria, op);
+    }
 }

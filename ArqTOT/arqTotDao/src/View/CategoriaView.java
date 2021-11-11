@@ -63,6 +63,9 @@ public class CategoriaView {
         categoria.setNomeCategoria(categoriaView.escolher_Categoria().get(op));
         return categoria;
     }
+    public void excluirCategoria(){
+
+    }
 
 
 }
