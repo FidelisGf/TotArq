@@ -2,11 +2,12 @@ package View;
 
 import Model.Categoria;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Menu {
     Scanner scanner = new Scanner(System.in);
-    public void Menu_Principal(){
+    public void Menu_Principal() throws IOException {
         String op = "";
         while (true){
             System.out.println("-----------------------------------");

@@ -13,9 +13,14 @@ public class UnidadeDao {
         try{
             FileWriter fwg = new FileWriter("Unidades/manusUnid.txt", true);
             PrintWriter bwg = new PrintWriter(fwg);
+            FileWriter fw = new FileWriter("getIdNick.txt", true);
+            PrintWriter bw = new PrintWriter(fw);
+            bw.print("Nome: " + uni.getNomeUnidade() + "\n");
             bwg.println(uni.toString());
             bwg.close();
             fwg.close();
+            fw.close();
+            bw.close();
             
         }catch(Exception e){
             System.out.println(e.getMessage());
@@ -125,8 +130,14 @@ public class UnidadeDao {
             FileWriter fwg = new FileWriter("Unidades/manusUnid.txt", true);
             PrintWriter bwg = new PrintWriter(fwg);
             bwg.print("\n" + pegaid + "\n");
+            FileWriter fw = new FileWriter("getIdNick.txt", true);
+            PrintWriter bw = new PrintWriter(fw);
+            bwg.print("\n" + pegaid + "\n");
+            bw.print("ID: " + pegaid + " | ");
             fwg.close();
             bwg.close();
+            bw.close();
+            fw.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -154,4 +165,27 @@ public class UnidadeDao {
         fwg.close();
     }
 
+    public void listarCategoriasUnidade(long idSelecionado) throws IOException {
+        Path path = Paths.get("listaCategoriasUnidade.txt");
+        listAux = Files.readAllLines(path);
+        String convertLong = Long.toString(idSelecionado);
+        for (int i = 0; i < listAux.size(); i++){
+            if (convertLong.equals(listAux.get(i))) {
+                System.out.println(listAux.get(i+1).toUpperCase());
+            }
+        }
+    }
+
+    public void listaNomeIdUnidade() throws IOException {
+        FileReader arquivo = new FileReader("getIdNick.txt");
+        BufferedReader arquivoR = new BufferedReader(arquivo);
+        String linha;
+
+        linha = arquivoR.readLine();
+        while (linha != null) {
+            System.out.println(linha);
+            linha = arquivoR.readLine();
+        }
+        arquivo.close();
+    }
 }

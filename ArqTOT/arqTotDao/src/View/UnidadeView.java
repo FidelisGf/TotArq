@@ -19,7 +19,8 @@ public class UnidadeView {
             System.out.println("*         4 - Buscar Unidade             *");
             System.out.println("*         5 - Editar Unidade             *");
             System.out.println("*         6 - Excluir Unidade            *");
-            System.out.println("*         7 - Sair                       *");
+            System.out.println("*         7 - Listar Categorias Unidade  *");
+            System.out.println("*         8 - Sair                       *");
             System.out.println("******************************************");
             escolha = scan.nextInt();
             switch (escolha) {
@@ -42,13 +43,17 @@ public class UnidadeView {
                     excluirUnidade();
                     break;
                 case 7:
+                    uc.listaNomeIdUnid();
+                    listarCategoriasUnidades();
+                    break;
+                case 8:
                     System.out.println("Xau!");
                     break;
                 default:
                     System.out.println("Opção Inválida!");
                     break;
             }
-        }while (escolha != 7);
+        }while (escolha != 8);
     }
 
     public void insertUnidade() throws IOException {
@@ -107,6 +112,13 @@ public class UnidadeView {
             String resp = scan.nextLine();
             uc.excluirUnidade(idSelec, resp);
         }
+    }
+
+    public void listarCategoriasUnidades() throws IOException {
+        System.out.println("\nInsira o id da Unidade");
+        Long idUnid = scan.nextLong();
+        scan.nextLine();
+        uc.listarCatUnid(idUnid);
     }
 
 }

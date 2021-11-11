@@ -1,8 +1,5 @@
 package Dao;
-
-import Model.Categoria;
-import Model.Produto;
-
+import Model.*;
 import javax.imageio.IIOException;
 import java.io.*;
 import java.util.ArrayList;
@@ -10,10 +7,10 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class CategoriaDAO {
-    File lista = new File("C:\\Users\\Fifo\\Desktop\\ArqTOT\\Config\\listaCategorias.txt");
+    File lista = new File("../listaCategorias.txt");
     public void Registrar_Categoria(Categoria categoria){
         try {
-            File file = new File("C:\\Users\\Fifo\\Desktop\\ArqTOT\\Config\\"+ categoria.getNomeCategoria()+".txt");
+            File file = new File("../"+ categoria.getNomeCategoria()+".txt");
             FileWriter fileWriter = new FileWriter(lista,true);
             PrintWriter printWriter = new PrintWriter(fileWriter);
             if(!file.exists()){
@@ -59,5 +56,15 @@ public class CategoriaDAO {
         }catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    public void salvaCategoriaUnidade(String nomeCategoria, Long idUnidade) throws IOException {
+        File listaCatUnd = new File("listaCategoriasUnidade.txt");
+        FileWriter fw = new FileWriter(listaCatUnd, true);
+        PrintWriter pw = new PrintWriter(fw);
+        pw.println(idUnidade);
+        pw.println(nomeCategoria);
+        fw.close();
+        pw.close();
     }
 }
