@@ -12,6 +12,7 @@ public class AdministradorController {
         UsuarioView usuario = new UsuarioView();
         UnidadeView unidade = new UnidadeView();
         CategoriaView categoria = new CategoriaView();
+        Menu menu = new Menu();
 
         if (option.equals("1")) {  // empresa
             empresa.menuEmpresaView();
@@ -27,6 +28,10 @@ public class AdministradorController {
         }
         else if (option.equals("4")) {  // categorias
             categoria.menuCategoria();
+            adm.menuAdministradorView();
+        }
+        else if (option.equals("5")) {
+            menu.Menu_Principal();
             adm.menuAdministradorView();
         }
     }

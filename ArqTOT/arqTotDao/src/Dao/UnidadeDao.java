@@ -132,7 +132,6 @@ public class UnidadeDao {
             bwg.print("\n" + pegaid + "\n");
             FileWriter fw = new FileWriter("../TotArq/ArqTOT/Config/getIdNick.txt", true);
             PrintWriter bw = new PrintWriter(fw);
-            bwg.print("\n" + pegaid + "\n");
             bw.print("ID: " + pegaid + " | ");
             fwg.close();
             bwg.close();

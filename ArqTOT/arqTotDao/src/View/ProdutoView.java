@@ -12,6 +12,7 @@ public class ProdutoView {
     Produto produto = new Produto();
     Scanner le = new Scanner(System.in);
     Menu menu = new Menu();
+
     public void MenuProdutos() throws IOException {
         String op = "";
         while (true){
@@ -51,10 +52,13 @@ public class ProdutoView {
         }
     }
     public void Registrar_Produto(){
+        ProdutoController estoqueController = new ProdutoController();
         System.out.println("Digite o nome do produto :");
         produto.setNomeProduto(le.nextLine().toUpperCase());
         System.out.println("Digite o valor do produto : ");
         produto.setValorProduto(le.nextFloat());
+        System.out.println("Digite a quantidade do produto : ");
+        produto.setQuantidadeProduto(le.nextInt());
         le.nextLine();
         System.out.println("Selecione uma Categoria : ");
         CategoriaView categoriaView = new CategoriaView();
@@ -64,6 +68,7 @@ public class ProdutoView {
         Categoria categoria = new Categoria();
         categoria.setNomeCategoria(categoriaView.escolher_Categoria().get(op));
         produtoController.Registrar_Produto(produto, categoria);
+        estoqueController.cadastrarEstoque(produto);
     }
 
     public void listar_Produtos(){
@@ -108,6 +113,33 @@ public class ProdutoView {
         }
         System.out.println("Selecione um produto :");
         return op = le.nextInt();
+    }
+
+    public void menuEstoque(){
+        int escolhe = 0;
+        System.out.println("-----------------------------------");
+        System.out.printf(" | (1) Listar Estoque            |\n");
+        System.out.printf(" | (2) Sair                      |\n");
+        System.out.println("-----------------------------------");
+
+        escolhe = le.nextInt();
+
+        switch (escolhe){
+            case 1:
+                listarEstoque();
+                break;
+            case 2:
+                System.out.println("Saindo...");
+                break;
+            default:
+                System.out.println("ERROR - Reinicie o Sistema");
+        }
+    }
+
+    public void listarEstoque(){
+        for (Produto produto : produtoController.listarEstoque()){
+            System.out.println("NOME: " + produto.getNomeProduto() + " | QUANTIDADE: " + produto.getQuantidadeProduto());
+        }
     }
 
 }

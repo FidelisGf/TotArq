@@ -13,7 +13,8 @@ public class Menu {
             System.out.println("-----------------------------------");
             System.out.printf(" | (1) Menu Produtos             |\n");
             System.out.printf(" | (2) Menu Categorias           |\n");
-            System.out.printf(" | (3) Sair                      |\n");
+            System.out.printf(" | (3) Menu Estoque              |\n");
+            System.out.printf(" | (4) Sair                      |\n");
             System.out.println("-----------------------------------");
             op = scanner.nextLine();
             switch (op){
@@ -26,6 +27,10 @@ public class Menu {
                     categoriaView.menuCategoria();
                     break;
                 case "3":
+                    ProdutoView produtoVer = new ProdutoView();
+                    produtoVer.menuEstoque();
+                    break;
+                case "4":
                     TotFast totFast = new TotFast();
                     totFast.MenuTotem();
                     break;

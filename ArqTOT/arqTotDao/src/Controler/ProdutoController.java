@@ -27,4 +27,14 @@ public class ProdutoController {
         ProdutoDAO produtoDAO = new ProdutoDAO();
         produtoDAO.editar_produto(categoria, op, escolha, produto);
     }
+
+    public List<Produto> listarEstoque(){
+        ProdutoDAO produtoDAO = new ProdutoDAO();
+        return produtoDAO.listarEstoque();
+    }
+
+    public void cadastrarEstoque(Produto produto){
+        ProdutoDAO produtoDAO = new ProdutoDAO();
+        produtoDAO.cadastraEstoque(produto);
+    }
 }
