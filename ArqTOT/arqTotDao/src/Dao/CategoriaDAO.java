@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class CategoriaDAO {
-    File lista = new File("C:\\Users\\Fifo\\Desktop\\ArqTOT\\Config\\listaCategorias.txt");
+    File lista = new File("../TotArq/ArqTOT/Config/listaCategorias.txt");
     public void Registrar_Categoria(Categoria categoria){
         try {
-            File file = new File("C:\\Users\\Fifo\\Desktop\\ArqTOT\\Config\\"+ categoria.getNomeCategoria()+".txt");
+            File file = new File("../TotArq/ArqTOT/Config/"+ categoria.getNomeCategoria()+".txt");
             FileWriter fileWriter = new FileWriter(lista,true);
             PrintWriter printWriter = new PrintWriter(fileWriter);
             if(!file.exists()){
@@ -55,13 +55,13 @@ public class CategoriaDAO {
             printWriter.close();
             fileWriter.close();
 
-            File file = new File("./Config/" + categoria.getNomeCategoria());
+            File file = new File("../TotArq/ArqTOT/Config/" + categoria.getNomeCategoria());
         }catch (IOException e){
             e.printStackTrace();
         }
     }
     public void salvaCategoriaUnidade(String nomeCategoria, Long idUnidade) throws IOException {
-        File listaCatUnd = new File("listaCategoriasUnidade.txt");
+        File listaCatUnd = new File("../TotArq/ArqTOT/Config/listaCategoriasUnidade.txt");
         FileWriter fw = new FileWriter(listaCatUnd, true);
         PrintWriter pw = new PrintWriter(fw);
         pw.println(idUnidade);

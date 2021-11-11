@@ -7,7 +7,7 @@ import java.io.IOException;
 public class UnidadeControler {
     UnidadeDao undDAO = new UnidadeDao();
     public void cadastraUnidade(Unidade u1) throws IOException {
-        File file1 = new File("guarda_ID.txt");
+        File file1 = new File("../TotArq/ArqTOT/Config/guarda_ID.txt");
         if(!file1.exists()){
             undDAO.escreveId(0);
         }
