@@ -15,8 +15,15 @@ public class TotFast {
     public void Comprar(){
         int i = 0;
         List<Produto> list = new ArrayList<>();
+
+        System.out.println("-----------------------------");
+        System.out.println("|        Bem-Vindo          |");
+        System.out.println("|           ao              |");
+        System.out.println("|         TOT-FAST          |");
+        System.out.println("-----------------------------");
+        System.out.println("Toque na tela para continuar :");
+        String tmp3 = le.nextLine();
         while (true){
-            System.out.println("Selecione uma categoria para acessar : ");
             CategoriaView categoriaView = new CategoriaView();
             Categoria categoria = categoriaView.escolher_Categoria_PorNome();
             for(Produto produto : produtoController.Listar_Produto_Categoria(categoria)){
@@ -31,6 +38,7 @@ public class TotFast {
             System.out.println("Tecle ENTER para continuar ou 3 para Finalizar a compra");
             String tmp = le.nextLine();
             if(tmp.contains("3")){
+                carrinhoView.finalizar_Compra();
                 break;
             }
             i = 0;
@@ -44,6 +52,7 @@ public class TotFast {
             System.out.printf(" _________________________________\n");
             switch (le.nextLine()){
                 case "1":
+                    Comprar();
                     break;
                 case "2":
                     Menu menu = new Menu();
@@ -51,6 +60,12 @@ public class TotFast {
                     break;
             }
         }
-
+    }
+    public static void pause(int ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            System.err.format("IOException: %s%n", e);
+        }
     }
 }
