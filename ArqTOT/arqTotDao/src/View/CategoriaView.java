@@ -70,9 +70,14 @@ public class CategoriaView {
         return categoria;
     }
     public void excluirCategoria(){
-        Categoria categoria = escolher_Categoria_PorNome();
-        int op = categoria.getIdCategoria();
-        categoriaController.excluirCategoria(categoria, op);
+        System.out.println("Deseja Mesmo Excluir essa categoria ? Isso irá excluir todos os produtos dentro dela ! (1) Sim (2) Nao");
+        if(scanner.nextLine().contains("1")){
+            Categoria categoria = escolher_Categoria_PorNome();
+            int op = categoria.getIdCategoria();
+            categoriaController.excluirCategoria(categoria, op);
+        }else{
+            System.out.println("Operação cancelada com sucesso !");
+        }
 
     }
 
