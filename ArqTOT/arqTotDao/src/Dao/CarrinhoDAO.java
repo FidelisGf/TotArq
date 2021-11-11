@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class CarrinhoDAO {
-    File file = new File("C:\\Users\\Fifo\\Desktop\\ArqTOT\\carrinho.txt");
+    File file = new File("../carrinho.txt");
     public void Adiciona_Carrinho(Carrinho carrinho){
         try {
 

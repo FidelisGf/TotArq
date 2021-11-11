@@ -4,10 +4,12 @@ public class Produto {
     private int IdProduto;
     private String nomeProduto;
     private Float ValorProduto;
+    private int quantidadeProduto;
 
-    public Produto(String nomeProduto, Float valorProduto) {
+    public Produto(String nomeProduto, Float valorProduto, int quantidadeProduto) {
         this.nomeProduto = nomeProduto;
         ValorProduto = valorProduto;
+       this.quantidadeProduto = quantidadeProduto;
     }
 
     public Produto() {
@@ -37,12 +39,21 @@ public class Produto {
         ValorProduto = valorProduto;
     }
 
+    public int getQuantidadeProduto() {
+        return quantidadeProduto;
+    }
+
+    public void setQuantidadeProduto(int quantidadeProduto) {
+        this.quantidadeProduto = quantidadeProduto;
+    }
+
     @Override
     public String toString() {
         return "Produto{" +
                 "IdProduto=" + IdProduto +
                 ", nomeProduto='" + nomeProduto + '\'' +
                 ", ValorProduto=" + ValorProduto +
+                ", quantidadeProduto=" + quantidadeProduto +
                 '}';
     }
 }

@@ -66,7 +66,7 @@ public class ProdutoDAO {
         StringTokenizer myTokens;
         List<Produto> lista = new ArrayList<>();
         try {
-            File file = new File("C:\\Users\\Fifo\\Desktop\\ArqTOT\\Config\\"+ categoria.getNomeCategoria()+".txt");
+            File file = new File("../Config/"+ categoria.getNomeCategoria()+".txt");
             FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             while (bufferedReader.ready()){

@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class CategoriaDAO {
-    File lista = new File("C:\\Users\\Fifo\\Desktop\\ArqTOT\\Config\\listaCategorias.txt");
+    File lista = new File("../Config/listaCategorias.txt");
     public void Registrar_Categoria(Categoria categoria){
         try {
-            File file = new File("C:\\Users\\Fifo\\Desktop\\ArqTOT\\Config\\"+ categoria.getNomeCategoria()+".txt");
+            File file = new File("../Config/"+ categoria.getNomeCategoria()+".txt");
             FileWriter fileWriter = new FileWriter(lista,true);
             PrintWriter printWriter = new PrintWriter(fileWriter);
             if(!file.exists()){

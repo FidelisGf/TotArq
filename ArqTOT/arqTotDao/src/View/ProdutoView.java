@@ -1,6 +1,8 @@
 package View;
 
+import Controler.EstoqueController;
 import Controler.ProdutoController;
+import Dao.EstoqueDAO;
 import Model.Categoria;
 import Model.Produto;
 
@@ -11,6 +13,7 @@ public class ProdutoView {
     Produto produto = new Produto();
     Scanner le = new Scanner(System.in);
     Menu menu = new Menu();
+
     public void MenuProdutos(){
         String op = "";
         while (true){
@@ -50,10 +53,13 @@ public class ProdutoView {
         }
     }
     public void Registrar_Produto(){
+        EstoqueController estoqueController = new EstoqueController();
         System.out.println("Digite o nome do produto :");
         produto.setNomeProduto(le.nextLine().toUpperCase());
         System.out.println("Digite o valor do produto : ");
         produto.setValorProduto(le.nextFloat());
+        System.out.println("Digite a quantidade do produto : ");
+        produto.setQuantidadeProduto(le.nextInt());
         le.nextLine();
         System.out.println("Selecione uma Categoria : ");
         CategoriaView categoriaView = new CategoriaView();
@@ -63,6 +69,7 @@ public class ProdutoView {
         Categoria categoria = new Categoria();
         categoria.setNomeCategoria(categoriaView.escolher_Categoria().get(op));
         produtoController.Registrar_Produto(produto, categoria);
+        estoqueController.cadastrarEstoque(produto);
     }
 
     public void listar_Produtos(){
