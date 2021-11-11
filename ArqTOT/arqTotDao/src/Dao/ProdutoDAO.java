@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class ProdutoDAO {
-    File file = new File("C:\\Users\\Fifo\\Desktop\\ArqTOT\\Config\\idProduto.txt");
+    File file = new File("./Config/idProduto.txt");
 
     public void Registrar_Produto(Produto produto, Categoria categoria ,boolean op){
         if(verifica_se_existe(categoria,produto) || !op){
@@ -17,7 +17,7 @@ public class ProdutoDAO {
                 produto.setIdProduto(SetNovoId());
             }
             try {
-                File file = new File("C:\\Users\\Fifo\\Desktop\\ArqTOT\\Config\\" + categoria.getNomeCategoria() + ".txt");
+                File file = new File("./Config/" + categoria.getNomeCategoria() + ".txt");
                 FileWriter fileWriter = new FileWriter(file, op);
                 PrintWriter printWriter = new PrintWriter(fileWriter);
                 printWriter.println(produto.getIdProduto() + "|" + produto.getNomeProduto() + "|" + produto.getValorProduto());
@@ -48,7 +48,7 @@ public class ProdutoDAO {
     public int SetNovoId(){
         int id = PegaIdAtual();
         try {
-            File file = new File("C:\\Users\\Fifo\\Desktop\\ArqTOT\\Config\\idProduto.txt");
+            File file = new File("./Config/idProduto.txt");
             if(file.exists()){
                 FileWriter fileWriter = new FileWriter(file);
                 PrintWriter printWriter = new PrintWriter(fileWriter);
@@ -66,7 +66,7 @@ public class ProdutoDAO {
         StringTokenizer myTokens;
         List<Produto> lista = new ArrayList<>();
         try {
-            File file = new File("C:\\Users\\Fifo\\Desktop\\ArqTOT\\Config\\"+ categoria.getNomeCategoria()+".txt");
+            File file = new File("./Config/"+ categoria.getNomeCategoria()+".txt");
             FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             while (bufferedReader.ready()){
@@ -121,7 +121,7 @@ public class ProdutoDAO {
     }
     public void insere_edicao(Produto produto, Categoria categoria){
         try{
-            File file = new File("C:\\Users\\Fifo\\Desktop\\ArqTOT\\Config\\" + categoria.getNomeCategoria() + ".txt");
+            File file = new File("./Config/" + categoria.getNomeCategoria() + ".txt");
             FileWriter fileWriter = new FileWriter(file, true);
             PrintWriter printWriter = new PrintWriter(fileWriter);
             printWriter.println(produto.getIdProduto() + "|" + produto.getNomeProduto() + "|" + produto.getValorProduto());
