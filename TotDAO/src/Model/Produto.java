@@ -8,6 +8,7 @@ public class Produto {
     private float Preco;
     private int IdCategoria;
     private Instant Data;
+    private int Quantidade;
 
     public Instant getData() {
         return Data;
@@ -17,8 +18,23 @@ public class Produto {
         Data = data;
     }
 
+    public int getQuantidade() {
+        return Quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        Quantidade = quantidade;
+    }
+
     public int getId() {
         return Id;
+    }
+
+    public Produto(String nome, float preco, int idCategoria, int quantidade) {
+        Nome = nome;
+        Preco = preco;
+        IdCategoria = idCategoria;
+        Quantidade = quantidade;
     }
 
     public Produto(int id, String nome, float preco, int idCategoria) {

@@ -51,4 +51,5 @@ public class CargosDAO {
             throw new RuntimeException();
         }
     }
+
 }

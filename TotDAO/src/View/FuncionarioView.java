@@ -68,7 +68,7 @@ public class FuncionarioView {
                     listarTodos(id);
                     break;
                 case "3":
-                    menu.menu_Principal();
+                    menu.menu_Chefe();
                     break;
             }
         }
@@ -78,6 +78,9 @@ public class FuncionarioView {
         String menuTexto = "1 | Inserir Novo Funcionario | " + "\n2 | Listar todos os funcionarios |" + "\n3 | Sair |";
         return (String) JOptionPane.showInputDialog(null,"Selecione uma opção :\n" + menuTexto,"MenuFuncionario", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]);
     }
+
+
+
     public void iniciarSessao(){
         String nome,senha;
         nome = (String) JOptionPane.showInputDialog(null, "Usuario:");
@@ -85,11 +88,16 @@ public class FuncionarioView {
         Funcionario funcionario = new Funcionario(nome, senha);
         boolean verifica = funcionarioController.iniciarSessao(funcionario);
         if(verifica){
-            JOptionPane.showMessageDialog(null, "Login Realizado com sucesso !");
-            menu.menu_Principal();
-
+            if(funcionarioController.verificaCargo(funcionario) == 1){
+//                JOptionPane.showMessageDialog(null, "Login Realizado com sucesso !");
+                menu.menu_Chefe();
+            }else {
+                //JOptionPane.showMessageDialog(null, "Login Realizado com sucesso !");
+                menu.exibeMenuFuncionario();
+            }
         }else {
             JOptionPane.showMessageDialog(null, "Usuario Não Cadastrado !");
         }
     }
+
 }

@@ -1,11 +1,14 @@
 package DAO;
 
 import CONNECTION.ConnectionFactory;
+import Model.Cargos;
 import Model.Categoria;
 
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class CategoriaDAO {
     private Connection connection;
@@ -51,5 +54,28 @@ public class CategoriaDAO {
         }catch (SQLException e){
             throw  new RuntimeException();
         }
+   }
+   public int escolhe_Categoria(int id){
+       List<Categoria> list = this.listartodos(id);
+       int tamanho = list.size();
+       String[] object = new String[list.size()];
+       JFrame frame = new JFrame();
+       int op = 0;
+       frame.setAlwaysOnTop(true);
+       int i = 0;
+       try {
+           for (Categoria categoria : list) {
+               object[i] = String.valueOf(categoria.getId()) + "|" + categoria.getNome().toString();
+               i++;
+           }
+           Object selectionObject = (String) JOptionPane.showInputDialog(frame, "Escolha a Categoria desejada : ", "Categoria", JOptionPane.QUESTION_MESSAGE, null, object, object[0]);
+           String tmp = selectionObject.toString();
+           StringTokenizer st = new StringTokenizer(tmp);
+           op = Integer.valueOf(st.nextToken("|"));
+
+       }catch (Exception e){
+           e.printStackTrace();
+       }
+       return op;
    }
 }

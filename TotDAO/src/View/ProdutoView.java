@@ -1,9 +1,8 @@
 package View;
 
+import Controller.CategoriaController;
 import Controller.ProdutoController;
 import Model.Categoria;
-import Model.Empresa;
-import Model.Funcionario;
 import Model.Produto;
 
 import javax.swing.*;
@@ -15,6 +14,7 @@ public class ProdutoView {
     Menu menu = new Menu();
     Scanner le = new Scanner(System.in);
     ProdutoController produtoController = new ProdutoController();
+    CategoriaController categoriaController = new CategoriaController();
     public void menu(int id){
         while(true){
             String op = exibeMenuProdutos();
@@ -30,10 +30,9 @@ public class ProdutoView {
                     break;
                 case "4":
                     editarProduto(id);
-                    menu.espera_Enter();
                     break;
                 case "5":
-                    menu.menu_Principal();
+                    menu.menu_Chefe();
                     break;
             }
         }
@@ -43,35 +42,21 @@ public class ProdutoView {
         String nome = "";
         float tmp1 = 0;
         int tmp2 = 0;
-        nome = (String) JOptionPane.showInputDialog(null, "Nome do Produto:");
+        int qntd = 0;
+        nome = (String) JOptionPane.showInputDialog(null, "Nome do Produto:").toUpperCase();
         tmp1 = Float.parseFloat(JOptionPane.showInputDialog(null, "Valor do Produto : "));
-        List<Categoria> list = categoriaView.listartodos(id);
-        String[] object = new String[list.size()];
-        JFrame frame = new JFrame();
-        frame.setAlwaysOnTop(true);
-        int i = 0;
-        try {
-            for (Categoria categoria : list) {
-                object[i] = String.valueOf(categoria.getId()) + "|" + categoria.getNome().toString();
-                i++;
-            }
-            Object selectionObject = (String) JOptionPane.showInputDialog(frame, "Escolha a categoria do produto", "Categorias", JOptionPane.QUESTION_MESSAGE, null, object, object[0]);
-            String tmp3 = selectionObject.toString();
-            StringTokenizer st = new StringTokenizer(tmp3);
-            tmp2 = Integer.valueOf(st.nextToken("|"));
-            Produto produto = new Produto(nome ,tmp1, tmp2);
-            produtoController.insereProduto(produto);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        qntd = Integer.parseInt(JOptionPane.showInputDialog(null,"Insira a quantidade inicial desse produto :"));
+        tmp2 = categoriaView.escolherCategoria(id);
+        Produto produto = new Produto(nome ,tmp1, tmp2, qntd);
+        produtoController.insereProduto(produto);
     }
     public String exibeMenuProdutos(){
         String[] escolhas = {"1", "2", "3", "4", "5"};
-        String menuTexto = "1 | Inserir Produto | " + "\n\n2 | Listar Todos os Produtos |" + "\n\n3 | Listar Produto por Categoria |\n\n4 | Editar Produto |\n\n5 | Sair |\n";
+        String menuTexto = "1 | Inserir Produto | " + "\n\n2 | Listar Todos os Produtos |" + "\n\n3 | Listar Produto por Categoria |\n\n4 | Editar Produto |\n\n 5 | Sair |\n";
         return (String) JOptionPane.showInputDialog(null,"Selecione uma opção :\n\n" + menuTexto,"MenuProdutos", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]);
     }
     public void listarProdutoporCategoria(int id2){
-        int op = Integer.parseInt(JOptionPane.showInputDialog(null,"Digite o Id da Categoria :"));
+        int op = categoriaController.escolherCategoria(id2);
         List<Produto> list = produtoController.listaProdutoporCategoria(op, id2);
         if(list.isEmpty()){
             JOptionPane.showInternalMessageDialog(null, "Categoria Vazia");
@@ -99,31 +84,20 @@ public class ProdutoView {
     }
     public void editarProduto(int id){
         int i = 0;
-        List<Produto> list = produtoController.listarTodosProdutos(id);
-        JFrame frame = new JFrame();
-        frame.setAlwaysOnTop(true);
-        String[] tmp = new String[list.size()];
-        String opc = "";
-        String output = "";
-        for (Produto produto : list) {
-            tmp[i] =  i + "| " + "NOME : " + produto.getNome() + " Com o VALOR de : R$" + String.valueOf(produto.getPreco());
-            i++;
-        }
-        Object selectionObject = (String) JOptionPane.showInputDialog(frame,"Select Product","Produtos",JOptionPane.QUESTION_MESSAGE,null, tmp, tmp[0]);
+        int idCategoria = categoriaController.escolherCategoria(id);
+        List<Produto> list = produtoController.listaProdutoporCategoria(idCategoria,id);
+        int id1 = produtoController.escolher_produto(idCategoria,id);
         Produto produto = new Produto();
-        String pegaop = selectionObject.toString();
-        StringTokenizer st = new StringTokenizer(pegaop);
-        int id1 = Integer.parseInt(st.nextToken("|"));
         produto.setId(list.get(id1).getId());
         produto.setNome(list.get(id1).getNome());
         int op = 0;
-        String[] escolhas = {"1", "2", "3"};
-        String menuTexto = "1 | Editar Nome| " + "\n\n2 | Editar Valor |" + "\n\n3 | Edidar Categoria do Produto |\n\n";
+        String opc;
+        String[] escolhas = {"1", "2", "3", "4"};
+        String menuTexto = "1 | Editar Nome| " + "\n\n2 | Editar Valor |" + "\n\n3 | Edidar Categoria do Produto |\n\n4 | Adiconar Quantidade a um produto |\n";
         opc = (String) (JOptionPane.showInputDialog(null,"Selecione uma opção :\n\n" + menuTexto,"EditarProdutos", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]));
         op = Integer.parseInt(opc);
         switch (op){
             case 1:
-
                 String tmp1 = (String) JOptionPane.showInputDialog(null, "Novo Nome para o Produto : " + produto.getNome());
                 produto.setNome(tmp1);
                 produtoController.editarProduto(produto, op);
@@ -146,8 +120,15 @@ public class ProdutoView {
                 produtoController.editarProduto(produto, op);
                 System.out.println("Produto Editado com sucesso !");
                 break;
+            case 4:
+                adicionarQuantidadeProduto(produto);
+                break;
 
         }
-
+    }
+    public void adicionarQuantidadeProduto(Produto produto){
+        int Quantidade = Integer.parseInt(JOptionPane.showInputDialog(null,"Quantas unidades desse produto voce deseja adicionar : "));
+        produto.setQuantidade(Quantidade);
+        produtoController.adicionarQuantidadeProduto(produto);
     }
 }

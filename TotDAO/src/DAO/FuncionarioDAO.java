@@ -98,5 +98,39 @@ public class FuncionarioDAO {
             e.printStackTrace();
         }
    }
+   public int verificaCargo(Funcionario funcionario){
+        try {
+            String sql = "SELECT * FROM funcionarios WHERE funcionarios.Nome = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, funcionario.getNome());
+            statement.execute();
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()){
+               funcionario.setIdCargo(resultSet.getInt("IdCargo"));
+            }
+            System.out.println(funcionario.getIdCargo());
+            sql = "SELECT * from cargos WHERE cargos.IdCargo = ?";
+            PreparedStatement statement2 = connection.prepareStatement(sql);
+            statement2.setInt(1, funcionario.getIdCargo());
+            statement2.execute();
+            resultSet = statement2.executeQuery();
+            if(resultSet.next()){
+                funcionario.setCargo(resultSet.getString("NomeCargo"));
+            }
+            System.out.println(funcionario.getCargo());
+            statement.close();
+            resultSet.close();
+            if(funcionario.getCargo().contains("Patrao")){
+                return 1;
+            }else{
+                return 0;
+            }
+        }catch (SQLException e){
+            throw new RuntimeException();
+        }
+
+    }
 
 }

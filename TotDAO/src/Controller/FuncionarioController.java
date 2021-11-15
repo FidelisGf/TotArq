@@ -19,4 +19,8 @@ public class FuncionarioController {
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
         return funcionarioDAO.iniciarSessao(funcionario);
     }
+    public int verificaCargo(Funcionario funcionario){
+        FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+        return  funcionarioDAO.verificaCargo(funcionario);
+    }
 }

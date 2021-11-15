@@ -1,6 +1,7 @@
 package DAO;
 
 import CONNECTION.ConnectionFactory;
+import Controller.ProdutoController;
 import Model.Categoria;
 import Model.Funcionario;
 import Model.Produto;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.StringTokenizer;
 
 public class ProdutoDAO {
     private Connection connection;
@@ -21,21 +23,26 @@ public class ProdutoDAO {
     }
     public void insereProduto(Produto produto){
         try {
-            String sql = "INSERT INTO produtos" + "(Produto, Valor, IdCategoria)" + "VALUES(?,?,?)";
+            String sql = "INSERT INTO produtos" + "(Produto, Valor,Quantidade,IdCategoria)" + "VALUES(?,?,?,?)";
             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, produto.getNome());
-            statement.setFloat(2, produto.getPreco());
-            statement.setInt(3, produto.getIdCategoria());
-            statement.execute();
-
-            ResultSet rs = statement.getGeneratedKeys();
-            int id = 0;
-            while (rs.next()){
-                id = rs.getInt(1);
+            verificaSeExiste(produto);
+            if(verificaSeExiste(produto) == false){
+                statement.setString(1, produto.getNome());
+                statement.setFloat(2, produto.getPreco());
+                statement.setInt(3, produto.getQuantidade());
+                statement.setInt(4, produto.getIdCategoria());
+                statement.execute();
+                ResultSet rs = statement.getGeneratedKeys();
+                int id = 0;
+                while (rs.next()){
+                    id = rs.getInt(1);
+                }
+                fazerLogAdicionar(produto);
+                JOptionPane.showMessageDialog(null, "Cadastro do produto " + produto.getNome() +" realizado com sucesso no id -> " + id);
+                statement.close();
+            }else{
+                JOptionPane.showMessageDialog(null, "Produto Já existente");
             }
-            fazerLogAdicionar(produto);
-            JOptionPane.showMessageDialog(null, "Cadastro do produto " + produto.getNome() +" realizado com sucesso no id -> " + id);
-            statement.close();
         }catch (SQLException e){
             JOptionPane.showMessageDialog(null, "Falha no Cadastro  ");
             e.getErrorCode();
@@ -75,10 +82,15 @@ public class ProdutoDAO {
                 case 1:
                     sql = "Update produtos SET Produto = ? WHERE Codigo = ?";
                     PreparedStatement statement = connection.prepareStatement(sql);
-                    statement.setString(1, produto.getNome());
-                    statement.setInt(2, produto.getId());
-                    statement.executeUpdate();
-                    statement.close();
+                    if(verificaSeExiste(produto)==false){
+                        statement.setString(1, produto.getNome().toUpperCase());
+                        statement.setInt(2, produto.getId());
+                        statement.executeUpdate();
+                        statement.close();
+                        JOptionPane.showMessageDialog(null,"Nome alterado com sucesso");
+                    }else{
+                        JOptionPane.showMessageDialog(null,"Já existe um produto com esse nome");
+                    }
                     break;
                 case 2:
                     sql = "Update produtos SET Valor = ? WHERE  Codigo = ?";
@@ -95,6 +107,9 @@ public class ProdutoDAO {
                     statement.setInt(2, produto.getId());
                     statement.executeUpdate();
                     statement.close();
+                    break;
+                case 4:
+                    adicionarQuantidadeProduto(produto);
                     break;
             }
         }catch (SQLException e){
@@ -161,5 +176,54 @@ public class ProdutoDAO {
         }catch (SQLException | IOException e){
             throw new RuntimeException();
         }
+    }
+    public boolean verificaSeExiste(Produto produto){
+        try {
+            String sql = "SELECT * FROM produtos";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.execute();
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                if(resultSet.getString("Produto").equals(produto.getNome())){
+                    return true;
+                }
+            }
+            return false;
+        }catch (SQLException e){
+            throw  new RuntimeException();
+        }
+    }
+    public void adicionarQuantidadeProduto(Produto produto){
+        try {
+            String sql = "Update produtos SET Quantidade = Quantidade + ? WHERE Produto = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, produto.getQuantidade());
+            statement.setString(2,produto.getNome());
+            statement.execute();
+            statement.close();
+            JOptionPane.showMessageDialog(null,"Quantidade Adicionada com sucesso !");
+        }catch (SQLException e){
+            throw new RuntimeException();
+        }
+
+    }
+    public int escolher_produto( int idCategoria, int idEmpresa){
+        int i = 0;
+        List<Produto> list = listaProdutosporCategoria(idEmpresa, idCategoria);
+        JFrame frame = new JFrame();
+        frame.setAlwaysOnTop(true);
+        String[] tmp = new String[list.size()];
+        String opc = "";
+        String output = "";
+        for (Produto produto : list) {
+            tmp[i] =  i + "| " + "NOME : " + produto.getNome() + " Com o VALOR de : R$" + String.valueOf(produto.getPreco());
+            i++;
+        }
+        Object selectionObject = (String) JOptionPane.showInputDialog(frame,"Select Product","Produtos",JOptionPane.QUESTION_MESSAGE,null, tmp, tmp[0]);
+        Produto produto = new Produto();
+        String pegaop = selectionObject.toString();
+        StringTokenizer st = new StringTokenizer(pegaop);
+        int id1 = Integer.parseInt(st.nextToken("|"));
+        return id1;
     }
 }

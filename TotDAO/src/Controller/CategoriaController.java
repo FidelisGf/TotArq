@@ -14,4 +14,8 @@ public class CategoriaController {
         CategoriaDAO categoriaDAO = new CategoriaDAO();
         return categoriaDAO.listartodos(id);
     }
+    public int escolherCategoria(int id){
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        return categoriaDAO.escolhe_Categoria(id);
+    }
 }

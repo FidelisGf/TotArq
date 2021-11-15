@@ -3,6 +3,7 @@ package Controller;
 import DAO.ProdutoDAO;
 import Model.Produto;
 
+import javax.sound.midi.MidiChannel;
 import java.util.List;
 
 public class ProdutoController {
@@ -21,5 +22,13 @@ public class ProdutoController {
     public void editarProduto(Produto produto, int op){
         ProdutoDAO produtoDAO = new ProdutoDAO();
         produtoDAO.EditarProduto(produto, op);
+    }
+    public void adicionarQuantidadeProduto(Produto produto){
+        ProdutoDAO produtoDAO = new ProdutoDAO();
+        produtoDAO.adicionarQuantidadeProduto(produto);
+    }
+    public int escolher_produto(int idEmpresa, int idCategoria){
+        ProdutoDAO produtoDAO = new ProdutoDAO();
+        return  produtoDAO.escolher_produto(idCategoria, idEmpresa);
     }
 }

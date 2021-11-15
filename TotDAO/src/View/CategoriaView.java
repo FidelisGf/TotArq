@@ -2,8 +2,8 @@ package View;
 
 import Controller.CategoriaController;
 import Model.Categoria;
-import Model.Produto;
 
+import javax.swing.*;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,11 +13,9 @@ public class CategoriaView {
     Menu menu = new Menu();
     public void InsereCategoria(int id){
         String tmp;
-        System.out.println("Insira o nome da nova categoria : ");
-        tmp = le.nextLine();
+        tmp = (String) JOptionPane.showInputDialog(null,"Insira o nome da nova categoria : ");
         Categoria categoria = new Categoria();
         categoria.setNome(tmp);
-        categoria.setIdEmpresa(1);
         categoriaController.InsereCategoria(categoria, id);
     }
     public List<Categoria> listartodos(int id){
@@ -25,30 +23,41 @@ public class CategoriaView {
         List<Categoria> list = categoriaController.listartodos(id);
         return list;
     }
+    public void mostrarCategorias(int id){
+        List <Categoria> list = categoriaController.listartodos(id);
+        JFrame frame = new JFrame();
+        frame.setAlwaysOnTop(true);
+        String output = "";
+        for (Categoria categoria : list) {
+            String tmp = "NOME : " + categoria.getNome();
+            output += tmp + " \n\n";
+        }
+        JOptionPane.showMessageDialog(frame,output);
+    }
     public void Menu(int id){
-        int op;
+        String op;
         Scanner le = new Scanner(System.in);
         while (true){
-            System.out.printf("----------------------------------------\n");
-            System.out.printf("|||  (1)Criar Nova Categoria         |||\n");
-            System.out.printf("|||  (2)Listar todas as Categorias   |||\n");
-            System.out.printf("|||  (3)Sair                         |||\n");
-            System.out.printf("----------------------------------------\n");
-            op = le.nextInt();
-            le.nextLine();
+            op = exibeMenuCategorias();
             switch (op){
-                case 1:
+                case "1":
                     InsereCategoria(id);
-                    menu.espera_Enter();
                     break;
-                case 2:
-                    listartodos(id);
-                    menu.espera_Enter();
+                case "2":
+                    mostrarCategorias(id);
                     break;
-                case 3:
-                    menu.menu_Principal();
+                case "3":
+                    menu.menu_Chefe();
                     break;
             }
         }
+    }
+    public String exibeMenuCategorias(){
+        String[] escolhas = {"1", "2", "3"};
+        String menuTexto = "1 | Inserir Nova Categoria | " + "\n\n2 | Listar Categorias |" + "\n\n3 | Sair |\n";
+        return (String) JOptionPane.showInputDialog(null,"Selecione uma opção :\n\n" + menuTexto,"MenuCategorias", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]);
+    }
+    public int escolherCategoria(int id){
+        return categoriaController.escolherCategoria(id);
     }
 }
