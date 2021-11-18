@@ -117,10 +117,16 @@ public class CarrinhoDAO {
                     Produto produto = new Produto();
                     produto.setNome(myTokens.nextToken());
                     produto.setPreco(pegaValorProdutoDoCarrinho(produto.getNome()));
-                    list.add(produto);
+                    if(produto.getPreco() != 0){
+                        list.add(produto);
+                    }
                 }
-                carrinho.setValor_Total(resultSet.getFloat("Valor_Total"));
-                carrinho.setLista_do_carrinho(list);
+                if(resultSet.getFloat("Valor_Total") != 0){
+                    carrinho.setValor_Total(resultSet.getFloat("Valor_Total"));
+                }
+                if(!list.isEmpty()){
+                    carrinho.setLista_do_carrinho(list);
+                }
             }
             return carrinho;
         }catch (SQLException e){
@@ -138,7 +144,7 @@ public class CarrinhoDAO {
         }
     }
     public Float pegaValorProdutoDoCarrinho(String nomeProduto){
-        Float Valor_Total = null;
+        Float Valor_Total = Float.valueOf(0);
         try {
             String sql = "SELECT * FROM produtos WHERE produtos.Produto = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -146,6 +152,9 @@ public class CarrinhoDAO {
             statement.execute();
             ResultSet resultSet = statement.executeQuery();
             if(resultSet.next()){
+                if(resultSet.getFloat("Valor") == 0){
+                    return Valor_Total;
+                }
                 Valor_Total = resultSet.getFloat("Valor");
             }
             statement.close();
@@ -159,6 +168,9 @@ public class CarrinhoDAO {
         List<Produto> list = listarCarrinho().getLista_do_carrinho();
         JFrame frame = new JFrame();
         frame.setAlwaysOnTop(true);
+        if(list == null){
+            return -1;
+        }
         String[] tmp = new String[list.size()];
         String opc = "";
         String output = "";

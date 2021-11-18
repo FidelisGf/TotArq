@@ -32,6 +32,9 @@ public class ProdutoView {
                     editarProduto(id);
                     break;
                 case "5":
+                    excluirProduto(id);
+                    break;
+                case "6":
                     menu.menu_Chefe();
                     break;
             }
@@ -40,19 +43,23 @@ public class ProdutoView {
     public void insereProduto(int id){
         CategoriaView categoriaView = new CategoriaView();
         String nome = "";
-        float tmp1 = 0;
-        int tmp2 = 0;
+        float Valor = 0;
+        int IdCategoria = 0;
         int qntd = 0;
         nome = (String) JOptionPane.showInputDialog(null, "Nome do Produto:").toUpperCase();
-        tmp1 = Float.parseFloat(JOptionPane.showInputDialog(null, "Valor do Produto : "));
+        Valor = Float.parseFloat(JOptionPane.showInputDialog(null, "Valor do Produto : "));
         qntd = Integer.parseInt(JOptionPane.showInputDialog(null,"Insira a quantidade inicial desse produto :"));
-        tmp2 = categoriaView.escolherCategoria(id);
-        Produto produto = new Produto(nome ,tmp1, tmp2, qntd);
-        produtoController.insereProduto(produto);
+        IdCategoria = categoriaView.escolherCategoria(id);
+        Produto produto = new Produto(nome ,Valor, IdCategoria, qntd);
+        if(menu.menuConfirmar().contains("1")){
+            produtoController.insereProduto(produto);
+        }else{
+            JOptionPane.showMessageDialog(null, "Ação cancelada com sucesso !");
+        }
     }
     public String exibeMenuProdutos(){
-        String[] escolhas = {"1", "2", "3", "4", "5"};
-        String menuTexto = "1 | Inserir Produto | " + "\n\n2 | Listar Todos os Produtos |" + "\n\n3 | Listar Produto por Categoria |\n\n4 | Editar Produto |\n\n 5 | Sair |\n";
+        String[] escolhas = {"1", "2", "3", "4", "5", "6"};
+        String menuTexto = "1 | Inserir Produto | " + "\n\n2 | Listar Todos os Produtos |" + "\n\n3 | Listar Produto por Categoria |\n\n4 | Editar Produto |\n\n 5 | Excluir Produto |\n\n 6 | Sair    |\n\n";
         return (String) JOptionPane.showInputDialog(null,"Selecione uma opção :\n\n" + menuTexto,"MenuProdutos", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]);
     }
     public void listarProdutoporCategoria(int id2){
@@ -100,35 +107,55 @@ public class ProdutoView {
             case 1:
                 String tmp1 = (String) JOptionPane.showInputDialog(null, "Novo Nome para o Produto : " + produto.getNome());
                 produto.setNome(tmp1);
-                produtoController.editarProduto(produto, op);
+                if(menu.menuConfirmar().contains("1")){
+                    produtoController.editarProduto(produto, op);
+                }else{
+                    JOptionPane.showMessageDialog(null, " Ação Cancelada com sucesso !");
+                }
                 break;
             case 2:
-
                 float valor = Float.parseFloat(JOptionPane.showInputDialog(null,"Novo valor para o Produto " + produto.getNome()));
                 produto.setPreco(valor);
-                produtoController.editarProduto(produto, op);
+                if(menu.menuConfirmar().contains("1")){
+                    produtoController.editarProduto(produto, op);
+                }else{
+                    JOptionPane.showMessageDialog(null, " Ação Cancelada com sucesso !");
+                }
                 break;
             case 3:
-                i = 0;
-                CategoriaView categoriaView = new CategoriaView();
-                System.out.println("Escolha uma nova categoria : ");
-                List<Categoria> list1 = categoriaView.listartodos(id);
-                op = le.nextInt();
-                le.nextLine();
-                produto.setIdCategoria(list1.get(op).getId());
-                System.out.println(produto);
-                produtoController.editarProduto(produto, op);
-                System.out.println("Produto Editado com sucesso !");
+                JOptionPane.showMessageDialog(null, "Escolha a nova categoria do produto");
+                int idNewCat = categoriaController.escolherCategoria(id);
+                produto.setIdCategoria(idNewCat);
+                if(menu.menuConfirmar().contains("1")){
+                    produtoController.editarProduto(produto, op);
+                }else{
+                    JOptionPane.showMessageDialog(null, " Ação Cancelada com sucesso !");
+                }
+
                 break;
             case 4:
-                adicionarQuantidadeProduto(produto);
+                if(menu.menuConfirmar().contains("1")){
+                    adicionarQuantidadeProduto(produto);
+                }else {
+                    JOptionPane.showMessageDialog(null, " Ação Cancelada com sucesso !");
+                }
                 break;
-
         }
     }
     public void adicionarQuantidadeProduto(Produto produto){
         int Quantidade = Integer.parseInt(JOptionPane.showInputDialog(null,"Quantas unidades desse produto voce deseja adicionar : "));
         produto.setQuantidade(Quantidade);
         produtoController.adicionarQuantidadeProduto(produto);
+    }
+    public void excluirProduto(int id){
+        int idCategoria = categoriaController.escolherCategoria(id);
+        List<Produto> list = produtoController.listaProdutoporCategoria(idCategoria, id);
+        int idProduto = produtoController.escolher_produto(idCategoria , id );
+        if(menu.menuConfirmar().contains("1")){
+            produtoController.excluirProduto(list.get(idProduto).getNome());
+            JOptionPane.showMessageDialog(null, "Produto excluido com sucesso !");
+        }else{
+            JOptionPane.showMessageDialog(null, " Ação Cancelada com sucesso !");
+        }
     }
 }

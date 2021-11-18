@@ -16,7 +16,12 @@ public class CategoriaView {
         tmp = (String) JOptionPane.showInputDialog(null,"Insira o nome da nova categoria : ");
         Categoria categoria = new Categoria();
         categoria.setNome(tmp);
-        categoriaController.InsereCategoria(categoria, id);
+        if(menu.menuConfirmar().contains("1")){
+            categoriaController.InsereCategoria(categoria, id);
+        }else{
+            JOptionPane.showMessageDialog(null, "Ação cancelada com sucesso");
+        }
+
     }
     public List<Categoria> listartodos(int id){
         int i = 0;
@@ -53,8 +58,8 @@ public class CategoriaView {
         }
     }
     public String exibeMenuCategorias(){
-        String[] escolhas = {"1", "2", "3"};
-        String menuTexto = "1 | Inserir Nova Categoria | " + "\n\n2 | Listar Categorias |" + "\n\n3 | Sair |\n";
+        String[] escolhas = {"1", "2", "3", "4"};
+        String menuTexto = "1 | Inserir Nova Categoria | " + "\n\n2 | Listar Categorias |" + "\n\n3 | Sair |\n\n" + "4 | Nova opçao |\n\n";
         return (String) JOptionPane.showInputDialog(null,"Selecione uma opção :\n\n" + menuTexto,"MenuCategorias", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]);
     }
     public int escolherCategoria(int id){

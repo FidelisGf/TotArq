@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TotDAo:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/TotDAo_jar</output-path>
+    <root id="archive" name="TotDAo.jar">
+      <element id="module-output" name="TotDAO" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/TotDAO/lib/mysql-connector-java-8.0.26.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

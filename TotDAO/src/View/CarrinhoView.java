@@ -15,6 +15,7 @@ public class CarrinhoView {
     ProdutoController pc = new ProdutoController();
     CategoriaController ct = new CategoriaController();
     CarrinhoController carrinhoController = new CarrinhoController();
+
     public void insereNoCarrinho(int id){
         int cat = ct.escolherCategoria(id);
         List<Produto> list = new ArrayList<>();
@@ -59,17 +60,32 @@ public class CarrinhoView {
             JOptionPane.showMessageDialog(frame,output);
         }
     }
-    public void excluirDoCarrinho(){
+    public void excluirDoCarrinho(int id1){
+        Menu menu = new Menu();
         int id = carrinhoController.escolherProdutoDoCarrinho();
+        if(id == -1){
+            JOptionPane.showMessageDialog(null, "Carrinho Vazio");
+            menuCarrinho(id1);
+        }
         Carrinho carrinho = new Carrinho();
         carrinho.setLista_do_carrinho(carrinhoController.listarCarrinho().getLista_do_carrinho());
-        carrinhoController.excluirDoCarrinho(carrinho, id);
+        if(menu.menuConfirmar().contains("1")){
+            carrinhoController.excluirDoCarrinho(carrinho, id);
+            JOptionPane.showMessageDialog(null, "Produto excluido do carrinho com sucesso !");
+        }else{
+            menuCarrinho(id1);
+        }
+
     }
-    public void finalizar_Pedido(){
+    public void finalizar_Pedido(int id){
+        Menu menu = new Menu();
         Carrinho carrinho = carrinhoController.listarCarrinho();
         PagamentoView pagamentoView = new PagamentoView();
-        pagamentoView.menuPagamento(carrinho);
-
+        if(menu.menuConfirmar().contains("1")){
+            pagamentoView.menuPagamento(carrinho);
+        }else{
+            menuCarrinho(id);
+        }
     }
     public String exibeMenuCarrinho(){
         String[] escolhas = {"1", "2", "3", "4"};
@@ -87,10 +103,10 @@ public class CarrinhoView {
                     listarCarrinho();
                     break;
                 case "3":
-                    excluirDoCarrinho();
+                    excluirDoCarrinho(id);
                     break;
                 case "4":
-                    finalizar_Pedido();
+                    finalizar_Pedido(id);
                     break;
             }
         }

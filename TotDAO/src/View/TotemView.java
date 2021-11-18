@@ -6,7 +6,6 @@ public class TotemView {
     CarrinhoView carrinhoView = new CarrinhoView();
     public void menu_Totfast(){
         int id = 0;
-
         while (true){
             String opc = exibeMenuTotem();
             switch (opc){

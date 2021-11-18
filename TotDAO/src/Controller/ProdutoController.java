@@ -31,4 +31,8 @@ public class ProdutoController {
         ProdutoDAO produtoDAO = new ProdutoDAO();
         return  produtoDAO.escolher_produto(idCategoria, idEmpresa);
     }
+    public void excluirProduto(String nomeProduto){
+        ProdutoDAO produtoDAO = new ProdutoDAO();
+        produtoDAO.Excluir_produto(nomeProduto);
+    }
 }

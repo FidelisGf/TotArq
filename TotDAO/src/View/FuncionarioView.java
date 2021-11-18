@@ -56,6 +56,7 @@ public class FuncionarioView {
         JOptionPane.showMessageDialog(frame,output);
     }
     public void MenuFuncionario(int id){
+        CargosView cargosView = new CargosView();
         String op = "";
         Menu menu = new Menu();
         while (true){
@@ -68,14 +69,17 @@ public class FuncionarioView {
                     listarTodos(id);
                     break;
                 case "3":
+                    cargosView.menu_Cargos(id);
+                    break;
+                case "4":
                     menu.menu_Chefe();
                     break;
             }
         }
     }
     public String exibeMenuFuncionario(){
-        String[] escolhas = {"1", "2", "3"};
-        String menuTexto = "1 | Inserir Novo Funcionario | " + "\n2 | Listar todos os funcionarios |" + "\n3 | Sair |";
+        String[] escolhas = {"1", "2", "3", "4"};
+        String menuTexto = "1 | Inserir Novo Funcionario | " + "\n\n2 | Listar todos os funcionarios |" + "\n\n3 | Configurar Cargos  |" + "\n\n4 | Sair  |\n\n";
         return (String) JOptionPane.showInputDialog(null,"Selecione uma opção :\n" + menuTexto,"MenuFuncionario", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]);
     }
 

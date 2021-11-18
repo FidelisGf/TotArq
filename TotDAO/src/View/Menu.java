@@ -81,4 +81,9 @@ public class Menu {
         String menuTexto = "1 | Menu Produtos | " + "\n2 | Menu Categorias |" + "\n3 | Sair |";
         return (String) JOptionPane.showInputDialog(null,"Selecione uma opção :\n" + menuTexto,"Menu", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]);
     }
+    public String menuConfirmar(){
+        String[] escolhas = {"1", "2"};
+        String menuTexto = "\n\n1 | Sim | " + "\n\n2 | Nao |\n\n";
+        return (String) JOptionPane.showInputDialog(null,"Tem certeza que deseja realizar essa ação  ? \n" + menuTexto,"Confirmação", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]);
+    }
 }

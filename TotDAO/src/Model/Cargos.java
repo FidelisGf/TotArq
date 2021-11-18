@@ -32,6 +32,7 @@ public class Cargos {
     public Cargos() {
     }
 
+
     public String getNomeCargo() {
         return nomeCargo;
     }

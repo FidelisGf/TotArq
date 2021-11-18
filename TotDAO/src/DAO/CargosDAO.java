@@ -4,6 +4,7 @@ import CONNECTION.ConnectionFactory;
 import Model.Cargos;
 import Model.Categoria;
 
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,21 +14,21 @@ public class CargosDAO {
     public CargosDAO() {
         this.connection  = new ConnectionFactory().getConnection();
     }
-    public void InserirCargo(Cargos cargos, int id){
+    public void InserirCargo(Cargos cargos, int idEmpresa){
         try {
             System.out.println(cargos);
             String sql = "INSERT INTO cargos" + "(NomeCargo, Salario, IdEmpresa)" + "VALUES(?,?,?)";
             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, cargos.getNomeCargo());
             statement.setFloat(2, cargos.getSalarioDoCargo());
-            statement.setInt(3, id);
+            statement.setInt(3, idEmpresa);
             statement.execute();
             int id2 = 0;
             ResultSet resultSet = statement.getGeneratedKeys();
             while (resultSet.next()){
                 id2 = resultSet.getInt(1);
             }
-            System.out.println("Id do Novo Cargo é : " + id2);
+            JOptionPane.showMessageDialog(null, "Novo cargo Registrado no Id - >  " + id2);
             statement.close();
         }catch (SQLException e){
             throw new RuntimeException();

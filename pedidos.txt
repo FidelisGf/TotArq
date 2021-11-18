@@ -38,10 +38,30 @@ Pedido N� - >  11  Com os seguintes itens :
 Produto - > COXINHA   No Valor de - > 25.0
 Produto - > COCA-COLA  No Valor de - > 4.0
 Valor Total do Pedido - > 28.0
-----------------
+-----------------
 Pedido Nº - >  12  Com os seguintes itens :
 Produto - > SUCO DE PERA  No Valor de - > 24.0
 Produto - > LOLZINHO KK  No Valor de - > 22.0
 Produto - > PASTEL DE CARNE  No Valor de - > 22.0
 Valor Total do Pedido - > 68.0
+----------------
+Pedido Nº - >  13  Com os seguintes itens :
+Produto - > BOLO DE MORANGO  No Valor de - > 56.8
+Produto - > COCA-COLA   No Valor de - > 4.0
+Valor Total do Pedido - > 60.8
+----------------
+Pedido Nº - >  14  Com os seguintes itens :
+Produto - > PASTEL DE FRANGO  No Valor de - > 24.0
+Produto - > LOLZINHO KK  No Valor de - > 22.0
+Produto - > COXINHA   No Valor de - > 25.0
+Valor Total do Pedido - > 70.0
+----------------
+Pedido Nº - >  15  Com os seguintes itens :
+Produto - > PASTEL DE CARNE  No Valor de - > 22.0
+Valor Total do Pedido - > 22.0
+----------------
+Pedido N� - >  16  Com os seguintes itens :
+Produto - > BOLO DE MORANGO  No Valor de - > 56.8
+Produto - > SUCO DE PERA   No Valor de - > 24.0
+Valor Total do Pedido - > 80.8
 ----------------

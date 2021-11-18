@@ -207,7 +207,7 @@ public class ProdutoDAO {
         }
 
     }
-    public int escolher_produto( int idCategoria, int idEmpresa){
+    public int escolher_produto(int idCategoria, int idEmpresa){
         int i = 0;
         List<Produto> list = listaProdutosporCategoria(idEmpresa, idCategoria);
         JFrame frame = new JFrame();
@@ -225,5 +225,16 @@ public class ProdutoDAO {
         StringTokenizer st = new StringTokenizer(pegaop);
         int id1 = Integer.parseInt(st.nextToken("|"));
         return id1;
+    }
+    public void Excluir_produto(String nomeProduto){
+        try {
+            String sql = "DELETE FROM produtos WHERE Produto = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, nomeProduto);
+            statement.execute();
+            statement.close();
+        }catch (SQLException e){
+            throw  new RuntimeException();
+        }
     }
 }
