@@ -13,6 +13,24 @@ public class CargosDAO {
     private Connection connection;
     public CargosDAO() {
         this.connection  = new ConnectionFactory().getConnection();
+        criarTabelaCargos();
+    }
+    public void criarTabelaCargos(){
+        try {
+            String sql = "CREATE TABLE IF not exists cargos " +
+                    "(IdCargo BIGINT not NULL AUTO_INCREMENT, " +
+                    " PRIMARY KEY (IdCargo) , " +
+                    " NomeCargo VARCHAR(255), " +
+                    " Salario FLOAT , " +
+                    " IdEmpresa BIGINT , " +
+                    " DATA TIMESTAMP , " +
+                    " FOREIGN KEY (IdEmpresa) REFERENCES empresa(IDEmpresa))" ;
+            Statement statement = connection.createStatement();
+            statement.execute(sql);
+            statement.close();
+        }catch (SQLException e){
+            throw  new RuntimeException();
+        }
     }
     public void InserirCargo(Cargos cargos, int idEmpresa){
         try {

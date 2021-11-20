@@ -1,5 +1,6 @@
 import DAO.CarrinhoDAO;
 import DAO.FuncionarioDAO;
+import DAO.ProdutoDAO;
 import Model.Carrinho;
 import Model.Funcionario;
 import View.*;
@@ -9,7 +10,6 @@ public class Main {
 
         TotemView tt = new TotemView();
         tt.menu_Totfast();
-
 
 
     }

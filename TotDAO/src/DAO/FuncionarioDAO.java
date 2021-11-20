@@ -16,6 +16,26 @@ public class FuncionarioDAO {
     Connection connection;
     public FuncionarioDAO() {
         this.connection = new ConnectionFactory().getConnection();
+        criarTabelaFuncionario();
+    }
+    public void criarTabelaFuncionario(){
+        try {
+            String sql = "CREATE TABLE IF not exists funcionarios " +
+                    "(IdFuncionario BIGINT not NULL AUTO_INCREMENT, " +
+                    " PRIMARY KEY (IdFuncionario) , " +
+                    " Nome VARCHAR(255)  , " +
+                    " Senha VARCHAR(255) , " +
+                    " Idade INTEGER   , " +
+                    " Endereco VARCHAR(255) , " +
+                    " IdCargo BIGINT , " +
+                    " DATA TIMESTAMP , " +
+                    " FOREIGN KEY (IdCargo) REFERENCES cargos(IdCargo))" ;
+            Statement statement = connection.createStatement();
+            statement.execute(sql);
+            statement.close();
+        }catch (SQLException e){
+            throw  new RuntimeException();
+        }
     }
     public void cadastrarFuncionario(Funcionario funcionario){
         try {

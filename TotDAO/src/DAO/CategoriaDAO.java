@@ -14,11 +14,27 @@ public class CategoriaDAO {
     private Connection connection;
     public CategoriaDAO() {
         this.connection = new ConnectionFactory().getConnection();
+        criar_TabelaCategoria();
     }
-
+    public void criar_TabelaCategoria(){
+        try {
+            String sql = "CREATE TABLE IF not exists Categorias " +
+                    "(Idd BIGINT not NULL AUTO_INCREMENT, " +
+                    " PRIMARY KEY (Idd) , " +
+                    " NomeCategoria VARCHAR(255), " +
+                    " IdEmpresa BIGINT , " +
+                    " DATA TIMESTAMP , " +
+                    " FOREIGN KEY (IdEmpresa) REFERENCES empresa(IDEmpresa))";
+            Statement statement = connection.createStatement();
+            statement.execute(sql);
+            statement.close();
+        }catch (SQLException e){
+            throw  new RuntimeException();
+        }
+    }
     public void InsereCategoria(Categoria categoria, int id){
         try {
-            String sql = "INSERT INTO teste22" + "(NomeCategoria, IdEmpresa)" + "VALUES(?,?)";
+            String sql = "INSERT INTO Categorias" + "(NomeCategoria, IdEmpresa)" + "VALUES(?,?)";
             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, categoria.getNome());
             statement.setInt(2, id);
@@ -37,7 +53,7 @@ public class CategoriaDAO {
     }
    public List<Categoria> listartodos(int id){
         try {
-            String sql = "SELECT * FROM teste22 WHERE teste22.IdEmpresa = ?";
+            String sql = "SELECT * FROM Categorias WHERE Categorias.IdEmpresa = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
             statement.execute();

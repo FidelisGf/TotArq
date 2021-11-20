@@ -3,10 +3,7 @@ package DAO;
 import CONNECTION.ConnectionFactory;
 import Model.Empresa;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +12,23 @@ public class EmpresaDAO {
 
     public EmpresaDAO() {
         this.connection = new ConnectionFactory().getConnection();
+        criarTabelaEmpresa();
+    }
+    public void criarTabelaEmpresa(){
+        try {
+            String sql = "CREATE TABLE IF not exists empresa " +
+                    "(IDEmpresa BIGINT not NULL AUTO_INCREMENT, " +
+                    " PRIMARY KEY (IDEmpresa) , " +
+                    " Nome VARCHAR(255), " +
+                    " Cnpj BIGINT , " +
+                    " Endereco VARCHAR(200), " +
+                    " DATA TIMESTAMP )";
+            Statement statement = connection.createStatement();
+            statement.execute(sql);
+            statement.close();
+        }catch (SQLException e){
+            throw  new RuntimeException();
+        }
     }
     public void insereEmpresa(Empresa empresa){
         try {

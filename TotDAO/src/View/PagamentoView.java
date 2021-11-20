@@ -6,6 +6,7 @@ import Model.Carrinho;
 import Model.Pagamento;
 
 import javax.swing.*;
+import java.sql.PreparedStatement;
 import java.util.Scanner;
 
 public class PagamentoView {
@@ -51,5 +52,6 @@ public class PagamentoView {
                 break;
         }
     }
+
 
 }

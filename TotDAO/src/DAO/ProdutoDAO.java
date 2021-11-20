@@ -1,8 +1,6 @@
 package DAO;
 
 import CONNECTION.ConnectionFactory;
-import Controller.ProdutoController;
-import Model.Categoria;
 import Model.Funcionario;
 import Model.Produto;
 
@@ -12,7 +10,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
 
@@ -20,6 +17,7 @@ public class ProdutoDAO {
     private Connection connection;
     public ProdutoDAO() {
         this.connection = new ConnectionFactory().getConnection();
+        criarTabelaProduto();
     }
     public void insereProduto(Produto produto){
         try {
@@ -48,10 +46,28 @@ public class ProdutoDAO {
             e.getErrorCode();
         }
     }
+    public void criarTabelaProduto(){
+        try {
+            String sql = "CREATE TABLE IF not exists Produtos " +
+                    "(Codigo BIGINT not NULL AUTO_INCREMENT, " +
+                    " PRIMARY KEY (Codigo) , " +
+                    " Produto VARCHAR(255), " +
+                    " Valor FLOAT , " +
+                    " Quantidade INTEGER , " +
+                    " IdCategoria BIGINT not NULL , " +
+                    " DATA TIMESTAMP , " +
+                    " FOREIGN KEY (IdCategoria) REFERENCES Categorias(Idd))";
+            Statement statement = connection.createStatement();
+            statement.execute(sql);
+            statement.close();
+        }catch (SQLException e){
+            throw  new RuntimeException();
+        }
+    }
     public List<Produto> listaProdutosporCategoria(int id, int id2) {
         try {
             List<Produto> lista = new ArrayList<>();
-            String sql = "SELECT * FROM produtos, teste22, empresa WHERE produtos.IdCategoria = ? && produtos.IdCategoria = teste22.Idd AND empresa.IDEmpresa = ? &&  teste22.IdEmpresa = empresa.IDEmpresa  ";
+            String sql = "SELECT * FROM produtos, Categorias, empresa WHERE produtos.IdCategoria = ? && produtos.IdCategoria = Categorias.Idd AND empresa.IDEmpresa = ? &&  Categorias.IdEmpresa = empresa.IDEmpresa  ";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
             statement.setInt(2, id2);
@@ -64,7 +80,7 @@ public class ProdutoDAO {
     }
     public List<Produto> listarTodosProdutos(int id){
        try {
-           String sql = "SELECT * FROM produtos, teste22, empresa WHERE empresa.IDEmpresa = ? && teste22.IdEmpresa = empresa.IDEmpresa && produtos.IdCategoria = teste22.Idd";
+           String sql = "SELECT * FROM produtos, Categorias, empresa WHERE empresa.IDEmpresa = ? && Categorias.IdEmpresa = empresa.IDEmpresa && produtos.IdCategoria = Categorias.Idd";
            PreparedStatement statement = connection.prepareStatement(sql);
            statement.setInt(1, id);
            statement.execute();

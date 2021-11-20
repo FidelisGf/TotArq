@@ -58,8 +58,8 @@ public class CategoriaView {
         }
     }
     public String exibeMenuCategorias(){
-        String[] escolhas = {"1", "2", "3", "4"};
-        String menuTexto = "1 | Inserir Nova Categoria | " + "\n\n2 | Listar Categorias |" + "\n\n3 | Sair |\n\n" + "4 | Nova opçao |\n\n";
+        String[] escolhas = {"1", "2", "3"};
+        String menuTexto = "1 | Inserir Nova Categoria | " + "\n\n2 | Listar Categorias |" + "\n\n3 | Sair |\n\n";
         return (String) JOptionPane.showInputDialog(null,"Selecione uma opção :\n\n" + menuTexto,"MenuCategorias", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]);
     }
     public int escolherCategoria(int id){

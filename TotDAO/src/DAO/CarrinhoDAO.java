@@ -18,9 +18,41 @@ public class CarrinhoDAO {
     private Connection connection;
     public CarrinhoDAO() {
         this.connection = new ConnectionFactory().getConnection();
+        criarTabelaCarrinho();
     }
-
-    public void insereNoCarrinho(Carrinho carrinho, boolean exluir){
+    public void criarTabelaCarrinho(){
+        try {
+            String sql = "CREATE TABLE IF not exists carrinho " +
+                    "(idCarrinho BIGINT not NULL AUTO_INCREMENT, " +
+                    " PRIMARY KEY (idCarrinho) , " +
+                    " Produtos VARCHAR(255), " +
+                    " Valor_Total FLOAT , " +
+                    " DATA TIMESTAMP )";
+            Statement statement = connection.createStatement();
+            statement.execute(sql);
+            statement.close();
+            if(!verificaTabelaVazia()){
+                Finalizar_Carrinho(); // tem o papel de criar o primeiro registro do carrinho
+            }
+        }catch (SQLException e){
+            throw  new RuntimeException();
+        }
+    }
+    public boolean verificaTabelaVazia(){
+        try {
+            String sql = "SELECT * FROM carrinho";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()){
+                return true;
+            }else{
+                return false;
+            }
+        }catch (SQLException e){
+            throw  new RuntimeException();
+        }
+    }
+    public void insereNoCarrinho(Carrinho carrinho, boolean exluir){// uso boolean excluir para reutilizar esse codigo em duas funções
         try {
             String command = "";
             if(!exluir){
