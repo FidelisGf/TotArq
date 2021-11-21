@@ -35,9 +35,13 @@ public class UsuarioView {
     public void cadastroUsuarioView() throws IOException{
         String status;
 
-        usuario.setIdUsuario(usuarioDao.getIdUsuario());
-        usuarioDao.setIdUsuario(usuario.getIdUsuario());
-        System.out.print("Usuario: ");
+        System.out.print("Nome: ");
+        usuario.setNome(scan.nextLine().trim());
+        System.out.print("Cpf: ");
+        usuario.setCpf(scan.nextLine().trim());
+        System.out.print("Endereco: ");
+        usuario.setEndereco(scan.nextLine().trim());
+        System.out.print("Nome de Usuario: ");
         usuario.setNomeUsuario(scan.nextLine().trim());
         System.out.print("Senha: ");
         usuario.setSenhaUsuario(scan.nextLine().trim());
@@ -56,6 +60,7 @@ public class UsuarioView {
     }
 
     public void editarUsuarioView() throws IOException {
+        System.out.println(controleUsuario.visualizarUsuarioController());
         String status;
         System.out.print("Digite o ID do usuario que deseja editar: ");
         String id = scan.nextLine().trim();
@@ -69,8 +74,13 @@ public class UsuarioView {
             String option = scan.nextLine().trim();
 
             if (option.equals("1")) {
-                usuario.setIdUsuario(Long.parseLong(id));
-                System.out.print("Usuario: ");
+                System.out.print("Nome: ");
+                usuario.setNome(scan.nextLine().trim());
+                System.out.print("Cpf: ");
+                usuario.setCpf(scan.nextLine().trim());
+                System.out.print("Endereco: ");
+                usuario.setEndereco(scan.nextLine().trim());
+                System.out.print("Nome de Usuario: ");
                 usuario.setNomeUsuario(scan.nextLine().trim());
                 System.out.print("Senha: ");
                 usuario.setSenhaUsuario(scan.nextLine().trim());
@@ -79,7 +89,7 @@ public class UsuarioView {
                 System.out.print("Unidade: ");
                 usuario.setUnidadeUsuario(scan.nextLine().trim());
 
-                status = controleUsuario.editarUsuarioController(usuario);
+                status = controleUsuario.editarUsuarioController(usuario, Integer.parseInt(id));
                 System.out.println(status);
             }
             else if (option.equals("2")) {
@@ -87,7 +97,7 @@ public class UsuarioView {
                 String confirma = scan.nextLine().trim().toLowerCase();
                 if (confirma.equals("sim")) {
                     usuario.setIdUsuario(Long.parseLong(id));
-                    status = controleUsuario.deletarUsuarioController(usuario);
+                    status = controleUsuario.deletarUsuarioController(Integer.parseInt(id));
                     System.out.println(status);
                 }
             }

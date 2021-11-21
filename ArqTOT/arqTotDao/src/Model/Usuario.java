@@ -11,17 +11,47 @@ public class Usuario {
     private String senhaUsuario;
     private String acessoUsuario;
     private String unidadeUsuario;
+    private String nome;
+    private String cpf;
+    private String endereco;
 
     public Usuario() {
 
     }
 
-    public Usuario(long idUsuario, String nomeUsuario, String senhaUsuario, String acessoUsuario, String uniadeUsuario) {
+    public Usuario(long idUsuario, String nomeUsuario, String senhaUsuario, String acessoUsuario, String uniadeUsuario, String nome, String cpf, String endereco) {
         this.idUsuario = idUsuario;
         this.nomeUsuario = nomeUsuario;
         this.senhaUsuario = senhaUsuario;
         this.acessoUsuario = acessoUsuario;
         this.unidadeUsuario = uniadeUsuario;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.endereco = endereco;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
 
     public long getIdUsuario() {
@@ -53,13 +83,13 @@ public class Usuario {
     }
 
     public void setAcessoUsuario(String acessoUsuario) {
-        if (acessoUsuario.equals("1")) {
+        if (acessoUsuario.equals("1") || acessoUsuario.equals("administrador") ) {
             this.acessoUsuario = "administrador";
         }
-        else if (acessoUsuario.equals("2")) {
+        else if (acessoUsuario.equals("2")|| acessoUsuario.equals("supervisor") ) {
             this.acessoUsuario = "supervisor";
         }
-        else if (acessoUsuario.equals("3")) {
+        else if (acessoUsuario.equals("3")|| acessoUsuario.equals("funcionario") ) {
             this.acessoUsuario = "funcionario";
         }
     }
@@ -74,17 +104,13 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return idUsuario + " | " + nomeUsuario + " | " + senhaUsuario + " | " + acessoUsuario + " | " + unidadeUsuario;
+        return idUsuario + " | " +
+                nomeUsuario + " | " +
+                senhaUsuario + " | " +
+                acessoUsuario + " | " +
+                unidadeUsuario + " | " +
+                nome + " | " +
+                cpf + " | " +
+                endereco + " | ";
     }
-
-//    @Override
-//    public String toString() {
-//        return "Usuarios{" +
-//                "idUsuario=" + idUsuario +
-//                ", nomeUsuario='" + nomeUsuario + '\'' +
-//                ", senhaUsuario='" + senhaUsuario + '\'' +
-//                ", acessoUsuario='" + acessoUsuario + '\'' +
-//                ", uniadeUsuario='" + uniadeUsuario + '\'' +
-//                '}';
-//    }
 }

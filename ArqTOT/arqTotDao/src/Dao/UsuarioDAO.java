@@ -2,193 +2,222 @@ package Dao;
 
 import java.io.*;
 import Model.*;
+import Factory.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
 
 public class UsuarioDAO {
-    private long idUsuario;
-    private File caminhoUsuarios = new File("../TotArq/ArqTOT/Config/usuarios.txt");
-    private File caminhoIdUsuario = new File("../TotArq/ArqTOT/Config/idUsuarios.txt");
+    private Connection connection;
 
-    public long getIdUsuario() throws IOException {
-        if (caminhoIdUsuario.exists()) {  // se ja tiver alguem cadastrado
-            FileReader file = new FileReader(caminhoIdUsuario);
-            BufferedReader fileR = new BufferedReader(file);
-            this.idUsuario = Long.parseLong(fileR.readLine());
-            file.close();
-        }
-        else {  // nao existe id cadastrado, entao cria o arquivo com o id (0)
-            FileWriter file = new FileWriter(caminhoIdUsuario);
-            PrintWriter fileW = new PrintWriter(file);
-
-            fileW.println("0");  // id inicial (0)
-            file.close();
-            this.idUsuario = 0;
-        }
-
-        return this.idUsuario + 1;
+    public UsuarioDAO() {
+        this.connection = new ConnectionFactory().getConnection();
     }
 
-    public void setIdUsuario(long idUsuario) throws IOException{
-        FileWriter file = new FileWriter(caminhoIdUsuario);
-        PrintWriter fileW = new PrintWriter(file);
-        fileW.println(idUsuario);
-        file.close();
-        this.idUsuario = idUsuario;
-    }
+    public void createTableUsuarios() {
+        String query = "CREATE TABLE IF NOT EXISTS usuarios (" +
+                "idUsuario INT AUTO_INCREMENT PRIMARY KEY NOT NULL," +
+                "nome VARCHAR(50)," +
+                "cpf VARCHAR(50)," +
+                "endereco VARCHAR(50)," +
+                "nomeUsuario VARCHAR(50) NOT NULL," +
+                "senhaUsuario VARCHAR(50) NOT NULL," +
+                "acessoUsuario VARCHAR(20) NOT NULL," +
+                "unidadeUsuario VARCHAR(50) NOT NULL)";
 
-    public String cadastroUsuarioDAO(Usuario usuario) throws IOException {
-        if (usuario.getAcessoUsuario() != null) {
-            FileWriter file = new FileWriter(caminhoUsuarios, true);
-            PrintWriter fileW = new PrintWriter(file);
-            fileW.println(usuario);
-            file.close();
-            return usuario.getNomeUsuario() + " foi cadastrado com sucesso!";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.execute();
+            stmt.close();
         }
-        else {
-            return "erro ao cadastrar usuario!";
+        catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-    }
 
-    public String visualizarUsuarioDAO() throws IOException{
-        if (caminhoUsuarios.exists()) {
-            FileReader file = new FileReader(caminhoUsuarios);
-            BufferedReader fileR = new BufferedReader(file);
-            String texto = fileR.readLine();
-            String usuarios = "ID | NOME | SENHA | ACESSO | UNIDADE\n";
-
-            while (texto != null) {
-                usuarios += texto + '\n';
-                texto = fileR.readLine();
+        query = "SELECT * FROM usuarios";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            ResultSet resultset = stmt.executeQuery();
+            if (! resultset.next()) {
+                stmt.close();
+                query = "INSERT INTO usuarios (nomeUsuario, senhaUsuario, acessoUsuario, unidadeUsuario)" +
+                        "VALUES ('admin', 'admin', 'administrador', '')" ;
+                try {
+                    stmt = connection.prepareStatement(query);
+                    stmt.execute();
+                    stmt.close();
+                }
+                catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-            file.close();
 
+    public String cadastroUsuarioDAO(Usuario usuario)  {
+        if (! nomeUsuarioExiste(usuario)) {
+            String query = "INSERT INTO usuarios (" +
+                    "nome, cpf, endereco, nomeUsuario, senhaUsuario, acessoUsuario, unidadeUsuario)" +
+                    "VALUES ('" + usuario.getNome() + "','" + usuario.getCpf() + "','" + usuario.getEndereco() +
+                    "','" + usuario.getNomeUsuario() +
+                    "','" + usuario.getSenhaUsuario() + "','" + usuario.getAcessoUsuario() +
+                    "','" + usuario.getUnidadeUsuario() + "')";
+
+            try {
+                PreparedStatement stmt = connection.prepareStatement(query);
+                stmt.execute();
+                stmt.close();
+                return usuario.getNomeUsuario() + " foi cadastrado com sucesso!";
+            }
+            catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return "Nome de usuario ja existe";
+
+    }
+
+    public String visualizarUsuarioDAO(){
+        String query = "SELECT * FROM usuarios";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            ResultSet resultset = stmt.executeQuery();
+            String usuarios = "ID | NOME | CPF | ENDERECO | NOME_USUARIO | SENHA | ACESSO | UNIDADE\n";
+            Usuario usuario;
+
+            while (resultset.next()) {
+                usuario = new Usuario();
+                usuario.setIdUsuario(resultset.getInt("idUsuario"));
+                usuario.setNome(resultset.getString("nome"));
+                usuario.setCpf(resultset.getString("cpf"));
+                usuario.setEndereco(resultset.getString("endereco"));
+                usuario.setNomeUsuario(resultset.getString("nomeUsuario"));
+                usuario.setSenhaUsuario(resultset.getString("senhaUsuario"));
+                usuario.setAcessoUsuario(resultset.getString("acessoUsuario"));
+                usuario.setUnidadeUsuario(resultset.getString("unidadeUsuario"));
+
+                usuarios += usuario + "\n";
+            }
             return usuarios;
         }
-        else {
-            return "nenhum usuario cadastrado!";
+        catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public String visualizarUsuarioByIdDAO(String id) throws IOException{
-        if (caminhoUsuarios.exists()) {
-            FileReader file = new FileReader(caminhoUsuarios);
-            BufferedReader fileR = new BufferedReader(file);
-            StringTokenizer token;
-            String texto;
-            String buffer;
+    public String visualizarUsuarioByIdDAO(String id) {
+        String query = "SELECT * FROM usuarios WHERE idUsuario = " + Integer.parseInt(id);
 
-            while (true) {
-                texto = fileR.readLine();
-                if (texto == null) {
-                    break;
-                }
-                else {
-                    token = new StringTokenizer(texto, " | ");
-                    buffer = token.nextToken();
-                    if (id.equals(buffer)) {
-                        return "ID | NOME | SENHA | ACESSO | UNIDADE\n" + texto;
-                    }
-                }
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            ResultSet resultset = stmt.executeQuery();
+            String usuarios = "ID | NOME | CPF | ENDERECO | NOME_USUARIO | SENHA | ACESSO | UNIDADE\n";
+            Usuario usuario;
+
+            if (resultset.next()) {
+                usuario = new Usuario();
+                usuario.setIdUsuario(resultset.getInt("idUsuario"));
+                usuario.setNome(resultset.getString("nome"));
+                usuario.setCpf(resultset.getString("cpf"));
+                usuario.setEndereco(resultset.getString("endereco"));
+                usuario.setNomeUsuario(resultset.getString("nomeUsuario"));
+                usuario.setSenhaUsuario(resultset.getString("senhaUsuario"));
+                usuario.setAcessoUsuario(resultset.getString("acessoUsuario"));
+                usuario.setUnidadeUsuario(resultset.getString("unidadeUsuario"));
+
+                usuarios += usuario + "\n";
             }
-            file.close();
-            return "usuario nao encontrado!";
+            return usuarios;
         }
-        else {
-            return "nenhum usuario cadastrado!";
+        catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public List<String> backupUsuarios(long id) throws IOException{
-        FileReader file = new FileReader(caminhoUsuarios);
-        BufferedReader fileR = new BufferedReader(file);
-        StringTokenizer token;
-        String bufferId;
-        String texto;
-        List<String> usuarios = new ArrayList<>();
-
-        while (true) {
-            texto = fileR.readLine();
-            if (texto == null) {
-                break;
+    public String editarUsuarioDAO(Usuario usuario, int id) {
+        if (! nomeUsuarioExiste(usuario)) {
+            String query = "UPDATE usuarios SET " +
+                    "nome='" + usuario.getNome() + "'," +
+                    "cpf='" + usuario.getCpf() + "'," +
+                    "endereco='" + usuario.getEndereco() + "'," +
+                    "nomeUsuario= '"+usuario.getNomeUsuario()+"', " +
+                    "" + "senhaUsuario = '" + usuario.getSenhaUsuario() + "', " +
+                    "" + "acessoUsuario = '"+usuario.getAcessoUsuario()+"', " +
+                    "" + "unidadeUsuario = '" + usuario.getUnidadeUsuario() +
+                    "' WHERE idUsuario = "+ id;
+            try {
+                PreparedStatement stmt = connection.prepareStatement(query);
+                stmt.execute();
+                stmt.close();
+                return usuario.getNomeUsuario() + " foi editado com sucesso!";
             }
-            token = new StringTokenizer(texto, " | ");
-            bufferId = token.nextToken();
-            if (id != Long.parseLong(bufferId)) {
-                usuarios.add(texto);
+            catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         }
-        file.close();
-
-        return usuarios;  // lista dos usuarios
+        return "Nome de usuario ja existe";
     }
 
-    public String editarUsuarioDAO(Usuario usuario) throws IOException{
-        if (usuario.getAcessoUsuario() != null) {
-            List<String> usuarios = backupUsuarios(usuario.getIdUsuario());
-            FileWriter file = new FileWriter(caminhoUsuarios);
-            PrintWriter fileW = new PrintWriter(file);
+    public String deletarUsuarioDAO(int id){
 
-            for (int i = 0; i < usuarios.size(); i ++) {
-                fileW.println(usuarios.get(i));
-            }
-            fileW.println(usuario);
-            file.close();
+        String query = "DELETE FROM usuarios WHERE idUsuario = " + id;
 
-            return usuario.getNomeUsuario() + " foi editado com sucesso!";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.execute();
+            stmt.close();
         }
-        else {
-            return "erro ao editar usuario!";
+        catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-    }
-
-    public String deletarUsuarioDAO(Usuario usuario) throws IOException{
-        List<String> usuarios = backupUsuarios(usuario.getIdUsuario());
-        FileWriter file = new FileWriter(caminhoUsuarios);
-        PrintWriter fileW = new PrintWriter(file);
-
-        for (int i = 0; i < usuarios.size(); i ++) {
-            fileW.println(usuarios.get(i));
-        }
-        file.close();
 
         return "usuario foi deletado com sucesso!";
     }
 
-    public String loginUsuarioDAO(Usuario usuario) throws IOException{  // get() > 1 = usuario, 2 = senha, 3 = acesso
-        if (caminhoUsuarios.exists()) {
-            FileReader file = new FileReader(caminhoUsuarios);
-            BufferedReader fileR = new BufferedReader(file);
-            StringTokenizer token;
-            String texto;
-            List<String> linha;
-            String acesso = null;
-            while (true) {
-                linha = new ArrayList<>();
-                texto = fileR.readLine();
-                if (texto == null) {
-                    break;
-                }
-                token = new StringTokenizer(texto, " | ");
-                while (token.hasMoreTokens()) {
-                    linha.add(token.nextToken());
-                }
-                if (linha.get(1).equals(usuario.getNomeUsuario())) {
-                    if (linha.get(2).equals(usuario.getSenhaUsuario())) {
-                        acesso = linha.get(3);
-                        acesso += "|" + linha.get(0);
-                        break;
-                    }
-                }
+    public String loginUsuarioDAO(Usuario usuario) {  // get() > 1 = usuario, 2 = senha, 3 = acesso
+        String query = "SELECT * FROM usuarios WHERE nomeUsuario = '" + usuario.getNomeUsuario()+
+                "' AND senhaUsuario='" + usuario.getSenhaUsuario()+"'";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            ResultSet resultset = stmt.executeQuery();
+
+            if (resultset.next()) {
+                String acesso = resultset.getString("acessoUsuario");
+                stmt.close();
+                return acesso;
             }
-            file.close();
-            return acesso;
         }
-        else {
-            return "";
+        catch (SQLException e) {
+            throw new RuntimeException(e);
         }
+
+        return null;
+    }
+
+    private boolean nomeUsuarioExiste(Usuario usuario) {
+        String query = "SELECT * FROM usuarios WHERE nomeUsuario='"+usuario.getNomeUsuario()+"'";
+        ResultSet resultset;
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            resultset = stmt.executeQuery();
+            if (resultset.next()) {
+                stmt.close();
+                return true;
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return false;
     }
 }

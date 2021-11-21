@@ -9,11 +9,6 @@ public class AdministradorView {
     AdministradorController controleAdm = new AdministradorController();
     Scanner scan = new Scanner(System.in);
 
-    public void executaAdministradorView(long idAdm) throws IOException{
-        // fazer um constructor dps
-        menuAdministradorView();
-    }
-
     public void menuAdministradorView() throws IOException {
         System.out.println("*****************************");
         System.out.println("      Administrador");

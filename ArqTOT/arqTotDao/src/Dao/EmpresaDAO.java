@@ -1,49 +1,95 @@
 package Dao;
 
 import Model.Empresa;
-
+import Factory.*;
 import java.io.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class EmpresaDAO {
     private File caminhoEmpresa = new File("./Config/empresa.txt");
+    private Connection connection;
 
-    public String cadastrarEmpresaDAO(Empresa empresa) throws IOException {
-        if (! caminhoEmpresa.exists() && empresa.getNomeEmpresa() != null && empresa.getEnderecoEmpresa() != null && empresa.getCnpjEmpresa() != null) {
-            FileWriter file = new FileWriter(caminhoEmpresa);
-            PrintWriter fileW = new PrintWriter(file);
+    public EmpresaDAO() {
+        this.connection = new ConnectionFactory().getConnection();
+    }
 
-            fileW.println(empresa);
-            file.close();
+    public void createTableEmpresa() {
+        String query = "CREATE TABLE IF NOT EXISTS empresa (" +
+                "nomeEmpresa VARCHAR(50) NOT NULL," +
+                "enderecoEmpresa VARCHAR(50) NOT NULL," +
+                "cnpjEmpresa VARCHAR(50) NOT NULL)";
 
-            return empresa.getNomeEmpresa() + " foi cadastrada com sucesso!";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.execute();
+            stmt.close();
         }
-        else {
-            return "nao foi possivel cadastrar a empresa!";
+        catch(SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public String visualizarEmpresaDAO() throws IOException{
-        if (caminhoEmpresa.exists()) {
-            FileReader file = new FileReader(caminhoEmpresa);
-            BufferedReader fileR = new BufferedReader(file);
-            String texto = fileR.readLine();
-            file.close();
+    public String cadastrarEmpresaDAO(Empresa empresa) {
+        String emp = visualizarEmpresaDAO();
+        String query = "INSERT INTO empresa (" +
+                "nomeEmpresa, enderecoEmpresa, cnpjEmpresa) VALUES (" +
+                "'" + empresa.getNomeEmpresa() + "','" + empresa.getEnderecoEmpresa() + "','" + empresa.getCnpjEmpresa() + "')";
 
-            return texto;
+        if (emp.equals("nao ha empresa cadastrada!")) {
+            try {
+                PreparedStatement stmt = connection.prepareStatement(query);
+                stmt.execute();
+                stmt.close();
+                return empresa.getNomeEmpresa() + " foi cadastrada com sucesso!";
+            }
+            catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
-        return "nao ha empresa nao cadastrada!";
+        return "nao foi possivel cadastrar a empresa";
     }
 
-    public String editarEmpresaDAO(Empresa empresa) throws IOException {
-        if (caminhoEmpresa.exists() && empresa.getNomeEmpresa() != null && empresa.getEnderecoEmpresa() != null && empresa.getCnpjEmpresa() != null) {
-            FileWriter file = new FileWriter(caminhoEmpresa);
-            PrintWriter fileW = new PrintWriter(file);
+    public String editarEmpresaDAO(Empresa empresa){
+        String emp = visualizarEmpresaDAO();
 
-            fileW.println(empresa);
-            file.close();
+        String query = "UPDATE empresa SET nomeEmpresa = '"+empresa.getNomeEmpresa()+"', " + "enderecoEmpresa = '" + empresa.getEnderecoEmpresa() + "', " + "cnpjEmpresa = '"+empresa.getCnpjEmpresa()+"'";
 
-            return empresa.getNomeEmpresa() + " foi alterada com sucesso!";
+        //if (emp.equals("nao ha empresa cadastrada!")) {
+            try {
+                PreparedStatement stmt = connection.prepareStatement(query);
+                stmt.execute();
+                stmt.close();
+
+                return empresa.getNomeEmpresa() + " foi alterada com sucesso!";
+            }
+            catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        //}
+    }
+
+    public String visualizarEmpresaDAO(){
+        String query = "SELECT * FROM empresa";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            ResultSet resultset = stmt.executeQuery();
+            Empresa emp = new Empresa();
+
+            if (resultset.next()) {
+                emp.setNomeEmpresa(resultset.getString("nomeEmpresa"));
+                emp.setEnderecoEmpresa(resultset.getString("enderecoEmpresa"));
+                emp.setCnpjEmpresa(resultset.getString("cnpjEmpresa"));
+
+                return emp.toString();
+            }
         }
-        return "nao foi possivel editar a empresa!";
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return "nao ha empresa cadastrada!";
     }
 }

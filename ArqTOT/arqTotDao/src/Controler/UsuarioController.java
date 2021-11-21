@@ -25,33 +25,30 @@ public class UsuarioController {
         return usuarioDao.visualizarUsuarioByIdDAO(id);
     }
 
-    public String editarUsuarioController(Usuario usuario) throws IOException{
-        return usuarioDao.editarUsuarioDAO(usuario);
+    public String editarUsuarioController(Usuario usuario, int id) throws IOException{
+        return usuarioDao.editarUsuarioDAO(usuario, id);
     }
 
-    public String deletarUsuarioController(Usuario usuario) throws IOException{
-        return usuarioDao.deletarUsuarioDAO(usuario);
+    public String deletarUsuarioController(int id) throws IOException{
+        return usuarioDao.deletarUsuarioDAO(id);
     }
 
     public String loginUsuarioController(Usuario usuario) throws IOException{  // get() > 1 = usuario, 2 = senha, 3 = acesso
-        String info = usuarioDao.loginUsuarioDAO(usuario);
-
-        // redireciona para a classe responsavel, de acordo com o login de acesso
-        if (info != null) {
-            StringTokenizer token = new StringTokenizer(info, "|");
-            String acesso = token.nextToken();
-            String id = token.nextToken();
-
+        String acesso = usuarioDao.loginUsuarioDAO(usuario);
+        if (acesso != null) {
             if (acesso.equals("administrador")) {
                 AdministradorView adm = new AdministradorView();
-                adm.executaAdministradorView(Long.parseLong(id));  // manda o id do adm pra classe dele
+                adm.menuAdministradorView();  // manda o id do adm pra classe dele
             } else if (acesso.equals("supervisor")) {
 
             } else if (acesso.equals("funcionario")) {
 
             }
         }
-        return "usuario nao cadastrado!";
+        else {
+            return "usuario nao cadastrado!";
+        }
+        return "";
     }
 
     public void funcionarioController(String option) throws IOException {
