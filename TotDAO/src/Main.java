@@ -7,12 +7,7 @@ import View.*;
 
 public class Main {
     public static void main(String[] args) {
-
-//        TotemView tt = new TotemView();
-//        tt.menu_Totfast();
-        Menu menu = new Menu();
-        menu.menu_Chefe();
-
-
+        TotemView tt = new TotemView();
+        tt.menu_Totfast();
     }
 }

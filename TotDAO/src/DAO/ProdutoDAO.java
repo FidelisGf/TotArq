@@ -91,42 +91,21 @@ public class ProdutoDAO {
            throw new RuntimeException();
        }
     }
-    public void EditarProduto(Produto produto, int op){
+    public void EditarProduto(Produto produto){
         try {
             String sql = "";
-            switch (op) {
-                case 1:
-                    sql = "Update produtos SET Produto = ? WHERE Codigo = ?";
-                    PreparedStatement statement = connection.prepareStatement(sql);
-                    if(verificaSeExiste(produto)==false){
-                        statement.setString(1, produto.getNome().toUpperCase());
-                        statement.setInt(2, produto.getId());
-                        statement.executeUpdate();
-                        statement.close();
-                        JOptionPane.showMessageDialog(null,"Nome alterado com sucesso");
-                    }else{
-                        JOptionPane.showMessageDialog(null,"Já existe um produto com esse nome");
-                    }
-                    break;
-                case 2:
-                    sql = "Update produtos SET Valor = ? WHERE  Codigo = ?";
-                    statement = connection.prepareStatement(sql);
-                    statement.setFloat(1,produto.getPreco());
-                    statement.setInt(2, produto.getId());
-                    statement.executeUpdate();
-                    statement.close();
-                    break;
-                case 3:
-                    sql = "Update produtos SET IdCategoria = ? WHERE Codigo = ?";
-                    statement = connection.prepareStatement(sql);
-                    statement.setInt(1, produto.getIdCategoria());
-                    statement.setInt(2, produto.getId());
-                    statement.executeUpdate();
-                    statement.close();
-                    break;
-                case 4:
-                    adicionarQuantidadeProduto(produto);
-                    break;
+            sql = "Update produtos SET Produto = ?, Valor = ?, IdCategoria = ? WHERE Codigo = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            if(verificaSeExiste(produto)==false){
+                statement.setString(1, produto.getNome().toUpperCase());
+                statement.setFloat(2, produto.getPreco());
+                statement.setInt(3, produto.getIdCategoria());
+                statement.setInt(4, produto.getId());
+                statement.executeUpdate();
+                statement.close();
+                JOptionPane.showMessageDialog(null,"Alteração Realizada com sucesso");
+            }else{
+                JOptionPane.showMessageDialog(null,"Já existe um produto com esse nome");
             }
         }catch (SQLException e){
             throw new RuntimeException();

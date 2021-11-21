@@ -19,9 +19,9 @@ public class ProdutoController {
         ProdutoDAO produtoDAO = new ProdutoDAO();
         return produtoDAO.listarTodosProdutos(id);
     }
-    public void editarProduto(Produto produto, int op){
+    public void editarProduto(Produto produto){
         ProdutoDAO produtoDAO = new ProdutoDAO();
-        produtoDAO.EditarProduto(produto, op);
+        produtoDAO.EditarProduto(produto);
     }
     public void adicionarQuantidadeProduto(Produto produto){
         ProdutoDAO produtoDAO = new ProdutoDAO();

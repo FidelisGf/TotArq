@@ -46,10 +46,10 @@ public class ProdutoView {
         float Valor = 0;
         int IdCategoria = 0;
         int qntd = 0;
+        IdCategoria = categoriaView.escolherCategoria(id);
         nome = (String) JOptionPane.showInputDialog(null, "Nome do Produto:").toUpperCase();
         Valor = Float.parseFloat(JOptionPane.showInputDialog(null, "Valor do Produto : "));
         qntd = Integer.parseInt(JOptionPane.showInputDialog(null,"Insira a quantidade inicial desse produto :"));
-        IdCategoria = categoriaView.escolherCategoria(id);
         Produto produto = new Produto(nome ,Valor, IdCategoria, qntd);
         if(menu.menuConfirmar().contains("1")){
             produtoController.insereProduto(produto);
@@ -97,6 +97,8 @@ public class ProdutoView {
         Produto produto = new Produto();
         produto.setId(list.get(id1).getId());
         produto.setNome(list.get(id1).getNome());
+        produto.setPreco(list.get(id1).getPreco());
+        produto.setIdCategoria(list.get(id1).getIdCategoria());
         int op = 0;
         String opc;
         String[] escolhas = {"1", "2", "3", "4"};
@@ -108,7 +110,7 @@ public class ProdutoView {
                 String tmp1 = (String) JOptionPane.showInputDialog(null, "Novo Nome para o Produto : " + produto.getNome());
                 produto.setNome(tmp1);
                 if(menu.menuConfirmar().contains("1")){
-                    produtoController.editarProduto(produto, op);
+                    produtoController.editarProduto(produto);
                 }else{
                     JOptionPane.showMessageDialog(null, " Ação Cancelada com sucesso !");
                 }
@@ -117,7 +119,7 @@ public class ProdutoView {
                 float valor = Float.parseFloat(JOptionPane.showInputDialog(null,"Novo valor para o Produto " + produto.getNome()));
                 produto.setPreco(valor);
                 if(menu.menuConfirmar().contains("1")){
-                    produtoController.editarProduto(produto, op);
+                    produtoController.editarProduto(produto);
                 }else{
                     JOptionPane.showMessageDialog(null, " Ação Cancelada com sucesso !");
                 }
@@ -127,7 +129,7 @@ public class ProdutoView {
                 int idNewCat = categoriaController.escolherCategoria(id);
                 produto.setIdCategoria(idNewCat);
                 if(menu.menuConfirmar().contains("1")){
-                    produtoController.editarProduto(produto, op);
+                    produtoController.editarProduto(produto);
                 }else{
                     JOptionPane.showMessageDialog(null, " Ação Cancelada com sucesso !");
                 }
