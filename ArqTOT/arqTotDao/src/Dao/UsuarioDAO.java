@@ -25,7 +25,8 @@ public class UsuarioDAO {
                 "nomeUsuario VARCHAR(50) NOT NULL," +
                 "senhaUsuario VARCHAR(50) NOT NULL," +
                 "acessoUsuario VARCHAR(20) NOT NULL," +
-                "unidadeUsuario VARCHAR(50) NOT NULL)";
+                "unidadeUsuario INT,"+
+                "FOREIGN KEY (unidadeUsuario) REFERENCES unidade (idUnidade))";
 
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
@@ -42,8 +43,8 @@ public class UsuarioDAO {
             ResultSet resultset = stmt.executeQuery();
             if (! resultset.next()) {
                 stmt.close();
-                query = "INSERT INTO usuarios (nomeUsuario, senhaUsuario, acessoUsuario, unidadeUsuario)" +
-                        "VALUES ('admin', 'admin', 'administrador', '')" ;
+                query = "INSERT INTO usuarios (nomeUsuario, senhaUsuario, acessoUsuario)" +
+                        "VALUES ('admin', 'admin', 'administrador')" ;
                 try {
                     stmt = connection.prepareStatement(query);
                     stmt.execute();
