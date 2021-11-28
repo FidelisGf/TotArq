@@ -18,4 +18,12 @@ public class CategoriaController {
         CategoriaDAO categoriaDAO = new CategoriaDAO();
         return categoriaDAO.escolhe_Categoria(id);
     }
+    public void excluirCategoria(int op){
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        categoriaDAO.excluirCategoria(op);
+    }
+    public boolean verificarNome(String nome){
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        return categoriaDAO.VerificarNome(nome);
+    }
 }

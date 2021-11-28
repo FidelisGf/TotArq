@@ -6,54 +6,38 @@ public class Produto {
     private int Id;
     private String Nome;
     private float Preco;
-    private int IdCategoria;
+    private Categoria categoria;
     private Instant Data;
     private int Quantidade;
+    private String Desc;
 
-    public Instant getData() {
-        return Data;
-    }
 
-    public void setData(Instant data) {
-        Data = data;
-    }
-
-    public int getQuantidade() {
-        return Quantidade;
-    }
-
-    public void setQuantidade(int quantidade) {
-        Quantidade = quantidade;
-    }
-
-    public int getId() {
-        return Id;
-    }
-
-    public Produto(String nome, float preco, int idCategoria, int quantidade) {
+    public Produto(String nome, float preco, Categoria IdCategoria, int quantidade, String desc) {
         Nome = nome;
         Preco = preco;
-        IdCategoria = idCategoria;
+        this.categoria = IdCategoria;
         Quantidade = quantidade;
+        Desc = desc;
     }
 
-    public Produto(int id, String nome, float preco, int idCategoria) {
+    public Produto(int id, String nome, float preco, Categoria IdCategoria) {
         Id = id;
         Nome = nome;
         Preco = preco;
-        IdCategoria = idCategoria;
+        this.categoria = IdCategoria;
     }
+
 
     public void setId(int id) {
         Id = id;
     }
 
-    public int getIdCategoria() {
-        return IdCategoria;
+    public Categoria getCategoria() {
+        return categoria;
     }
 
-    public void setIdCategoria(int idCategoria) {
-        IdCategoria = idCategoria;
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 
     public Produto(String nome) {
@@ -65,10 +49,17 @@ public class Produto {
         Preco = preco;
     }
 
-    public Produto(String nome, float preco, int idCategoria) {
+    public Produto(String nome, float preco, Categoria idCategoria) {
         Nome = nome;
         Preco = preco;
-        IdCategoria = idCategoria;
+        this.categoria = idCategoria;
+    }
+
+    public Produto(String nome, float preco, String desc, Categoria idCategoria) {
+        Nome = nome;
+        Preco = preco;
+        this.categoria = idCategoria;
+        Desc = desc;
     }
 
     public Produto(float preco) {
@@ -91,15 +82,49 @@ public class Produto {
         Preco = preco;
     }
 
+    public Instant getData() {
+        return Data;
+    }
+
+    public void setData(Instant data) {
+        Data = data;
+    }
+
+    public int getQuantidade() {
+        return Quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        Quantidade = quantidade;
+    }
+
+    public int getId() {
+        return Id;
+    }
+
+    public String getDesc() {
+        return Desc;
+    }
+
+    public void setDesc(String desc) {
+        Desc = desc;
+    }
+
     @Override
     public String toString() {
         return "Produto{" +
                 "Id=" + Id +
                 ", Nome='" + Nome + '\'' +
                 ", Preco=" + Preco +
-                ", IdCategoria=" + IdCategoria +
+                ", categoria=" + categoria +
+                ", Data=" + Data +
+                ", Quantidade=" + Quantidade +
+                ", Desc='" + Desc + '\'' +
                 '}';
     }
+
+
+
 
     public Produto() {
     }

@@ -14,6 +14,7 @@ public class FuncionarioView {
     FuncionarioController funcionarioController = new FuncionarioController();
     Scanner le = new Scanner(System.in);
     Menu menu = new Menu();
+    AdministradorView administradorView = new AdministradorView();
     public void cadastraFuncionario(int id){
         String nome, ende, senha;
         int idade;
@@ -72,7 +73,7 @@ public class FuncionarioView {
                     cargosView.menu_Cargos(id);
                     break;
                 case "4":
-                    menu.menu_Chefe();
+                    administradorView.menu_Chefe();
                     break;
             }
         }
@@ -94,7 +95,7 @@ public class FuncionarioView {
         if(verifica){
             if(funcionarioController.verificaCargo(funcionario) == 1){
 //                JOptionPane.showMessageDialog(null, "Login Realizado com sucesso !");
-                menu.menu_Chefe();
+                administradorView.menu_Chefe();
             }else {
                 //JOptionPane.showMessageDialog(null, "Login Realizado com sucesso !");
                 menu.exibeMenuFuncionario();

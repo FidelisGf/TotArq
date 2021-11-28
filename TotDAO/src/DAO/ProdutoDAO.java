@@ -1,6 +1,7 @@
 package DAO;
 
 import CONNECTION.ConnectionFactory;
+import Controller.RelatorioController;
 import Model.Funcionario;
 import Model.Produto;
 
@@ -21,21 +22,23 @@ public class ProdutoDAO {
     }
     public void insereProduto(Produto produto){
         try {
-            String sql = "INSERT INTO produtos" + "(Produto, Valor,Quantidade,IdCategoria)" + "VALUES(?,?,?,?)";
+            RelatorioController relatorioController = new RelatorioController();
+            String sql = "INSERT INTO produtos" + "(Produto, Valor,Quantidade,IdCategoria,Descricao)" + "VALUES(?,?,?,?,?)";
             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             verificaSeExiste(produto);
             if(verificaSeExiste(produto) == false){
                 statement.setString(1, produto.getNome());
                 statement.setFloat(2, produto.getPreco());
                 statement.setInt(3, produto.getQuantidade());
-                statement.setInt(4, produto.getIdCategoria());
+                statement.setInt(4, produto.getCategoria().getId());
+                statement.setString(5, produto.getDesc());
                 statement.execute();
                 ResultSet rs = statement.getGeneratedKeys();
                 int id = 0;
                 while (rs.next()){
                     id = rs.getInt(1);
                 }
-                fazerLogAdicionar(produto);
+                relatorioController.fazerLogAdicionar(produto);
                 JOptionPane.showMessageDialog(null, "Cadastro do produto " + produto.getNome() +" realizado com sucesso no id -> " + id);
                 statement.close();
             }else{
@@ -54,9 +57,10 @@ public class ProdutoDAO {
                     " Produto VARCHAR(255), " +
                     " Valor FLOAT , " +
                     " Quantidade INTEGER , " +
+                    " Descricao VARCHAR(255), " +
                     " IdCategoria BIGINT not NULL , " +
                     " DATA TIMESTAMP , " +
-                    " FOREIGN KEY (IdCategoria) REFERENCES Categorias(Idd))";
+                    " FOREIGN KEY (IdCategoria) REFERENCES Categorias(Idd) ON DELETE CASCADE )";
             Statement statement = connection.createStatement();
             statement.execute(sql);
             statement.close();
@@ -67,7 +71,7 @@ public class ProdutoDAO {
     public List<Produto> listaProdutosporCategoria(int id, int id2) {
         try {
             List<Produto> lista = new ArrayList<>();
-            String sql = "SELECT * FROM produtos, Categorias, empresa WHERE produtos.IdCategoria = ? && produtos.IdCategoria = Categorias.Idd AND empresa.IDEmpresa = ? &&  Categorias.IdEmpresa = empresa.IDEmpresa  ";
+            String sql = "SELECT * FROM produtos, Categorias, unidade WHERE produtos.IdCategoria = ? && produtos.IdCategoria = Categorias.Idd AND unidade.idUnidade = ? &&  Categorias.IdUnidade = unidade.idUnidade";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
             statement.setInt(2, id2);
@@ -80,7 +84,7 @@ public class ProdutoDAO {
     }
     public List<Produto> listarTodosProdutos(int id){
        try {
-           String sql = "SELECT * FROM produtos, Categorias, empresa WHERE empresa.IDEmpresa = ? && Categorias.IdEmpresa = empresa.IDEmpresa && produtos.IdCategoria = Categorias.Idd";
+           String sql = "SELECT * FROM produtos, Categorias, unidade WHERE unidade.idUnidade = ? && Categorias.IdUnidade = unidade.IdUnidade && produtos.IdCategoria = Categorias.Idd";
            PreparedStatement statement = connection.prepareStatement(sql);
            statement.setInt(1, id);
            statement.execute();
@@ -94,19 +98,16 @@ public class ProdutoDAO {
     public void EditarProduto(Produto produto){
         try {
             String sql = "";
-            sql = "Update produtos SET Produto = ?, Valor = ?, IdCategoria = ? WHERE Codigo = ?";
+            sql = "Update produtos SET Produto = ?, Valor = ?, IdCategoria = ?, Descricao = ? WHERE Codigo = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
-            if(verificaSeExiste(produto)==false){
-                statement.setString(1, produto.getNome().toUpperCase());
-                statement.setFloat(2, produto.getPreco());
-                statement.setInt(3, produto.getIdCategoria());
-                statement.setInt(4, produto.getId());
-                statement.executeUpdate();
-                statement.close();
-                JOptionPane.showMessageDialog(null,"Alteração Realizada com sucesso");
-            }else{
-                JOptionPane.showMessageDialog(null,"Já existe um produto com esse nome");
-            }
+            statement.setString(1, produto.getNome().toUpperCase());
+            statement.setFloat(2, produto.getPreco());
+            statement.setInt(3, produto.getCategoria().getId());
+            statement.setString(4, produto.getDesc());
+            statement.setInt(5, produto.getId());
+            statement.executeUpdate();
+            statement.close();
+            JOptionPane.showMessageDialog(null,"Alteração Realizada com sucesso");
         }catch (SQLException e){
             throw new RuntimeException();
         }
@@ -119,58 +120,11 @@ public class ProdutoDAO {
             produto.setId(resultSet.getInt("Codigo"));
             produto.setNome(resultSet.getString("Produto"));
             produto.setPreco(resultSet.getFloat("Valor"));
-            produto.setIdCategoria(resultSet.getInt("IdCategoria"));
+            produto.getCategoria().setId(resultSet.getInt("IdCategoria"));
+            produto.setDesc(resultSet.getString("Descricao"));
             list.add(produto);
         }
         return list;
-    }
-    public int VerificaLogin(){
-        try {
-            int id = 0;
-            File file = new File("C:\\Users\\Fifo\\Desktop\\TotDAo\\ControleLog\\Logado.txt");
-            FileReader fileReader = new FileReader(file);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            while (bufferedReader.ready()){
-                id = Integer.valueOf(bufferedReader.readLine());
-            }
-            bufferedReader.close();
-            fileReader.close();
-            return id;
-        }catch (IOException e){
-            throw new RuntimeException();
-        }
-    }
-    public void fazerLogAdicionar(Produto produto){
-        int id = VerificaLogin();
-        System.out.println(id);
-        try {
-            String sql = "SELECT * FROM funcionarios WHERE funcionarios.IdFuncionario = ?";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, id);
-            statement.execute();
-            ResultSet resultSet = statement.executeQuery();
-            Funcionario funcionario = new Funcionario();
-            Date date = new Date();
-            while (resultSet.next()){
-                funcionario.setNome(resultSet.getString("Nome"));
-            }
-            statement.close();
-            File file = new File("C:\\Users\\Fifo\\Desktop\\TotDAo\\ControleLog\\log.txt");
-            FileWriter fileWriter = new FileWriter(file, true);
-            PrintWriter printWriter = new PrintWriter(fileWriter);
-            try {
-                if(!file.exists()){
-                    file.createNewFile();
-                }
-                printWriter.println("USUARIO : " + funcionario.getNome() + " INSERIU : " + produto.getNome() + " Na CATEGORIA : " + produto.getIdCategoria() + " no HORARIO : " + new Timestamp(date.getTime()));
-                printWriter.close();
-                fileWriter.close();
-            }catch (IOException e){
-                throw new RuntimeException();
-            }
-        }catch (SQLException | IOException e){
-            throw new RuntimeException();
-        }
     }
     public boolean verificaSeExiste(Produto produto){
         try {
@@ -205,6 +159,9 @@ public class ProdutoDAO {
     public int escolher_produto(int idCategoria, int idEmpresa){
         int i = 0;
         List<Produto> list = listaProdutosporCategoria(idEmpresa, idCategoria);
+        if(list.isEmpty()){
+            return -1;
+        }
         JFrame frame = new JFrame();
         frame.setAlwaysOnTop(true);
         String[] tmp = new String[list.size()];

@@ -22,9 +22,7 @@ public class CargosDAO {
                     " PRIMARY KEY (IdCargo) , " +
                     " NomeCargo VARCHAR(255), " +
                     " Salario FLOAT , " +
-                    " IdEmpresa BIGINT , " +
-                    " DATA TIMESTAMP , " +
-                    " FOREIGN KEY (IdEmpresa) REFERENCES empresa(IDEmpresa))" ;
+                    " DATA TIMESTAMP )";
             Statement statement = connection.createStatement();
             statement.execute(sql);
             statement.close();
@@ -32,14 +30,13 @@ public class CargosDAO {
             throw  new RuntimeException();
         }
     }
-    public void InserirCargo(Cargos cargos, int idEmpresa){
+    public void InserirCargo(Cargos cargos){
         try {
             System.out.println(cargos);
-            String sql = "INSERT INTO cargos" + "(NomeCargo, Salario, IdEmpresa)" + "VALUES(?,?,?)";
+            String sql = "INSERT INTO cargos" + "(NomeCargo, Salario)" + "VALUES(?,?)";
             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, cargos.getNomeCargo());
             statement.setFloat(2, cargos.getSalarioDoCargo());
-            statement.setInt(3, idEmpresa);
             statement.execute();
             int id2 = 0;
             ResultSet resultSet = statement.getGeneratedKeys();
@@ -55,9 +52,8 @@ public class CargosDAO {
     public List<Cargos> ListarTodas(int id){
         try {
             List<Cargos> list = new ArrayList<>();
-            String sql = "SELECT * FROM cargos WHERE  cargos.IdEmpresa = ?";
+            String sql = "SELECT * FROM cargos";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, id);
             statement.execute();
             ResultSet resultSet = statement.executeQuery();
             Cargos cargos;
@@ -65,6 +61,7 @@ public class CargosDAO {
                 cargos = new Cargos(resultSet.getInt("IdCargo"), resultSet.getString("NomeCargo"), resultSet.getFloat("Salario"));
                 list.add(cargos);
             }
+            statement.close();
             return list;
         }catch (SQLException e){
             throw new RuntimeException();

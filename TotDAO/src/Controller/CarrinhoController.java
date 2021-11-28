@@ -23,8 +23,9 @@ public class CarrinhoController {
         CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
         return carrinhoDAO.escolher_ProdutoDoCarrinho();
     }
-    public void logPedidos(Carrinho carrinho, Pagamento pagamento, Avaliacao avaliacao){
+    public void limparCarrinho(){
         CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
-        carrinhoDAO.logPedidos(carrinho, pagamento, avaliacao);
+        carrinhoDAO.limparCarrinho();
     }
+
 }

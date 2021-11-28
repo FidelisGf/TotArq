@@ -1,13 +1,14 @@
-import DAO.CarrinhoDAO;
-import DAO.FuncionarioDAO;
-import DAO.ProdutoDAO;
+import DAO.*;
 import Model.Carrinho;
 import Model.Funcionario;
 import View.*;
 
+import javax.swing.*;
+
 public class Main {
     public static void main(String[] args) {
-        TotemView tt = new TotemView();
-        tt.menu_Totfast();
+      TotemView totemView = new TotemView();
+      totemView.menu_Totfast();
+
     }
 }

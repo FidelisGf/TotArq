@@ -18,15 +18,24 @@ public class CarrinhoView {
 
     public void insereNoCarrinho(int id){
         int cat = ct.escolherCategoria(id);
-        List<Produto> list = new ArrayList<>();
-        int idProduto = pc.escolher_produto(cat, id);
-        Carrinho carrinho = new Carrinho();
-        list.add(pc.listaProdutoporCategoria(cat,id).get(idProduto));
-        list = adicionarVirgula(list);
-        carrinho.setLista_do_carrinho(list);
-        carrinho.setValor_Total(Calcula_total(carrinho.getLista_do_carrinho()));
-        carrinhoController.insereNoCarrinho(carrinho);
-        JOptionPane.showMessageDialog(null,"Produto Adicionado ao Carrinho");
+        if(cat != -1){
+            List<Produto> list = new ArrayList<>();
+            int idProduto = pc.escolher_produto(cat, id);
+            if(idProduto != -1){
+                Carrinho carrinho = new Carrinho();
+                list.add(pc.listaProdutoporCategoria(cat,id).get(idProduto));
+                list = adicionarVirgula(list);
+                carrinho.setLista_do_carrinho(list);
+                carrinho.setValor_Total(Calcula_total(carrinho.getLista_do_carrinho()));
+                carrinhoController.insereNoCarrinho(carrinho);
+                JOptionPane.showMessageDialog(null,"Produto Adicionado ao Carrinho");
+            }else{
+                JOptionPane.showMessageDialog(null, "Não Há Produtos Registrados Nessa Categoria !");
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Não Há Categorias Registradas Nessa Unidade !");
+        }
+
     }
     public Float Calcula_total(List<Produto> list){
         Float Total = Float.valueOf(0);
@@ -77,19 +86,27 @@ public class CarrinhoView {
         }
 
     }
+    public void limparCarrinho(){
+        carrinhoController.limparCarrinho();
+        JOptionPane.showMessageDialog(null, "Carrinho Limpo com Sucesso !");
+    }
     public void finalizar_Pedido(int id){
         Menu menu = new Menu();
-        Carrinho carrinho = carrinhoController.listarCarrinho();
-        PagamentoView pagamentoView = new PagamentoView();
-        if(menu.menuConfirmar().contains("1")){
-            pagamentoView.menuPagamento(carrinho);
+        if(carrinhoController.listarCarrinho().getLista_do_carrinho() == null){
+            JOptionPane.showMessageDialog(null, "Seu Carrinho está Vazio, por favor adicione itens para poder finalizar a compra !");
         }else{
-            menuCarrinho(id);
+            Carrinho carrinho = carrinhoController.listarCarrinho();
+            PagamentoView pagamentoView = new PagamentoView();
+            if(menu.menuConfirmar().contains("1")){
+                pagamentoView.menuPagamento(carrinho);
+            }else{
+                menuCarrinho(id);
+            }
         }
     }
     public String exibeMenuCarrinho(){
-        String[] escolhas = {"1", "2", "3", "4"};
-        String menuTexto = "1 | Adicionar ao Carrinho | " + "\n\n2 | Listar Carrinho |" + "\n\n3 | Excluir do Carrinho  |\n\n4 | Finalizar Pedido  |\n\n";
+        String[] escolhas = {"1", "2", "3", "4", "5"};
+        String menuTexto = "1 | Adicionar ao Carrinho | " + "\n\n2 | Listar Carrinho |" + "\n\n3 | Excluir do Carrinho  |\n\n4 | Limpar Carrinho  |\n\n5  |  Finalizar Pedido  |\n\n";
         return (String) JOptionPane.showInputDialog(null,"Selecione uma opção :\n\n" + menuTexto,"MenuProdutos", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]);
     }
     public void menuCarrinho(int id){
@@ -106,12 +123,12 @@ public class CarrinhoView {
                     excluirDoCarrinho(id);
                     break;
                 case "4":
+                    limparCarrinho();
+                    break;
+                case "5":
                     finalizar_Pedido(id);
                     break;
             }
         }
     }
-
-
-
 }

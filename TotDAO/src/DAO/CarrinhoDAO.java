@@ -195,6 +195,20 @@ public class CarrinhoDAO {
             throw  new RuntimeException();
         }
     }
+    public void limparCarrinho(){
+        try {
+            int id = pegaCarrinhoAtual();
+            String sql = "UPDATE carrinho SET Produtos = ? , Valor_Total = ? WHERE idCarrinho = ? ";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, "");
+            statement.setFloat(2, Float.valueOf(0));
+            statement.setInt(3, id);
+            statement.execute();
+            statement.close();
+        }catch (SQLException e){
+            throw new RuntimeException();
+        }
+    }
     public int escolher_ProdutoDoCarrinho(){
         int i  = 0;
         List<Produto> list = listarCarrinho().getLista_do_carrinho();

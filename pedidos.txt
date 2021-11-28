@@ -1,0 +1,10 @@
+Pedido Nº - >  1  Com os seguintes itens :
+Produto - > PASTEL DE CARNE  No Valor de - > 8.0
+Produto - > PASTEL DE CARNE  No Valor de - > 8.0
+Valor Total do Pedido - > 16.0
+----------------
+Pedido Nº - >  2  Com os seguintes itens :
+Produto - > VODKA  No Valor de - > 22.0
+Produto - > PASTEL DE CARNE  No Valor de - > 8.0
+Valor Total do Pedido - > 30.0
+----------------

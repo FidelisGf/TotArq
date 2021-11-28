@@ -2,7 +2,6 @@ package View;
 
 import Controller.CategoriaController;
 import Model.Categoria;
-
 import javax.swing.*;
 import java.util.List;
 import java.util.Scanner;
@@ -10,34 +9,52 @@ import java.util.Scanner;
 public class CategoriaView {
     Scanner le= new Scanner(System.in);
     CategoriaController categoriaController = new CategoriaController();
+    AdministradorView administradorView = new AdministradorView();
     Menu menu = new Menu();
     public void InsereCategoria(int id){
-        String tmp;
-        tmp = (String) JOptionPane.showInputDialog(null,"Insira o nome da nova categoria : ");
+        String NomeCategoria;
+        do{
+            NomeCategoria = (String) JOptionPane.showInputDialog(null,"Insira o nome da nova categoria : ").toUpperCase();
+        }while (categoriaController.verificarNome(NomeCategoria));
         Categoria categoria = new Categoria();
-        categoria.setNome(tmp);
+        categoria.setNome(NomeCategoria);
         if(menu.menuConfirmar().contains("1")){
             categoriaController.InsereCategoria(categoria, id);
         }else{
             JOptionPane.showMessageDialog(null, "Ação cancelada com sucesso");
         }
-
     }
-    public List<Categoria> listartodos(int id){
+    public void excluirCategoria(int id){
+        int idCategoria = escolherCategoria(id);
+        if(idCategoria == -1){
+            JOptionPane.showMessageDialog(null , "Não há Categorias registradas nessa Unidade !");
+        }else{
+            if(menu.menuConfirmar().contains("1")){
+                categoriaController.excluirCategoria(idCategoria);
+            }else{
+                JOptionPane.showMessageDialog(null, "Ação cancelada com sucesso");
+            }
+        }
+    }
+    public List<Categoria> ListarCategorias(int id){
         int i = 0;
         List<Categoria> list = categoriaController.listartodos(id);
         return list;
     }
     public void mostrarCategorias(int id){
         List <Categoria> list = categoriaController.listartodos(id);
-        JFrame frame = new JFrame();
-        frame.setAlwaysOnTop(true);
-        String output = "";
-        for (Categoria categoria : list) {
-            String tmp = "NOME : " + categoria.getNome();
-            output += tmp + " \n\n";
+        if(list.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Não há Categorias registradas nessa Unidade !");
+        }else{
+            JFrame frame = new JFrame();
+            frame.setAlwaysOnTop(true);
+            String output = "";
+            for (Categoria categoria : list) {
+                String tmp = "NOME : " + categoria.getNome();
+                output += tmp + " \n\n";
+            }
+            JOptionPane.showMessageDialog(frame,output);
         }
-        JOptionPane.showMessageDialog(frame,output);
     }
     public void Menu(int id){
         String op;
@@ -52,14 +69,17 @@ public class CategoriaView {
                     mostrarCategorias(id);
                     break;
                 case "3":
-                    menu.menu_Chefe();
+                    excluirCategoria(id);
+                    break;
+                case "4":
+                    administradorView.menu_Chefe();
                     break;
             }
         }
     }
     public String exibeMenuCategorias(){
-        String[] escolhas = {"1", "2", "3"};
-        String menuTexto = "1 | Inserir Nova Categoria | " + "\n\n2 | Listar Categorias |" + "\n\n3 | Sair |\n\n";
+        String[] escolhas = {"1", "2", "3", "4"};
+        String menuTexto = "1 | Inserir Nova Categoria | " + "\n\n2 | Listar Categorias |" + "\n\n3 | Excluir Categoria |" + "\n\n 4 | Sair   |\n\n";
         return (String) JOptionPane.showInputDialog(null,"Selecione uma opção :\n\n" + menuTexto,"MenuCategorias", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]);
     }
     public int escolherCategoria(int id){

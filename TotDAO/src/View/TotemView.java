@@ -1,5 +1,7 @@
 package View;
 
+import Controller.UnidadeController;
+
 import javax.swing.*;
 
 public class TotemView {
@@ -11,14 +13,14 @@ public class TotemView {
             switch (opc){
                 case "1":
                     JOptionPane.showMessageDialog(null,"Seja Bem-Vindo ao Tot-Fast");
-                    EmpresaView empresaView = new EmpresaView();
-                    id = empresaView.escolherEmpresa(id);
+                    UnidadeController unidadeController = new UnidadeController();
+                    unidadeController.escolherUnidade();
                     carrinhoView.menuCarrinho(id);
                     break;
                 case "2":
                     JOptionPane.showMessageDialog(null,"Seja Bem-Vindo ao Tot-Fast");
-                    FuncionarioView funcionarioView = new FuncionarioView();
-                    funcionarioView.iniciarSessao();
+                    UsuarioView usuarioView = new UsuarioView();
+                    usuarioView.loginUsuarioView();
                     break;
             }
         }

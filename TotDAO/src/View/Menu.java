@@ -1,5 +1,6 @@
 package View;
 
+import Controller.UnidadeController;
 import Model.Empresa;
 
 import javax.swing.*;
@@ -14,68 +15,12 @@ public class Menu {
         System.out.printf("\n\nPRESSIONE ENTER PARA CONTINUAR");
         String tmp = scanner.nextLine();
     }
-    public void menu_Chefe(){
-        String op;
-        int id = 0;
-        while (true){
-            op = exibeMenu();
-            switch (op){
-                case "1":
-                    EmpresaView empresaView = new EmpresaView();
-                    id = empresaView.escolherEmpresa(id);
-                    ProdutoView produtoView = new ProdutoView();
-                    produtoView.menu(id);
-                    break;
-                case "2":
-                    empresaView = new EmpresaView();
-                    CategoriaView categoriaView = new CategoriaView();
-                    id = empresaView.escolherEmpresa(id);
-                    categoriaView.Menu(id);
-                case "3":
-                    empresaView = new EmpresaView();
-                    empresaView.menu();
-                    break;
-                case "4":
-                    empresaView = new EmpresaView();
-                    id = empresaView.escolherEmpresa(id);
-                    FuncionarioView funcionarioView = new FuncionarioView();
-                    funcionarioView.MenuFuncionario(id);
-                    break;
-                case "5":
-                    JOptionPane.showMessageDialog(null, "Obrigado por utilizar nossos serviços !");
-                    System.exit(0);
-                    break;
-            }
-        }
-    }
     public String exibeMenu(){
-        String[] escolhas = {"1", "2", "3", "4", "5"};
-        String menuTexto = "1 | Menu Produtos | " + "\n2 | Menu Categorias |" + "\n3 | Menu Empresas  |\n4 | Menu Funcionario  |\n5 | Sair |";
+        String[] escolhas = {"1", "2", "3", "4", "5", "6"};
+        String menuTexto = "1 | Menu Produtos | " + "\n2 | Menu Categorias |" + "\n3 | Menu Empresas  |\n4 | Menu Funcionario  |\n5 | Relatorios  |\n6  | Sair  |";
         return (String) JOptionPane.showInputDialog(null,"Selecione uma opção :\n" + menuTexto,"Menu", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]);
     }
-    public void menu_Funcionarios(){
-        String op;
-        int id = 0;
-        while (true){
-            op = exibeMenu();
-            switch (op){
-                case "1":
-                    EmpresaView empresaView = new EmpresaView();
-                    id = empresaView.escolherEmpresa(id);
-                    ProdutoView produtoView = new ProdutoView();
-                    produtoView.menu(id);
-                    break;
-                case "2":
-                    empresaView = new EmpresaView();
-                    CategoriaView categoriaView = new CategoriaView();
-                    id = empresaView.escolherEmpresa(id);
-                    categoriaView.Menu(id);
-                case "3":
-                    System.exit(0);
-                    break;
-            }
-        }
-    }
+
     public String exibeMenuFuncionario(){
         String[] escolhas = {"1", "2", "3"};
         String menuTexto = "1 | Menu Produtos | " + "\n2 | Menu Categorias |" + "\n3 | Sair |";

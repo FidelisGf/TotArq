@@ -1,66 +1,45 @@
 package Model;
 
 public class Empresa {
-    private long id;
-    private String Nome;
-    private int cnpj;
-    private String endereco;
-
-    public Empresa(long id, String nome, int cnpj, String endereco) {
-        this.id = id;
-        Nome = nome;
-        this.cnpj = cnpj;
-        this.endereco = endereco;
-    }
-
-    public Empresa(String nome, int cnpj, String endereco) {
-        Nome = nome;
-        this.cnpj = cnpj;
-        this.endereco = endereco;
-    }
+    private String nomeEmpresa;
+    private String enderecoEmpresa;
+    private String cnpjEmpresa;
 
     public Empresa() {
     }
 
-    public long getId() {
-        return id;
+    public Empresa(String nomeEmpresa, String enderecoEmpresa, String cnpjEmpresa) {
+        this.nomeEmpresa = nomeEmpresa;
+        this.enderecoEmpresa = enderecoEmpresa;
+        this.cnpjEmpresa = cnpjEmpresa;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getNomeEmpresa() {
+        return nomeEmpresa;
     }
 
-    public String getNome() {
-        return Nome;
+    public void setNomeEmpresa(String nomeEmpresa) {
+        this.nomeEmpresa = nomeEmpresa;
     }
 
-    public void setNome(String nome) {
-        Nome = nome;
+    public String getEnderecoEmpresa() {
+        return enderecoEmpresa;
     }
 
-    public int getCnpj() {
-        return cnpj;
+    public void setEnderecoEmpresa(String enderecoEmpresa) {
+        this.enderecoEmpresa = enderecoEmpresa;
     }
 
-    public void setCnpj(int cnpj) {
-        this.cnpj = cnpj;
+    public String getCnpjEmpresa() {
+        return cnpjEmpresa;
     }
 
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
+    public void setCnpjEmpresa(String cnpjEmpresa) {
+        this.cnpjEmpresa = cnpjEmpresa;
     }
 
     @Override
     public String toString() {
-        return "Empresa{" +
-                "id=" + id +
-                ", Nome='" + Nome + '\'' +
-                ", cnpj=" + cnpj +
-                ", endereco='" + endereco + '\'' +
-                '}';
+        return nomeEmpresa + " | " + enderecoEmpresa + " | " + cnpjEmpresa;
     }
 }
