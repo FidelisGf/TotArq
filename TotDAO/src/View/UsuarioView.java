@@ -33,15 +33,8 @@ public class UsuarioView {
     }
 
     public void cadastroUsuarioView(){
-        String status;
-        UnidadeController unidadeController = new UnidadeController();
-        usuario.setNome((String) JOptionPane.showInputDialog(null, "Nome - > ").trim());
-        usuario.setCpf((String) JOptionPane.showInputDialog(null, "Cpf - > ").trim());
-        usuario.setEndereco((String) JOptionPane.showInputDialog(null, " Endereço - >").trim());
-        usuario.setNomeUsuario((String) JOptionPane.showInputDialog(null, " Nome do Usuario - >").trim());
-        usuario.setSenhaUsuario((String) JOptionPane.showInputDialog(null, "Senha do Usuario - >").trim());
-        usuario.setAcessoUsuario(exibeMenuAcesso());
-        usuario.setUnidadeUsuario(String.valueOf(unidadeController.listar().get(unidadeController.escolherUnidade()).getIdUnidade()));
+        Usuario usuario = inserirDadosUsuario();
+        String status = "";
         status = controleUsuario.cadastroUsuarioController(usuario);
         System.out.println(status);
     }
@@ -52,67 +45,55 @@ public class UsuarioView {
     }
 
     public void visualizarUsuarioView(){
-        String usuarios = "|           NOME                  |               CPF                 |            ENDERECO                    |     NOME_USUARIO     |         SENHA            |            ACESSO               |       UNIDADE        |\n";
+        String usuarios = "";
         String tmp = "";
         for(Usuario usuario : controleUsuario.listarUsuarios()){
-            tmp += "    " + usuario.getNome() + "                    " + usuario.getCpf() + "             " + usuario.getEndereco() + "                " + usuario.getNomeUsuario() + "                      " +
-                    "          " + usuario.getSenhaUsuario() + "                        " + usuario.getAcessoUsuario() + "                 " + usuario.getUnidadeUsuario();
+            tmp = "| LOGIN do Usuario : " + usuario.getNomeUsuario() +  " | NOME do Usuario : " + usuario.getNome() + " | CPF do Usuario : " + usuario.getCpf() + " |  UNIDADE do Usuario : " + usuario.getUnidadeUsuario() + " |";
             usuarios += tmp + "\n\n";
         }
         JOptionPane.showMessageDialog(null, usuarios);
     }
     public void visualizarUsuarioByIdView(){
-        System.out.print("Informe o ID do funcionario: ");
-        System.out.println(controleUsuario.visualizarUsuarioByIdController(scan.nextLine()));
+        int id = (int) controleUsuario.listarUsuarios().get(controleUsuario.escolher_Usuario()).getIdUsuario();
+        JOptionPane.showMessageDialog(null, controleUsuario.visualizarUsuarioByIdController(id));
     }
 
     public void editarUsuarioView() {
-        try {
-            System.out.println(controleUsuario.visualizarUsuarioController());
-        }catch (IOException e){
-            throw new RuntimeException();
-        }
         String status;
-        System.out.print("Digite o ID do usuario que deseja editar: ");
-        String id = scan.nextLine().trim();
-
+        int id = controleUsuario.escolher_Usuario();
+        id = (int) controleUsuario.listarUsuarios().get(id).getIdUsuario();
         status = controleUsuario.visualizarUsuarioByIdController(id);
-        System.out.println(status);
+        //System.out.println(status);
 
         if (! status.equals("usuario nao encontrado!") && ! status.equals("nenhum usuario cadastrado!")) {  // se usuario existe
-
-            System.out.print("\n1 - Editar / 2 - Deletar / outro - Cancelar: ");
-            String option = scan.nextLine().trim();
+            String option = JOptionPane.showInputDialog("\n1 - Editar / 2 - Deletar / outro - Cancelar: ").trim();
 
             if (option.equals("1")) {
-                System.out.print("Nome: ");
-                usuario.setNome(scan.nextLine().trim());
-                System.out.print("Cpf: ");
-                usuario.setCpf(scan.nextLine().trim());
-                System.out.print("Endereco: ");
-                usuario.setEndereco(scan.nextLine().trim());
-                System.out.print("Nome de Usuario: ");
-                usuario.setNomeUsuario(scan.nextLine().trim());
-                System.out.print("Senha: ");
-                usuario.setSenhaUsuario(scan.nextLine().trim());
-                System.out.print("Acesso [1 - Administrador / 2 - Supervisor / 3 - Funcionario]: ");
-                usuario.setAcessoUsuario(scan.nextLine().trim());
-                //uc.listarUnidade();
-                System.out.print("Unidade: ");
-                usuario.setUnidadeUsuario(scan.nextLine().trim());
-
-                status = controleUsuario.editarUsuarioController(usuario, Integer.parseInt(id));
-                System.out.println(status);
+                usuario = inserirDadosUsuario();
+                status = controleUsuario.editarUsuarioController(usuario,id);
+                JOptionPane.showMessageDialog(null, status);
             }
             else if (option.equals("2")) {
-                System.out.print("Tem certeza que deseja excluir? [sim/nao]: ");
-                String confirma = scan.nextLine().trim().toLowerCase();
+                String confirma = JOptionPane.showInputDialog("Tem certeza que deseja excluir? [sim/nao]: ").trim().toLowerCase();
                 if (confirma.equals("sim")) {
-                    usuario.setIdUsuario(Long.parseLong(id));
-                    status = controleUsuario.deletarUsuarioController(Integer.parseInt(id));
-                    System.out.println(status);
+                    usuario.setIdUsuario(id);
+                    status = controleUsuario.deletarUsuarioController(id);
+                    JOptionPane.showMessageDialog(null, status);
                 }
             }
         }
+    }
+    public Usuario inserirDadosUsuario(){
+        String status;
+        Usuario u = new Usuario();
+        UnidadeController unidadeController = new UnidadeController();
+        usuario.setNome((String) JOptionPane.showInputDialog(null, "Nome - > ").trim());
+        usuario.setCpf((String) JOptionPane.showInputDialog(null, "Cpf - > ").trim());
+        usuario.setEndereco((String) JOptionPane.showInputDialog(null, " Endereço - >").trim());
+        usuario.setNomeUsuario((String) JOptionPane.showInputDialog(null, " Nome do Usuario - >").trim());
+        usuario.setSenhaUsuario((String) JOptionPane.showInputDialog(null, "Senha do Usuario - >").trim());
+        usuario.setAcessoUsuario(exibeMenuAcesso());
+        usuario.setUnidadeUsuario(String.valueOf(unidadeController.listar().get(unidadeController.escolherUnidade()).getIdUnidade()));
+        return u;
     }
 }

@@ -17,15 +17,19 @@ public class UsuarioController {
     public String cadastroUsuarioController(Usuario usuario){
         return usuarioDao.cadastroUsuarioDAO(usuario);
     }
+    public int escolher_Usuario(){
+        return usuarioDao.escolher_Usuario();
+    }
+    public String visualizarUsuarioController(){
 
-    public String visualizarUsuarioController() throws IOException{
         return usuarioDao.visualizarUsuarioDAO();
+
     }
     public List<Usuario> listarUsuarios(){
         return usuarioDao.ListaUsuario();
     }
 
-    public String visualizarUsuarioByIdController(String id){
+    public String visualizarUsuarioByIdController(int id){
         return usuarioDao.visualizarUsuarioByIdDAO(id);
     }
 

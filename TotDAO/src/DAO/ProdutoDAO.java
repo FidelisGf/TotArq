@@ -2,6 +2,7 @@ package DAO;
 
 import CONNECTION.ConnectionFactory;
 import Controller.RelatorioController;
+import Model.Categoria;
 import Model.Funcionario;
 import Model.Produto;
 
@@ -114,13 +115,15 @@ public class ProdutoDAO {
     }
     public List<Produto> listar(ResultSet resultSet) throws SQLException{
         List<Produto> list = new ArrayList<>();
+        Categoria categoria = new Categoria();
         Produto produto;
         while (resultSet.next()){
             produto = new Produto();
             produto.setId(resultSet.getInt("Codigo"));
             produto.setNome(resultSet.getString("Produto"));
             produto.setPreco(resultSet.getFloat("Valor"));
-            produto.getCategoria().setId(resultSet.getInt("IdCategoria"));
+            categoria.setId(resultSet.getInt("IdCategoria"));
+            produto.setCategoria(categoria);
             produto.setDesc(resultSet.getString("Descricao"));
             list.add(produto);
         }

@@ -86,23 +86,5 @@ public class FuncionarioView {
 
 
 
-    public void iniciarSessao(){
-        String nome,senha;
-        nome = (String) JOptionPane.showInputDialog(null, "Usuario:");
-        senha = (String) JOptionPane.showInputDialog(null, "Senha:");
-        Funcionario funcionario = new Funcionario(nome, senha);
-        boolean verifica = funcionarioController.iniciarSessao(funcionario);
-        if(verifica){
-            if(funcionarioController.verificaCargo(funcionario) == 1){
-//                JOptionPane.showMessageDialog(null, "Login Realizado com sucesso !");
-                administradorView.menu_Chefe();
-            }else {
-                //JOptionPane.showMessageDialog(null, "Login Realizado com sucesso !");
-                menu.exibeMenuFuncionario();
-            }
-        }else {
-            JOptionPane.showMessageDialog(null, "Usuario Não Cadastrado !");
-        }
-    }
 
 }

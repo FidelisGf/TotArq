@@ -84,40 +84,7 @@ public class FuncionarioDAO {
             throw  new RuntimeException();
         }
    }
-   public boolean iniciarSessao(Funcionario funcionario){
-        try {
-            String sql = "SELECT *  FROM funcionarios WHERE  funcionarios.nome = ? AND funcionarios.senha = ? ";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, funcionario.getNome());
-            statement.setString(2, funcionario.getSenha());
-            statement.execute();
-            ResultSet resultSet = statement.executeQuery();
-            if(resultSet.next()){
-                funcionario.setId(resultSet.getInt("IdFuncionario"));
-                controleLogin(funcionario);
-                return true;
-            }else{
-                return false;
-            }
-        }catch (SQLException | IOException e){
-            throw new RuntimeException();
-        }
-   }
-   public void controleLogin(Funcionario funcionario) throws IOException {
-        File file = new File("C:\\Users\\Fifo\\Desktop\\TotDAo\\ControleLog\\Logado.txt");
-        FileWriter fileWriter = new FileWriter(file);
-        PrintWriter printWriter = new PrintWriter(fileWriter);
-        try {
-            if(!file.exists()){
-                file.createNewFile();
-            }
-            printWriter.println(funcionario.getId());
-            printWriter.close();
-            fileWriter.close();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-   }
+
    public int verificaCargo(Funcionario funcionario){
         try {
             String sql = "SELECT * FROM funcionarios WHERE funcionarios.Nome = ?";

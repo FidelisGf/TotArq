@@ -77,24 +77,16 @@ public class UnidadeView {
     }
 
     public void editarUnidade(){
-        System.out.println("Digite o ID da Unidade que deseja buscar");
-        int idSelect = scan.nextInt();
-        scan.nextLine();
-        String nome, endereco, uf;
-        System.out.println("Nome da Unidade: ");
-        nome = scan.nextLine();
-        System.out.println("Endereço da Unidade: ");
-        endereco = scan.nextLine();
-        System.out.println("UF: ");
-        uf = scan.nextLine();
+        int idSelect = uc.listar().get(uc.escolherUnidade()).getIdUnidade();
+        String nome = JOptionPane.showInputDialog("Insira o nome da unidade");
+        String endereco = JOptionPane.showInputDialog("Insira o endereço da unidade");
+        String uf = JOptionPane.showInputDialog("Insira a UF da unidade");
         Unidade unidade = new Unidade(nome, endereco, uf);
-        uc.editarUnidade(unidade, idSelect);
+        uc.editarUnidade(unidade,idSelect);
     }
 
     public void excluirUnidade(){
-        System.out.println("Digite o ID da Unidade que deseja buscar");
-        int idSelect = scan.nextInt();
-        scan.nextLine();
+        int idSelect = uc.listar().get(uc.escolherUnidade()).getIdUnidade();
         uc.excluirUnidade(idSelect);
     }
 }

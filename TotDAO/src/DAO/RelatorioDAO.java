@@ -13,7 +13,6 @@ public class RelatorioDAO {
     public RelatorioDAO() {
         this.connection  = new ConnectionFactory().getConnection();
     }
-
     public int VerificaLogin(){
         try {
             int id = 0;
@@ -30,42 +29,14 @@ public class RelatorioDAO {
             throw new RuntimeException();
         }
     }
-    public void fazerLogAdicionar(Produto produto){
-        int id = VerificaLogin();
-        System.out.println(id);
-        try {
-            String sql = "SELECT * FROM funcionarios WHERE funcionarios.IdFuncionario = ?";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, id);
-            statement.execute();
-            ResultSet resultSet = statement.executeQuery();
-            Funcionario funcionario = new Funcionario();
-            Date date = new Date();
-            while (resultSet.next()){
-                funcionario.setNome(resultSet.getString("Nome"));
-            }
-            statement.close();
-            File file = new File("C:\\Users\\Fifo\\Desktop\\TotDAo\\ControleLog\\log.txt");
-            FileWriter fileWriter = new FileWriter(file, true);
-            PrintWriter printWriter = new PrintWriter(fileWriter);
-            try {
-                if(!file.exists()){
-                    file.createNewFile();
-                }
-                printWriter.println("USUARIO : " + funcionario.getNome() + " INSERIU : " + produto.getNome() + " Na CATEGORIA : " + produto.getCategoria().getId() + " no HORARIO : " + new Timestamp(date.getTime()));
-                printWriter.close();
-                fileWriter.close();
-            }catch (IOException e){
-                throw new RuntimeException();
-            }
-        }catch (SQLException | IOException e){
-            throw new RuntimeException();
-        }
+    public void fazerLogAdicionar(Produto produto) {
+        String output = " INSERIU : " + produto.getNome() + " Na CATEGORIA : " + produto.getCategoria().getId();
+        fazerlog(produto, output);
     }
-    public void fazerlogEditarNomeProduto(Produto produto, String NomePassado){
+    public void fazerlog(Produto produto, String output){
         int id = VerificaLogin();
         try {
-            String sql = "SELECT * FROM funcionarios WHERE funcionarios.IdFuncionario = ?";
+            String sql = "SELECT * FROM usuarios WHERE usuarios.idUsuario = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
             statement.execute();
@@ -81,7 +52,7 @@ public class RelatorioDAO {
             PrintWriter printWriter = new PrintWriter(fileWriter);
             if(file.exists()){
                 file.createNewFile();
-                printWriter.println("USUARIO : " + funcionario.getNome() + "  EDITOU o nome do Produto : " + NomePassado + "  Para : " + produto.getNome() + " Na CATEGORIA : " + produto.getCategoria().getId() + " no HORARIO : " + new Timestamp(date.getTime()));
+                printWriter.println("USUARIO : " + funcionario.getNome() + output + " no HORARIO : " + new Timestamp(date.getTime()));
                 printWriter.close();
                 fileWriter.close();
             }
@@ -89,34 +60,15 @@ public class RelatorioDAO {
             throw new RuntimeException();
         }
     }
+    public void fazerlogEditarNomeProduto(Produto produto, String NomePassado){
+        String output =  "EDITOU o nome do Produto : " + NomePassado + "  Para : " + produto.getNome() + " Na CATEGORIA : " + produto.getCategoria().getId();
+        fazerlog(produto, output);
+    }
     public void fazerLogExcluirProduto(Produto produto){
-        int id = VerificaLogin();
-        try {
-            String sql = "SELECT * FROM funcionarios WHERE funcionarios.IdFuncionario = ?";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, id);
-            statement.execute();
-            ResultSet resultSet = statement.executeQuery();
-            Funcionario funcionario = new Funcionario();
-            Date date = new Date();
-            while (resultSet.next()) {
-                funcionario.setNome(resultSet.getString("Nome"));
-            }
-            statement.close();
+        String output = " EXCLUIU : o Produto " + " " + produto.getNome() + " Na CATEGORIA : " + produto.getCategoria().getId();
+        fazerlog(produto, output);
+    }
 
-            File file = new File("C:\\Users\\Fifo\\Desktop\\TotDAo\\ControleLog\\log.txt");
-            FileWriter fileWriter = new FileWriter(file, true);
-            PrintWriter printWriter = new PrintWriter(fileWriter);
-            if (file.exists()) {
-                file.createNewFile();
-                printWriter.println("USUARIO : " + funcionario.getNome() + " EXCLUIU : o Produto " + " " + produto.getNome() + " Na CATEGORIA : " + produto.getCategoria().getId() + " no HORARIO : " + new Timestamp(date.getTime()));
-                printWriter.close();
-                fileWriter.close();
-            }
-        }catch (SQLException | IOException e){
-            throw new RuntimeException();
-        }
-}
     public String listarAcoes(){
         String linha = "";
         try {

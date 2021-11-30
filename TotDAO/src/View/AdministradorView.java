@@ -32,10 +32,8 @@ public class AdministradorView {
                     unidadeView.menuUnidade();
                     break;
                 case "4":
-                    unidadeController = new UnidadeController();
-                    id = unidadeController.listar().get(unidadeController.escolherUnidade()).getIdUnidade();
-                    FuncionarioView funcionarioView = new FuncionarioView();
-                    funcionarioView.MenuFuncionario(id);
+                    UsuarioView usuarioView = new UsuarioView();
+                    usuarioView.funcionarioView();
                     break;
                 case "5":
                      EmpresaView empresaView = new EmpresaView();

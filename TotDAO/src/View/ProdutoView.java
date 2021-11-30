@@ -132,7 +132,9 @@ public class ProdutoView {
                 produto.setId(list.get(id1).getId());
                 produto.setNome(list.get(id1).getNome());
                 produto.setPreco(list.get(id1).getPreco());
-                produto.getCategoria().setId(list.get(id1).getId());
+                Categoria categoria = new Categoria();
+                categoria.setId(idCategoria);
+                produto.setCategoria(categoria);
                 int op = 0;
                 String opc;
                 String[] escolhas = {"1", "2", "3", "4"};

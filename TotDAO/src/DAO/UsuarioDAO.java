@@ -3,12 +3,15 @@ package DAO;
 import java.io.*;
 import Model.*;
 import CONNECTION.ConnectionFactory;
+
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 
 public class UsuarioDAO {
@@ -84,6 +87,39 @@ public class UsuarioDAO {
         }
         return "Nome de usuario ja existe ou cpf invalido";
 
+    }
+    public void controleLogin(Usuario usuario) throws IOException {
+        usuario.setIdUsuario(identifica_usuario(usuario));
+        File file = new File("C:\\Users\\Fifo\\Desktop\\TotDAo\\ControleLog\\Logado.txt");
+        FileWriter fileWriter = new FileWriter(file);
+        PrintWriter printWriter = new PrintWriter(fileWriter);
+        try {
+            if(!file.exists()){
+                file.createNewFile();
+            }
+            printWriter.println(usuario.getIdUsuario());
+            printWriter.close();
+            fileWriter.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    public int  identifica_usuario(Usuario usuario){
+        try {
+            String query = "SELECT * FROM usuarios WHERE usuarios.nomeUsuario = ?";
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, usuario.getNomeUsuario());
+            stmt.execute();
+            ResultSet resultSet = stmt.executeQuery();
+            int id = 0;
+            if(resultSet.next()){
+                id = resultSet.getInt("idUsuario");
+            }
+            stmt.close();
+            return id;
+        }catch (SQLException e){
+            throw new RuntimeException();
+        }
     }
 
     public String visualizarUsuarioDAO(){
@@ -163,7 +199,7 @@ public class UsuarioDAO {
         return nomeUnidade;
     }
 
-    public String visualizarUsuarioByIdDAO(String id) {
+    public String visualizarUsuarioByIdDAO(int id) {
         String query = "SELECT * FROM usuarios WHERE idUsuario = " + id;
 
         try {
@@ -245,10 +281,11 @@ public class UsuarioDAO {
             if (resultset.next()) {
                 String acesso = resultset.getString("acessoUsuario");
                 stmt.close();
+                controleLogin(usuario);
                 return acesso;
             }
         }
-        catch (SQLException e) {
+        catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
 
@@ -273,6 +310,7 @@ public class UsuarioDAO {
 
         return false;
     }
+
 
     public boolean cpfValidado(String cpf) {
         String novoCpf = "";
@@ -331,5 +369,27 @@ public class UsuarioDAO {
         catch (Exception e) {
             return false;
         }
+    }
+    public int escolher_Usuario(){
+        int i = 0;
+        List<Usuario> list = ListaUsuario();
+        if(list.isEmpty()){
+            return -1;
+        }
+        JFrame frame = new JFrame();
+        frame.setAlwaysOnTop(true);
+        String[] tmp = new String[list.size()];
+        String opc = "";
+        String output = "";
+        for (Usuario usuario : list) {
+            tmp[i] =  i + "| " + "NOME : " + usuario.getNome() + " Possui o acesso de   : " + usuario.getAcessoUsuario();
+            i++;
+        }
+        Object selectionObject = (String) JOptionPane.showInputDialog(frame,"Select Usuario : ","Usuarios",JOptionPane.QUESTION_MESSAGE,null, tmp, tmp[0]);
+        Produto produto = new Produto();
+        String pegaop = selectionObject.toString();
+        StringTokenizer st = new StringTokenizer(pegaop);
+        int id1 = Integer.parseInt(st.nextToken("|"));
+        return id1;
     }
 }
