@@ -26,4 +26,8 @@ public class CategoriaController {
         CategoriaDAO categoriaDAO = new CategoriaDAO();
         return categoriaDAO.VerificarNome(nome);
     }
+    public Categoria verCategoria(int idUnidade, int IdCategoria){
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        return  categoriaDAO.verCategoria(idUnidade, IdCategoria);
+    }
 }

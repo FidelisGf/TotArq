@@ -1,6 +1,7 @@
 package DAO;
 
 import CONNECTION.ConnectionFactory;
+import Controller.RegistroVendaController;
 import Model.*;
 
 import javax.swing.*;
@@ -36,15 +37,15 @@ public class RelatorioDAO {
     public void fazerlog(Produto produto, String output){
         int id = VerificaLogin();
         try {
+            Usuario usuario = new Usuario();
             String sql = "SELECT * FROM usuarios WHERE usuarios.idUsuario = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
             statement.execute();
             ResultSet resultSet = statement.executeQuery();
-            Funcionario funcionario = new Funcionario();
             Date date = new Date();
             while (resultSet.next()){
-                funcionario.setNome(resultSet.getString("Nome"));
+                usuario.setNomeUsuario(resultSet.getString("nomeUsuario"));
             }
             statement.close();
             File file = new File("C:\\Users\\Fifo\\Desktop\\TotDAo\\ControleLog\\log.txt");
@@ -52,7 +53,7 @@ public class RelatorioDAO {
             PrintWriter printWriter = new PrintWriter(fileWriter);
             if(file.exists()){
                 file.createNewFile();
-                printWriter.println("USUARIO : " + funcionario.getNome() + output + " no HORARIO : " + new Timestamp(date.getTime()));
+                printWriter.println("USUARIO : " + usuario.getNomeUsuario() + output + " no HORARIO : " + new Timestamp(date.getTime()));
                 printWriter.close();
                 fileWriter.close();
             }
@@ -87,6 +88,7 @@ public class RelatorioDAO {
     }
     public void logPedidos(Carrinho carrinho, Pagamento pagamento, Avaliacao avaliacao){
         CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
+        RegistroVendaController regVenda  = new RegistroVendaController();
         try {
             //int id = set_N_Pedido();
             int id = set_N_Pedido();
@@ -101,9 +103,11 @@ public class RelatorioDAO {
                 printWriter.println("Produto - > " + produto.getNome() + " No Valor de - > " + produto.getPreco());
             }
             printWriter.println("Valor Total do Pedido - > " + carrinho.getValor_Total());
+            printWriter.println("Pago no : " + pagamento.getFormaPagamento() + "  Avaliado como : " + avaliacao.getTpAvaliacao() );
             printWriter.println("----------------");
             printWriter.close();
             fileWriter.close();
+            regVenda.RegistrarVendaProduto(carrinho);
             carrinhoDAO.Finalizar_Carrinho();
         }catch (IOException e){
             throw new RuntimeException();

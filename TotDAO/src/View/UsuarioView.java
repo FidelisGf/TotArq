@@ -28,7 +28,17 @@ public class UsuarioView {
     public void loginUsuarioView(){
         String status;
         usuario.setNomeUsuario(JOptionPane.showInputDialog(null, "Usuario : ").trim());
-        usuario.setSenhaUsuario(JOptionPane.showInputDialog(null, "Senha :").trim());
+        JPasswordField password = new JPasswordField(10);
+        password.setEchoChar('*');
+        JLabel rotulo = new JLabel("Senha:\n");
+        JPanel entUsuario = new JPanel();
+        entUsuario.add(rotulo);
+        entUsuario.add(password);
+
+        // Mostra o rótulo e a caixa de entrada de password para o usuario fornecer a senha:
+        JOptionPane.showMessageDialog(null, entUsuario, "Login", JOptionPane.PLAIN_MESSAGE);
+
+        usuario.setSenhaUsuario(String.valueOf(password.getPassword()));
         status = controleUsuario.loginUsuarioController(usuario);
     }
 
@@ -87,13 +97,14 @@ public class UsuarioView {
         String status;
         Usuario u = new Usuario();
         UnidadeController unidadeController = new UnidadeController();
-        usuario.setNome((String) JOptionPane.showInputDialog(null, "Nome - > ").trim());
-        usuario.setCpf((String) JOptionPane.showInputDialog(null, "Cpf - > ").trim());
-        usuario.setEndereco((String) JOptionPane.showInputDialog(null, " Endereço - >").trim());
-        usuario.setNomeUsuario((String) JOptionPane.showInputDialog(null, " Nome do Usuario - >").trim());
-        usuario.setSenhaUsuario((String) JOptionPane.showInputDialog(null, "Senha do Usuario - >").trim());
-        usuario.setAcessoUsuario(exibeMenuAcesso());
-        usuario.setUnidadeUsuario(String.valueOf(unidadeController.listar().get(unidadeController.escolherUnidade()).getIdUnidade()));
+        u.setNome((String) JOptionPane.showInputDialog(null, "Nome - > ").trim());
+        u.setCpf((String) JOptionPane.showInputDialog(null, "Cpf - > ").trim());
+        u.setEndereco((String) JOptionPane.showInputDialog(null, " Endereço - >").trim());
+        u.setNomeUsuario((String) JOptionPane.showInputDialog(null, " Nome do Usuario - >").trim());
+        u.setSenhaUsuario((String) JOptionPane.showInputDialog(null, "Senha do Usuario - >").trim());
+        u.setAcessoUsuario(exibeMenuAcesso());
+        u.setUnidadeUsuario(String.valueOf(unidadeController.listar().get(unidadeController.escolherUnidade()).getIdUnidade()));
+        System.out.println(u);
         return u;
     }
 }

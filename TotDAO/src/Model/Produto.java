@@ -1,6 +1,7 @@
 package Model;
 
 import java.time.Instant;
+import java.util.List;
 
 public class Produto {
     private int Id;
@@ -10,6 +11,7 @@ public class Produto {
     private Instant Data;
     private int Quantidade;
     private String Desc;
+    private List<Estoque> insumos;
 
 
     public Produto(String nome, float preco, Categoria IdCategoria, int quantidade, String desc) {
@@ -60,6 +62,23 @@ public class Produto {
         Preco = preco;
         this.categoria = idCategoria;
         Desc = desc;
+    }
+
+    public Produto(String nome, float preco, Categoria categoria, int quantidade, String desc, List<Estoque> insumos) {
+        Nome = nome;
+        Preco = preco;
+        this.categoria = categoria;
+        Quantidade = quantidade;
+        Desc = desc;
+        this.insumos = insumos;
+    }
+
+    public List<Estoque> getInsumos() {
+        return insumos;
+    }
+
+    public void setInsumos(List<Estoque> insumos) {
+        this.insumos = insumos;
     }
 
     public Produto(float preco) {

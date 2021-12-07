@@ -1,7 +1,6 @@
 package DAO;
 
 import CONNECTION.ConnectionFactory;
-import Model.Cargos;
 import Model.Categoria;
 
 import javax.swing.*;
@@ -125,5 +124,22 @@ public class CategoriaDAO {
            e.printStackTrace();
        }
        return op;
+   }
+   public Categoria verCategoria(int idUnidade , int idCategoria){
+       Categoria categoria = new Categoria();
+       try {
+           String sql = "SELECT * FROM Categorias WHERE Categorias.Idd = ?";
+           PreparedStatement statement = connection.prepareStatement(sql);
+           statement.setInt(1, idCategoria);
+           statement.execute();
+           ResultSet resultSet = statement.executeQuery();
+           if(resultSet.next()){
+               categoria.setId(resultSet.getInt("Idd"));
+               categoria.setNome(resultSet.getString("NomeCategoria"));
+           }
+           return categoria;
+       }catch (SQLException e){
+           throw new RuntimeException();
+       }
    }
 }

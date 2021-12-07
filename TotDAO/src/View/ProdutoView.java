@@ -1,12 +1,15 @@
 package View;
 
 import Controller.CategoriaController;
+import Controller.EstoqueController;
 import Controller.ProdutoController;
 import Controller.RelatorioController;
 import Model.Categoria;
+import Model.Estoque;
 import Model.Produto;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,6 +19,7 @@ public class ProdutoView {
     Scanner le = new Scanner(System.in);
     ProdutoController produtoController = new ProdutoController();
     CategoriaController categoriaController = new CategoriaController();
+    EstoqueController estoqueController = new EstoqueController();
     public void menu(int id){
         while(true){
             String op = exibeMenuProdutos();
@@ -59,6 +63,7 @@ public class ProdutoView {
             Desc = (String) JOptionPane.showInputDialog(null, "De uma descrição para o produto : ");
             qntd = Integer.parseInt(JOptionPane.showInputDialog(null,"Insira a quantidade inicial desse produto :"));
             Produto produto = new Produto(nome, Valor, categoria, qntd, Desc);
+            produto.setInsumos(adicionarInsumoAoProduto());
             if(menu.menuConfirmar().contains("1")){
                 produtoController.insereProduto(produto);
             }else{
@@ -198,14 +203,39 @@ public class ProdutoView {
     public void excluirProduto(int id){
         RelatorioController relatorioController = new RelatorioController();
         int idCategoria = categoriaController.escolherCategoria(id);
-        List<Produto> list = produtoController.listaProdutoporCategoria(idCategoria, id);
-        int idProduto = produtoController.escolher_produto(idCategoria , id );
-        if(menu.menuConfirmar().contains("1")){
-            relatorioController.fazerLogExcluirProduto(list.get(idProduto));
-            produtoController.excluirProduto(list.get(idProduto).getNome());
-            JOptionPane.showMessageDialog(null, "Produto excluido com sucesso !");
+        if(idCategoria != -1){
+            List<Produto> list = produtoController.listaProdutoporCategoria(idCategoria, id);
+            if(!list.isEmpty()){
+                int idProduto = produtoController.escolher_produto(idCategoria , id );
+                if(menu.menuConfirmar().contains("1")){
+                    relatorioController.fazerLogExcluirProduto(list.get(idProduto));
+                    produtoController.excluirProduto(list.get(idProduto).getNome());
+                    JOptionPane.showMessageDialog(null, "Produto excluido com sucesso !");
+                }else{
+                    JOptionPane.showMessageDialog(null, " Ação Cancelada com sucesso !");
+                }
+            }else{
+                JOptionPane.showMessageDialog(null, "Não há Produtos cadastrados nessa Categoria !");
+            }
         }else{
-            JOptionPane.showMessageDialog(null, " Ação Cancelada com sucesso !");
+            JOptionPane.showMessageDialog(null, "Não há Categorias cadastradas nessa Unidade !");
         }
+
+    }
+    public List<Estoque> adicionarInsumoAoProduto(){
+        List<Estoque> list = new ArrayList<>();
+        Estoque estoque;
+        String escolha = "";
+        do {
+            int IdInsumo = estoqueController.escolherInsumoEstoque();
+            estoque = estoqueController.listarEstoque().get(IdInsumo);
+            estoque.setQntdInsumo(Integer.valueOf(JOptionPane.showInputDialog(null, "Quantas unidades desse Insumo serão necessárias ? ")));
+            list.add(estoque);
+            JDialog.setDefaultLookAndFeelDecorated(true);
+            String[] escolhas = {"Sim", "Nao"};
+            String menuTexto = "Deseja adicionar mais insumos ?" + "\n";
+            escolha = (String) JOptionPane.showInputDialog(null,"Selecione uma opção :\n\n" + menuTexto,"MenuProdutos", JOptionPane.QUESTION_MESSAGE, null,escolhas, escolhas[0]);
+        }while (escolha.contains("Sim"));
+        return list;
     }
 }

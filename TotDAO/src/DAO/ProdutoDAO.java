@@ -3,7 +3,7 @@ package DAO;
 import CONNECTION.ConnectionFactory;
 import Controller.RelatorioController;
 import Model.Categoria;
-import Model.Funcionario;
+
 import Model.Produto;
 
 import javax.swing.*;
@@ -59,6 +59,7 @@ public class ProdutoDAO {
                     " Valor FLOAT , " +
                     " Quantidade INTEGER , " +
                     " Descricao VARCHAR(255), " +
+                    " Insumos VARCHAR(455), " +
                     " IdCategoria BIGINT not NULL , " +
                     " DATA TIMESTAMP , " +
                     " FOREIGN KEY (IdCategoria) REFERENCES Categorias(Idd) ON DELETE CASCADE )";

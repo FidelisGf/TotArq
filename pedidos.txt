@@ -1,10 +1,23 @@
 Pedido Nº - >  1  Com os seguintes itens :
-Produto - > PASTEL DE CARNE  No Valor de - > 8.0
-Produto - > PASTEL DE CARNE  No Valor de - > 8.0
-Valor Total do Pedido - > 16.0
+Produto - > SUCO DE UVA  No Valor de - > 12.0
+Produto - > PASTEL DE CARNE  No Valor de - > 7.0
+Valor Total do Pedido - > 19.0
+Pago no : Debito  Avaliado como : Otimo
 ----------------
 Pedido Nº - >  2  Com os seguintes itens :
-Produto - > VODKA  No Valor de - > 22.0
-Produto - > PASTEL DE CARNE  No Valor de - > 8.0
-Valor Total do Pedido - > 30.0
+Produto - > SUCO DE MANGA  No Valor de - > 12.0
+Produto - > SUCO DE UVA  No Valor de - > 12.0
+Valor Total do Pedido - > 24.0
+Pago no : Credito  Avaliado como : Otimo
+----------------
+Pedido Nº - >  3  Com os seguintes itens :
+Produto - > SUCO DE MANGA  No Valor de - > 12.0
+Produto - > SUCO DE UVA  No Valor de - > 12.0
+Valor Total do Pedido - > 24.0
+Pago no : Debito  Avaliado como : Otimo
+----------------
+Pedido Nº - >  4  Com os seguintes itens :
+Produto - > SUCO DE UVA  No Valor de - > 12.0
+Valor Total do Pedido - > 12.0
+Pago no : Credito  Avaliado como : Otimo
 ----------------

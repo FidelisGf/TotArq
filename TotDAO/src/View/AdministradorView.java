@@ -43,8 +43,8 @@ public class AdministradorView {
                     relatorioView.menuRelatorio();
                     break;
                 case "7":
-                    JOptionPane.showMessageDialog(null, "Obrigado por utilizar nossos serviços !");
-                    System.exit(0);
+                    TotemView totemView = new TotemView();
+                    totemView.menu_Totfast();
                     break;
             }
         }

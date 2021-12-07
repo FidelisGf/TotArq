@@ -1,7 +1,10 @@
 package View;
 
 import Controller.CategoriaController;
+import Controller.ProdutoController;
 import Model.Categoria;
+import Model.Produto;
+
 import javax.swing.*;
 import java.util.List;
 import java.util.Scanner;
@@ -56,6 +59,16 @@ public class CategoriaView {
             JOptionPane.showMessageDialog(frame,output);
         }
     }
+    public void verCategoria(int idUnidade){
+        ProdutoController produtoController = new ProdutoController();
+        int idCategoria = escolherCategoria(idUnidade);
+        Categoria categoria = categoriaController.verCategoria(idUnidade, idCategoria);
+        String output = "Nome da Categoria - > " + categoria.getNome() + "\nProdutos cadastrados : \n";
+        for(Produto produto : produtoController.listaProdutoporCategoria(idCategoria, idUnidade)){
+            output += "Produto - > " + produto.getNome() + "  Valor - > R$ " + produto.getPreco() + "\n";
+        }
+        JOptionPane.showMessageDialog(null, output);
+    }
     public void Menu(int id){
         String op;
         Scanner le = new Scanner(System.in);
@@ -72,14 +85,17 @@ public class CategoriaView {
                     excluirCategoria(id);
                     break;
                 case "4":
+                    verCategoria(id);
+                    break;
+                case "5":
                     administradorView.menu_Chefe();
                     break;
             }
         }
     }
     public String exibeMenuCategorias(){
-        String[] escolhas = {"1", "2", "3", "4"};
-        String menuTexto = "1 | Inserir Nova Categoria | " + "\n\n2 | Listar Categorias |" + "\n\n3 | Excluir Categoria |" + "\n\n 4 | Sair   |\n\n";
+        String[] escolhas = {"1", "2", "3", "4","5"};
+        String menuTexto = "1 | Inserir Nova Categoria | " + "\n\n2 | Listar Categorias |" + "\n\n3 | Excluir Categoria |" + "\n\n 4 | Ver uma Categoria   |\n\n" + "5 | Sair  |\n\n";
         return (String) JOptionPane.showInputDialog(null,"Selecione uma opção :\n\n" + menuTexto,"MenuCategorias", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]);
     }
     public int escolherCategoria(int id){

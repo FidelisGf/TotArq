@@ -107,7 +107,7 @@ public class CarrinhoView {
     public String exibeMenuCarrinho(){
         String[] escolhas = {"1", "2", "3", "4", "5"};
         String menuTexto = "1 | Adicionar ao Carrinho | " + "\n\n2 | Listar Carrinho |" + "\n\n3 | Excluir do Carrinho  |\n\n4 | Limpar Carrinho  |\n\n5  |  Finalizar Pedido  |\n\n";
-        return (String) JOptionPane.showInputDialog(null,"Selecione uma opção :\n\n" + menuTexto,"MenuProdutos", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]);
+        return (String) JOptionPane.showInputDialog(null,"Selecione uma opção :\n\n" + menuTexto,"Totem", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]);
     }
     public void menuCarrinho(int id){
         while (true){
