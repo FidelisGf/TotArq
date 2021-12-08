@@ -1,10 +1,7 @@
 package DAO;
 
 import CONNECTION.ConnectionFactory;
-import Model.Avaliacao;
-import Model.Carrinho;
-import Model.Pagamento;
-import Model.Produto;
+import Model.*;
 
 import javax.swing.*;
 import java.io.*;
@@ -148,7 +145,7 @@ public class CarrinhoDAO {
                 while (myTokens.hasMoreTokens()) {
                     Produto produto = new Produto();
                     produto.setNome(myTokens.nextToken());
-                    produto.setPreco(pegaValorProdutoDoCarrinho(produto.getNome()));
+                    produto = pegaProdutoDoCarrinho(produto.getNome());
                     if(produto.getPreco() != 0){
                         list.add(produto);
                     }
@@ -172,6 +169,40 @@ public class CarrinhoDAO {
             adicionarVirgula(carrinho.getLista_do_carrinho());
             insereNoCarrinho(carrinho, true);
         }catch (Exception e){
+            throw  new RuntimeException();
+        }
+    }
+    public Produto pegaProdutoDoCarrinho(String nomeProduto){
+        Produto produto = new Produto();
+        List<Estoque> estoques = new ArrayList<>();
+        Categoria categoria = new Categoria();
+        StringTokenizer myTokens;
+        Estoque estoque = new Estoque();
+        try {
+            String sql = "SELECT * FROM produtos WHERE produtos.Produto = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, nomeProduto);
+            statement.execute();
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()){
+                produto.setId(resultSet.getInt("Codigo"));
+                produto.setNome(resultSet.getString("Produto"));
+                produto.setPreco(resultSet.getFloat("Valor"));
+                categoria.setId(resultSet.getInt("IdCategoria"));
+                produto.setCategoria(categoria);
+                produto.setDesc(resultSet.getString("Descricao"));
+                myTokens = new StringTokenizer(resultSet.getString("Insumos"), ",");
+                while (myTokens.hasMoreTokens()) {
+                    estoque = new Estoque();
+                    estoque.setNomeInsumo(myTokens.nextToken());
+                    estoque.setQntdInsumo(Integer.valueOf(myTokens.nextToken()));
+                    estoques.add(estoque);
+                }
+                produto.setInsumos(estoques);
+            }
+            statement.close();
+            return produto;
+        }catch (SQLException e){
             throw  new RuntimeException();
         }
     }

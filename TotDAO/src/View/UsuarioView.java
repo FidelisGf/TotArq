@@ -3,9 +3,12 @@ package View;
 import Controller.UnidadeController;
 import Model.*;
 import Controller.*;
+
+import java.awt.*;
 import java.util.Scanner;
 import java.io.*;
 import DAO.*;
+import com.sun.security.auth.module.JndiLoginModule;
 
 import javax.swing.*;
 
@@ -27,17 +30,21 @@ public class UsuarioView {
 
     public void loginUsuarioView(){
         String status;
-        usuario.setNomeUsuario(JOptionPane.showInputDialog(null, "Usuario : ").trim());
+
         JPasswordField password = new JPasswordField(10);
         password.setEchoChar('*');
-        JLabel rotulo = new JLabel("Senha:\n");
+        JTextField User = new JTextField(10);
+        User.setSize(310,110);
+        JLabel rotulo1 = new JLabel("Usuario\n\n");
+        JLabel rotulo = new JLabel("\nSenha:\n");
         JPanel entUsuario = new JPanel();
+        entUsuario.add(rotulo1);
+        entUsuario.add(User);
         entUsuario.add(rotulo);
         entUsuario.add(password);
-
         // Mostra o rótulo e a caixa de entrada de password para o usuario fornecer a senha:
         JOptionPane.showMessageDialog(null, entUsuario, "Login", JOptionPane.PLAIN_MESSAGE);
-
+        usuario.setNomeUsuario(String.valueOf(User.getText()));
         usuario.setSenhaUsuario(String.valueOf(password.getPassword()));
         status = controleUsuario.loginUsuarioController(usuario);
     }

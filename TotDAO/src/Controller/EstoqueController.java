@@ -13,4 +13,17 @@ public class EstoqueController {
     public List<Estoque> listarEstoque(){
         return estoqueDAO.listarEstoque();
     }
+    public void cadastrarEstoque(Estoque estoque){
+        estoqueDAO.cadastrarEstoque(estoque);
+    }
+
+    public int escolheInsumoEstoque(){
+        return estoqueDAO.escolheInsumoEstoque();
+    }
+    public void editarEstoque(Estoque estoque){
+        estoqueDAO.editarEstoque(estoque);
+    }
+    public void descontarInsumo(Estoque estoque){
+        estoqueDAO.descontarInsumo(estoque);
+    }
 }

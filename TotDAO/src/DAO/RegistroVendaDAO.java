@@ -1,7 +1,9 @@
 package DAO;
 
 import CONNECTION.ConnectionFactory;
+import Controller.EstoqueController;
 import Model.Carrinho;
+import Model.Estoque;
 import Model.Produto;
 import Model.RegistroVenda;
 import com.mysql.cj.jdbc.CallableStatement;
@@ -33,6 +35,7 @@ public class RegistroVendaDAO {
         }
     }
     public void RegistraVendaProduto(Carrinho carrinho){
+        EstoqueController estoqueController = new EstoqueController();
         try {
             for(Produto produto : carrinho.getLista_do_carrinho()){
                 if(!procuraProdutoNaTabela(produto)){
@@ -48,6 +51,11 @@ public class RegistroVendaDAO {
                     statement.setString(1, produto.getNome());
                     statement.execute();
                     statement.close();
+                }
+            }
+            for(Produto produto : carrinho.getLista_do_carrinho()){
+                for(Estoque estoque : produto.getInsumos()){
+                    estoqueController.descontarInsumo(estoque);
                 }
             }
         }catch (SQLException e){

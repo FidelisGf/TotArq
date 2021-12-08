@@ -21,3 +21,13 @@ Produto - > SUCO DE UVA  No Valor de - > 12.0
 Valor Total do Pedido - > 12.0
 Pago no : Credito  Avaliado como : Otimo
 ----------------
+Pedido Nº - >  5  Com os seguintes itens :
+Produto - > HAMBURGAO No Valor de - > 28.0
+Valor Total do Pedido - > 28.0
+Pago no : Credito  Avaliado como : Otimo
+----------------
+Pedido Nº - >  6  Com os seguintes itens :
+Produto - > TST No Valor de - > 14.0
+Valor Total do Pedido - > 14.0
+Pago no : Credito  Avaliado como : Otimo
+----------------

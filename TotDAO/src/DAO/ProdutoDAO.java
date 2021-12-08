@@ -4,6 +4,7 @@ import CONNECTION.ConnectionFactory;
 import Controller.RelatorioController;
 import Model.Categoria;
 
+import Model.Estoque;
 import Model.Produto;
 
 import javax.swing.*;
@@ -23,16 +24,17 @@ public class ProdutoDAO {
     }
     public void insereProduto(Produto produto){
         try {
+            String Insumos = juntaInsumosProdutos(produto.getInsumos());
             RelatorioController relatorioController = new RelatorioController();
-            String sql = "INSERT INTO produtos" + "(Produto, Valor,Quantidade,IdCategoria,Descricao)" + "VALUES(?,?,?,?,?)";
+            String sql = "INSERT INTO produtos" + "(Produto, Valor,IdCategoria,Descricao,Insumos)" + "VALUES(?,?,?,?,?)";
             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             verificaSeExiste(produto);
             if(verificaSeExiste(produto) == false){
                 statement.setString(1, produto.getNome());
                 statement.setFloat(2, produto.getPreco());
-                statement.setInt(3, produto.getQuantidade());
-                statement.setInt(4, produto.getCategoria().getId());
-                statement.setString(5, produto.getDesc());
+                statement.setInt(3, produto.getCategoria().getId());
+                statement.setString(4, produto.getDesc());
+                statement.setString(5, Insumos);
                 statement.execute();
                 ResultSet rs = statement.getGeneratedKeys();
                 int id = 0;
@@ -57,7 +59,6 @@ public class ProdutoDAO {
                     " PRIMARY KEY (Codigo) , " +
                     " Produto VARCHAR(255), " +
                     " Valor FLOAT , " +
-                    " Quantidade INTEGER , " +
                     " Descricao VARCHAR(255), " +
                     " Insumos VARCHAR(455), " +
                     " IdCategoria BIGINT not NULL , " +
@@ -118,6 +119,9 @@ public class ProdutoDAO {
         List<Produto> list = new ArrayList<>();
         Categoria categoria = new Categoria();
         Produto produto;
+        Estoque estoque;
+        StringTokenizer myTokens;
+        List<Estoque> estoques = new ArrayList<>();
         while (resultSet.next()){
             produto = new Produto();
             produto.setId(resultSet.getInt("Codigo"));
@@ -126,6 +130,14 @@ public class ProdutoDAO {
             categoria.setId(resultSet.getInt("IdCategoria"));
             produto.setCategoria(categoria);
             produto.setDesc(resultSet.getString("Descricao"));
+            myTokens = new StringTokenizer(resultSet.getString("Insumos"), ",");
+            while (myTokens.hasMoreTokens()) {
+                estoque = new Estoque();
+                estoque.setNomeInsumo(myTokens.nextToken());
+                estoque.setQntdInsumo(Integer.valueOf(myTokens.nextToken()));
+                estoques.add(estoque);
+            }
+            produto.setInsumos(estoques);
             list.add(produto);
         }
         return list;
@@ -146,20 +158,7 @@ public class ProdutoDAO {
             throw  new RuntimeException();
         }
     }
-    public void adicionarQuantidadeProduto(Produto produto){
-        try {
-            String sql = "Update produtos SET Quantidade = Quantidade + ? WHERE Produto = ?";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, produto.getQuantidade());
-            statement.setString(2,produto.getNome());
-            statement.execute();
-            statement.close();
-            JOptionPane.showMessageDialog(null,"Quantidade Adicionada com sucesso !");
-        }catch (SQLException e){
-            throw new RuntimeException();
-        }
 
-    }
     public int escolher_produto(int idCategoria, int idEmpresa){
         int i = 0;
         List<Produto> list = listaProdutosporCategoria(idEmpresa, idCategoria);
@@ -192,5 +191,12 @@ public class ProdutoDAO {
         }catch (SQLException e){
             throw  new RuntimeException();
         }
+    }
+    public String juntaInsumosProdutos(List<Estoque> list){
+        String Insumos = "";
+        for(Estoque estoque : list){
+            Insumos += estoque.getNomeInsumo()  + "," + String.valueOf(estoque.getQntdInsumo()) + ",";
+        }
+        return Insumos;
     }
 }

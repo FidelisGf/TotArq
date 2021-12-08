@@ -64,11 +64,10 @@ public class Produto {
         Desc = desc;
     }
 
-    public Produto(String nome, float preco, Categoria categoria, int quantidade, String desc, List<Estoque> insumos) {
+    public Produto(String nome, float preco, Categoria categoria, String desc, List<Estoque> insumos) {
         Nome = nome;
         Preco = preco;
         this.categoria = categoria;
-        Quantidade = quantidade;
         Desc = desc;
         this.insumos = insumos;
     }
@@ -136,14 +135,10 @@ public class Produto {
                 ", Nome='" + Nome + '\'' +
                 ", Preco=" + Preco +
                 ", categoria=" + categoria +
-                ", Data=" + Data +
-                ", Quantidade=" + Quantidade +
                 ", Desc='" + Desc + '\'' +
+                ", insumos=" + insumos +
                 '}';
     }
-
-
-
 
     public Produto() {
     }

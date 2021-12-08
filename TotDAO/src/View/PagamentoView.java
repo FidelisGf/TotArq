@@ -19,7 +19,7 @@ public class PagamentoView {
         return (String) JOptionPane.showInputDialog(null,"Escolha o Metodo de Pagamento : :\n\n" + menuTexto,"Pagamento", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]);
     }
     public void menuPagamento(Carrinho carrinho){
-
+        System.out.println(carrinho);
         String escolha = exibeMenuPagamento();
         Pagamento pagamento = new Pagamento();
         switch(escolha){
@@ -37,6 +37,7 @@ public class PagamentoView {
                 if(pagc.validacaoPagamento((String) JOptionPane.showInputDialog(null, "Digite a senha do cartão"))){
                     AvaliacaoView avaliacaoView = new AvaliacaoView();
                     avaliacaoView.menuAvaliacao(carrinho, pagamento);
+
                 }
                 break;
             case "3":

@@ -39,4 +39,13 @@ public class Carrinho {
     public void setValor_Total(Float valor_Total) {
         Valor_Total = valor_Total;
     }
+
+    @Override
+    public String toString() {
+        return "Carrinho{" +
+                "IdCarrinho=" + IdCarrinho +
+                ", lista_do_carrinho=" + lista_do_carrinho +
+                ", Valor_Total=" + Valor_Total +
+                '}';
+    }
 }

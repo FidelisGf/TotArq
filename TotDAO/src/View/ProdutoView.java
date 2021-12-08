@@ -61,8 +61,7 @@ public class ProdutoView {
             nome = (String) JOptionPane.showInputDialog(null, "Nome do Produto:").toUpperCase();
             Valor = Float.parseFloat(JOptionPane.showInputDialog(null, "Valor do Produto : "));
             Desc = (String) JOptionPane.showInputDialog(null, "De uma descrição para o produto : ");
-            qntd = Integer.parseInt(JOptionPane.showInputDialog(null,"Insira a quantidade inicial desse produto :"));
-            Produto produto = new Produto(nome, Valor, categoria, qntd, Desc);
+            Produto produto = new Produto(nome, Valor, Desc, categoria);
             produto.setInsumos(adicionarInsumoAoProduto());
             if(menu.menuConfirmar().contains("1")){
                 produtoController.insereProduto(produto);
@@ -112,6 +111,7 @@ public class ProdutoView {
         JOptionPane.showMessageDialog(frame,output);
     }
     public void detalhesProduto(int id){
+        String Insumos = "";
         int idCategoria = categoriaController.escolherCategoria(id);
         if(idCategoria != -1){
             int idProduto = produtoController.escolher_produto(idCategoria, id);
@@ -119,7 +119,10 @@ public class ProdutoView {
                 JOptionPane.showMessageDialog(null, "Sem Produtos Registrados Nessa Categoria");
             }else{
                 Produto produto =produtoController.listaProdutoporCategoria(idCategoria, id).get(idProduto);
-                JOptionPane.showMessageDialog(null, "Nome do Produto  :  " + produto.getNome() + "\n\n Valor do Produto :  R$ : " + produto.getPreco() + "\n\n Com a Descrição de : \n   " + produto.getDesc());
+                for(Estoque estoque : produto.getInsumos()){
+                    Insumos += "\n" + estoque.getNomeInsumo() + " Quantidade : " + estoque.getQntdInsumo();
+                }
+                JOptionPane.showMessageDialog(null, "Nome do Produto  :  " + produto.getNome() + "\n\n Valor do Produto :  R$ : " + produto.getPreco() + "\n\nCom a Descrição de : \n" + produto.getDesc() + "\n\nCom os seguintes Ingredientes :\n" +  Insumos);
             }
         }else{
             JOptionPane.showMessageDialog(null, "Não há Categorias registradas nessa Unidade");
@@ -178,13 +181,6 @@ public class ProdutoView {
                         }
 
                         break;
-                    case 4:
-                        if(menu.menuConfirmar().contains("1")){
-                            adicionarQuantidadeProduto(produto);
-                        }else {
-                            JOptionPane.showMessageDialog(null, " Ação Cancelada com sucesso !");
-                        }
-                        break;
                 }
 
             }else{
@@ -194,11 +190,6 @@ public class ProdutoView {
             JOptionPane.showMessageDialog(null, "Não Ha Categorias Registradas ! ");
         }
 
-    }
-    public void adicionarQuantidadeProduto(Produto produto){
-        int Quantidade = Integer.parseInt(JOptionPane.showInputDialog(null,"Quantas unidades desse produto voce deseja adicionar : "));
-        produto.setQuantidade(Quantidade);
-        produtoController.adicionarQuantidadeProduto(produto);
     }
     public void excluirProduto(int id){
         RelatorioController relatorioController = new RelatorioController();
@@ -228,13 +219,16 @@ public class ProdutoView {
         String escolha = "";
         do {
             int IdInsumo = estoqueController.escolherInsumoEstoque();
-            estoque = estoqueController.listarEstoque().get(IdInsumo);
-            estoque.setQntdInsumo(Integer.valueOf(JOptionPane.showInputDialog(null, "Quantas unidades desse Insumo serão necessárias ? ")));
-            list.add(estoque);
-            JDialog.setDefaultLookAndFeelDecorated(true);
-            String[] escolhas = {"Sim", "Nao"};
-            String menuTexto = "Deseja adicionar mais insumos ?" + "\n";
-            escolha = (String) JOptionPane.showInputDialog(null,"Selecione uma opção :\n\n" + menuTexto,"MenuProdutos", JOptionPane.QUESTION_MESSAGE, null,escolhas, escolhas[0]);
+            if(IdInsumo != -1){
+                estoque = new Estoque();
+                estoque = estoqueController.listarEstoque().get(IdInsumo);
+                estoque.setQntdInsumo(Integer.valueOf(JOptionPane.showInputDialog(null, "Quantas unidades desse Insumo serão necessárias ? ")));
+                list.add(estoque);
+                JDialog.setDefaultLookAndFeelDecorated(true);
+                String[] escolhas = {"Sim", "Nao"};
+                String menuTexto = "Deseja adicionar mais insumos ?" + "\n";
+                escolha = (String) JOptionPane.showInputDialog(null,"Selecione uma opção :\n\n" + menuTexto,"MenuProdutos", JOptionPane.QUESTION_MESSAGE, null,escolhas, escolhas[0]);
+            }
         }while (escolha.contains("Sim"));
         return list;
     }

@@ -43,6 +43,9 @@ public class AdministradorView {
                     relatorioView.menuRelatorio();
                     break;
                 case "7":
+                    EstoqueView estoqueView = new EstoqueView();
+                    estoqueView.menuEstoque();
+                case "8":
                     TotemView totemView = new TotemView();
                     totemView.menu_Totfast();
                     break;
@@ -51,8 +54,8 @@ public class AdministradorView {
     }
     public String exibeMenu(){
         JDialog.setDefaultLookAndFeelDecorated(true);
-        String[] escolhas = {"1", "2", "3", "4", "5", "6","7"};
-        String menuTexto = "1 | Menu Produtos | " + "\n\n2 | Menu Categorias |" + "\n\n3 | Menu Unidades  |\n\n4 | Menu Usuarios  |\n\n5 | Menu Empresas  |\n\n6  | Relatorios  |\n\n7  | Sair  |\n\n";
+        String[] escolhas = {"1", "2", "3", "4", "5", "6","7","8"};
+        String menuTexto = "1 | Menu Produtos | " + "\n\n2 | Menu Categorias |" + "\n\n3 | Menu Unidades  |\n\n4 | Menu Usuarios  |\n\n5 | Menu Empresas  |\n\n6  | Relatorios  |\n\n7  | Menu Estoque |\n\n8  | Sair |\n\n";
         return (String) JOptionPane.showInputDialog(null,"Selecione uma opção :\n" + menuTexto,"Menu", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]);
     }
 }

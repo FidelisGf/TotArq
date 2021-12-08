@@ -23,10 +23,6 @@ public class ProdutoController {
         ProdutoDAO produtoDAO = new ProdutoDAO();
         produtoDAO.EditarProduto(produto);
     }
-    public void adicionarQuantidadeProduto(Produto produto){
-        ProdutoDAO produtoDAO = new ProdutoDAO();
-        produtoDAO.adicionarQuantidadeProduto(produto);
-    }
     public int escolher_produto(int idEmpresa, int idCategoria){
         ProdutoDAO produtoDAO = new ProdutoDAO();
         return  produtoDAO.escolher_produto(idCategoria, idEmpresa);
