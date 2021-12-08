@@ -103,7 +103,7 @@ public class EstoqueDAO {
             tmp[i] =  i + "| " + "NOME : " + estoque.getNomeInsumo() + "  Com Preço de :  " + estoque.getPrecoInsumo() +  " Por Unidade ";
             i++;
         }
-        Object selectionObject = (String) JOptionPane.showInputDialog(frame,"Selecione um Insumo para o produto : ","Produto",JOptionPane.QUESTION_MESSAGE,null, tmp, tmp[0]);
+        Object selectionObject = (String) JOptionPane.showInputDialog(frame,"Selecione um Insumo : ","Produto",JOptionPane.QUESTION_MESSAGE,null, tmp, tmp[0]);
         Produto produto = new Produto();
         String pegaop = selectionObject.toString();
         StringTokenizer st = new StringTokenizer(pegaop);
@@ -133,6 +133,17 @@ public class EstoqueDAO {
             statement.setString(2, estoque.getNomeInsumo());
             statement.execute();
             statement.close();
+        }catch (SQLException e){
+            throw new RuntimeException();
+        }
+    }
+    public void excluirEstoque(Estoque estoque){
+        try {
+            String sql = "DELETE FROM Estoque WHERE idInsumo = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, (int) estoque.getIdInsumo());
+            preparedStatement.execute();
+            preparedStatement.close();
         }catch (SQLException e){
             throw new RuntimeException();
         }

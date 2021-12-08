@@ -23,4 +23,8 @@ public class EstoqueController {
     public void descontarInsumo(Estoque estoque){
         estoqueDAO.descontarInsumo(estoque);
     }
+    public void excluirEstoque(Estoque estoque){
+        EstoqueDAO estoqueDAO = new EstoqueDAO();
+        estoqueDAO.excluirEstoque(estoque);
+    }
 }

@@ -26,12 +26,22 @@ public class EstoqueView {
                     case "3":
                         editarEstoque(id);
                         break;
+                    case "4":
+                        excluirEstoque(id);
+                        break;
+                    case "5":
+                        AdministradorView administradorView = new AdministradorView();
+                        administradorView.menu_Chefe();
+                        break;
+                    default:
+                        JOptionPane.showMessageDialog(null, "Opção Invalida !");
+                        break;
                 }
             }
         }
         public String exibeMenuEstoque(){
-            String[] escolhas = {"1", "2", "3"};
-            String menuTexto = "1 | Cadastrar Insumos | " + "\n\n2 | Listar Insumos  |" + "\n\n" + "3  | Editar Insumos  |" + "\n\n";
+            String[] escolhas = {"1", "2", "3","4"};
+            String menuTexto = "1 | Cadastrar Insumos | " + "\n\n2 | Listar Insumos  |" + "\n\n" + "3  | Editar Insumos  |" + "\n\n" + "4  | Excluir Insumo  |\n\n" + "5  | Sair  |\n\n";
             return (String) JOptionPane.showInputDialog(null,"Selecione uma opção :\n\n" + menuTexto,"Estoque", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]);
         }
 
@@ -121,6 +131,16 @@ public class EstoqueView {
                 break;
         }
         estoqueController.editarEstoque(estoque);
+    }
+    public void excluirEstoque(int id){
+        EstoqueController estoqueController = new EstoqueController();
+        Estoque estoque = new Estoque();
+        String recebe = "";
+        String recebeInt = String.valueOf(estoqueController.listarEstoque(id).get(estoqueController.escolheInsumoEstoque(id)).getIdInsumo());
+        if(recebeInt == null) menuEstoque(id);
+        estoque.setIdInsumo(Integer.parseInt(recebeInt));
+        estoqueController.excluirEstoque(estoque);
+        JOptionPane.showMessageDialog(null, "Insumo excluido com Sucesso ! ");
     }
 
 
