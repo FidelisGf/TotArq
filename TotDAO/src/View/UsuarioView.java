@@ -81,12 +81,13 @@ public class UsuarioView {
         int id = controleUsuario.escolher_Usuario();
         id = (int) controleUsuario.listarUsuarios().get(id).getIdUsuario();
         status = controleUsuario.visualizarUsuarioByIdController(id);
-        //System.out.println(status);
+        usuario.setIdUsuario(id);
 
         if (! status.equals("usuario nao encontrado!") && ! status.equals("nenhum usuario cadastrado!")) {  // se usuario existe
             String option = JOptionPane.showInputDialog("\n1 - Editar / 2 - Deletar / outro - Cancelar: ").trim();
 
             if (option.equals("1")) {
+                JOptionPane.showMessageDialog(null, "DEIXEI OS CAMPOS VAZIOS PARA CONTINUAR COM OS MESMOS DADOS");
                 usuario = inserirDadosUsuario();
                 status = controleUsuario.editarUsuarioController(usuario,id);
                 JOptionPane.showMessageDialog(null, status);
@@ -147,6 +148,7 @@ public class UsuarioView {
         u.setSenhaUsuario(senhaUsuario);
         u.setAcessoUsuario(acessoUsuario);
         u.setUnidadeUsuario(unidadeUsuario);
+
         return u;
     }
 }

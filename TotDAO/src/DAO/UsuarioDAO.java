@@ -88,39 +88,7 @@ public class UsuarioDAO {
         return "Nome de usuario ja existe ou cpf invalido";
 
     }
-    public void controleLogin(Usuario usuario) throws IOException {
-        usuario.setIdUsuario(identifica_usuario(usuario));
-        File file = new File("C:\\Users\\Fifo\\Desktop\\TotDAo\\ControleLog\\Logado.txt");
-        FileWriter fileWriter = new FileWriter(file);
-        PrintWriter printWriter = new PrintWriter(fileWriter);
-        try {
-            if(!file.exists()){
-                file.createNewFile();
-            }
-            printWriter.println(usuario.getIdUsuario());
-            printWriter.close();
-            fileWriter.close();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-    public int  identifica_usuario(Usuario usuario){
-        try {
-            String query = "SELECT * FROM usuarios WHERE usuarios.nomeUsuario = ?";
-            PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setString(1, usuario.getNomeUsuario());
-            stmt.execute();
-            ResultSet resultSet = stmt.executeQuery();
-            int id = 0;
-            if(resultSet.next()){
-                id = resultSet.getInt("idUsuario");
-            }
-            stmt.close();
-            return id;
-        }catch (SQLException e){
-            throw new RuntimeException();
-        }
-    }
+
 
     public String visualizarUsuarioDAO(){
         String query = "SELECT * FROM usuarios";
@@ -231,7 +199,7 @@ public class UsuarioDAO {
     }
 
     public String editarUsuarioDAO(Usuario usuario, int id) {
-        if (! nomeUsuarioExiste(usuario) && cpfValidado(usuario.getCpf())) {
+        if (cpfValidado(usuario.getCpf())) {
             String query = "UPDATE usuarios SET " +
                     "nome='" + usuario.getNome() + "'," +
                     "cpf='" + usuario.getCpf() + "'," +
@@ -251,7 +219,7 @@ public class UsuarioDAO {
                 throw new RuntimeException(e);
             }
         }
-        return "Nome de usuario ja existe ou cpf invalido";
+        return "cpf invalido";
     }
 
     public String deletarUsuarioDAO(int id){
@@ -370,31 +338,9 @@ public class UsuarioDAO {
             return false;
         }
     }
-    public int escolher_Usuario(){
-        int i = 0;
-        List<Usuario> list = ListaUsuario();
-        if(list.isEmpty()){
-            return -1;
-        }
-        JFrame frame = new JFrame();
-        frame.setAlwaysOnTop(true);
-        String[] tmp = new String[list.size()];
-        String opc = "";
-        String output = "";
-        for (Usuario usuario : list) {
-            tmp[i] =  i + "| " + "NOME : " + usuario.getNome() + " Possui o acesso de   : " + usuario.getAcessoUsuario();
-            i++;
-        }
-        Object selectionObject = (String) JOptionPane.showInputDialog(frame,"Select Usuario : ","Usuarios",JOptionPane.QUESTION_MESSAGE,null, tmp, tmp[0]);
-        Produto produto = new Produto();
-        String pegaop = selectionObject.toString();
-        StringTokenizer st = new StringTokenizer(pegaop);
-        int id1 = Integer.parseInt(st.nextToken("|"));
-        return id1;
-    }
     public Usuario carregaUsuario(long id) {
         Usuario usuario = new Usuario();
-        String query = "SELECT * FROM usuarios";
+        String query = "SELECT * FROM usuarios WHERE idUsuario = " + id;
 
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
@@ -421,5 +367,74 @@ public class UsuarioDAO {
         }
 
         return usuario;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public int escolher_Usuario(){
+        int i = 0;
+        List<Usuario> list = ListaUsuario();
+        if(list.isEmpty()){
+            return -1;
+        }
+        JFrame frame = new JFrame();
+        frame.setAlwaysOnTop(true);
+        String[] tmp = new String[list.size()];
+        String opc = "";
+        String output = "";
+        for (Usuario usuario : list) {
+            tmp[i] =  i + "| " + "NOME : " + usuario.getNome() + " Possui o acesso de   : " + usuario.getAcessoUsuario();
+            i++;
+        }
+        Object selectionObject = (String) JOptionPane.showInputDialog(frame,"Select Usuario : ","Usuarios",JOptionPane.QUESTION_MESSAGE,null, tmp, tmp[0]);
+        Produto produto = new Produto();
+        String pegaop = selectionObject.toString();
+        StringTokenizer st = new StringTokenizer(pegaop);
+        int id1 = Integer.parseInt(st.nextToken("|"));
+        return id1;
+    }
+    public void controleLogin(Usuario usuario) throws IOException {
+        usuario.setIdUsuario(identifica_usuario(usuario));
+        File file = new File("./ControleLog/Logado.txt");
+        FileWriter fileWriter = new FileWriter(file);
+        PrintWriter printWriter = new PrintWriter(fileWriter);
+        try {
+            if(!file.exists()){
+                file.createNewFile();
+            }
+            printWriter.println(usuario.getIdUsuario());
+            printWriter.close();
+            fileWriter.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    public int  identifica_usuario(Usuario usuario){
+        try {
+            String query = "SELECT * FROM usuarios WHERE usuarios.nomeUsuario = ?";
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, usuario.getNomeUsuario());
+            stmt.execute();
+            ResultSet resultSet = stmt.executeQuery();
+            int id = 0;
+            if(resultSet.next()){
+                id = resultSet.getInt("idUsuario");
+            }
+            stmt.close();
+            return id;
+        }catch (SQLException e){
+            throw new RuntimeException();
+        }
     }
 }

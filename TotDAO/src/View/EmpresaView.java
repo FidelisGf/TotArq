@@ -20,10 +20,9 @@ public class EmpresaView {
         controleEmpresa.menuEmpresaController(exibeMenuEmpresa());
     }
     public void cadastrarEmpresaView(){
-        empresa.setNomeEmpresa(JOptionPane.showInputDialog(null, " Nome da Empresa : ").trim());
-        empresa.setEnderecoEmpresa(JOptionPane.showInputDialog(null, " Endereço da Empresa : ").trim());
-        empresa.setCnpjEmpresa(JOptionPane.showInputDialog(null, " Cnpj da Empresa :").trim());
+        empresa = inserirDadosEmpresa();
         controleEmpresa.cadastrarEmpresaController(empresa);
+        //JOptionPane.showMessageDialog(null, status);
     }
 
     public void visualizarEmpresaView(){
@@ -34,13 +33,17 @@ public class EmpresaView {
 
     public void editarEmpresaView(){
         String status;
-        System.out.print("Nome: ");
-        empresa.setNomeEmpresa(scan.nextLine().trim());
-        System.out.print("Endereco: ");
-        empresa.setEnderecoEmpresa(scan.nextLine().trim());
-        System.out.print("Cnpj: ");
-        empresa.setCnpjEmpresa(scan.nextLine().trim());
+
+        empresa = inserirDadosEmpresa();
         status = controleEmpresa.editarEmpresaController(empresa);
-        System.out.println(status);
+        JOptionPane.showMessageDialog(null, status);
+    }
+    public Empresa inserirDadosEmpresa() {
+        Empresa e = new Empresa();
+        e.setNomeEmpresa(JOptionPane.showInputDialog("Nome").trim());
+        e.setEnderecoEmpresa(JOptionPane.showInputDialog("Endereco").trim());
+        e.setCnpjEmpresa(JOptionPane.showInputDialog("Cnpj").trim());
+
+        return e;
     }
 }
