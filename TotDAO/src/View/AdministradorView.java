@@ -44,7 +44,7 @@ public class AdministradorView {
                     break;
                 case "7":
                     EstoqueView estoqueView = new EstoqueView();
-                    estoqueView.menuEstoque();
+                    estoqueView.menuEstoque(id);
                 case "8":
                     TotemView totemView = new TotemView();
                     totemView.menu_Totfast();

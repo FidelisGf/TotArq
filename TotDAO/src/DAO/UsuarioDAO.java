@@ -392,4 +392,34 @@ public class UsuarioDAO {
         int id1 = Integer.parseInt(st.nextToken("|"));
         return id1;
     }
+    public Usuario carregaUsuario(long id) {
+        Usuario usuario = new Usuario();
+        String query = "SELECT * FROM usuarios";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            ResultSet resultset = stmt.executeQuery();
+
+            if (resultset.next()) {
+                usuario.setIdUsuario(resultset.getInt("idUsuario"));
+                usuario.setNome(resultset.getString("nome"));
+                usuario.setCpf(resultset.getString("cpf"));
+                usuario.setEndereco(resultset.getString("endereco"));
+                usuario.setNomeUsuario(resultset.getString("nomeUsuario"));
+                usuario.setSenhaUsuario(resultset.getString("senhaUsuario"));
+                usuario.setAcessoUsuario(resultset.getString("acessoUsuario"));
+                usuario.setUnidadeUsuario(resultset.getString("unidadeUsuario"));
+            }
+            else {
+                usuario = null;
+            }
+
+            stmt.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return usuario;
+    }
 }

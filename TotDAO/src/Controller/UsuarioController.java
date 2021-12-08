@@ -79,4 +79,7 @@ public class UsuarioController {
             usuario.funcionarioView();
         }
     }
+    public Usuario carregaUsuario(long id){
+        return usuarioDao.carregaUsuario(id);
+    }
 }

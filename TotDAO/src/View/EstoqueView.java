@@ -11,18 +11,18 @@ import static javax.swing.JOptionPane.showInputDialog;
 
 public class EstoqueView {
 
-    public void menuEstoque(){
+    public void menuEstoque(int id){
             while(true){
                 String op =  exibeMenuEstoque();
                 switch (op){
                     case "1":
-                        cadastrarEstoque();
+                        cadastrarEstoque(id);
                         break;
                     case "2":
-                        listarEstoque();
+                        listarEstoque(id);
                         break;
                     case "3":
-                        editarEstoque();
+                        editarEstoque(id);
                         break;
                 }
             }
@@ -34,32 +34,32 @@ public class EstoqueView {
         }
 
 
-        public void cadastrarEstoque() {
+        public void cadastrarEstoque(int id) {
             EstoqueController estoqueController = new EstoqueController();
             Estoque estoque = new Estoque();
 
             String recebeNome = showInputDialog(null, "Digite o Nome do Insumo:");
             if (recebeNome == null){
-                menuEstoque();
+                menuEstoque(id);
             }
             estoque.setNomeInsumo(recebeNome.toUpperCase());
 
             String recebeQnt = showInputDialog("Digite a Quantidade do Insumo: ");
-            if (recebeQnt == null) menuEstoque();
+            if (recebeQnt == null) menuEstoque(id);
             estoque.setQntdInsumo(Integer.parseInt(recebeQnt));
 
             String recebePreco = showInputDialog("Digite o Preço do Insumo: ");
-            if (recebePreco == null) menuEstoque();
+            if (recebePreco == null) menuEstoque(id);
             estoque.setPrecoInsumo(Float.parseFloat(recebePreco));
 
             String recebeValidade = showInputDialog("Digite a validade : ");
-            if (recebeValidade == null) menuEstoque();
+            if (recebeValidade == null) menuEstoque(id);
             estoque.setValidade(recebeValidade);
             estoqueController.cadastrarEstoque(estoque);
             JOptionPane.showMessageDialog(null, "Insumo Cadastrado com sucesso !");
 
         }
-    public void listarEstoque(){
+    public void listarEstoque(int id){
         EstoqueController estoqueController = new EstoqueController();
         String recebe = "";
         for (Estoque estoque : estoqueController.listarEstoque()){
@@ -71,7 +71,7 @@ public class EstoqueView {
         }
         JOptionPane.showMessageDialog(null, recebe);
     }
-    public void editarEstoque(){
+    public void editarEstoque(int id){
         EstoqueController estoqueController = new EstoqueController();
         String recebe = "";
         Estoque estoque = estoqueController.listarEstoque().get(estoqueController.escolheInsumoEstoque());
@@ -84,17 +84,17 @@ public class EstoqueView {
         switch (escolhe){
             case 1:
                 String recebeNome =  showInputDialog("Digite o Nome do Insumo:" );
-                if(recebeNome == null) menuEstoque();
+                if(recebeNome == null) menuEstoque(id);
                 estoque.setNomeInsumo(recebeNome.toUpperCase());
                 break;
             case 2:
                 String recebeQnt =  showInputDialog("Digite a Quantidade do Insumo: " );
-                if(recebeQnt == null) menuEstoque();
+                if(recebeQnt == null) menuEstoque(id);
                 estoque.setQntdInsumo(Integer.parseInt(recebeQnt));
                 break;
             case 3:
                 String recebePreco = showInputDialog("Digite o Preço do Insumo: ");
-                if(recebePreco == null) menuEstoque();
+                if(recebePreco == null) menuEstoque(id);
                 estoque.setPrecoInsumo(Float.parseFloat(recebePreco));
                 break;
             case 4:
@@ -102,15 +102,15 @@ public class EstoqueView {
                 break;
             case 5:
                 recebeNome =  showInputDialog("Digite o Nome do Insumo:" );
-                if(recebeNome == null) menuEstoque();
+                if(recebeNome == null) menuEstoque(id);
                 estoque.setNomeInsumo(recebeNome.toUpperCase());
 
                 recebeQnt =  showInputDialog("Digite a Quantidade do Insumo: " );
-                if(recebeQnt == null) menuEstoque();
+                if(recebeQnt == null) menuEstoque(id);
                 estoque.setQntdInsumo(Integer.parseInt(recebeQnt));
 
                 recebePreco = showInputDialog("Digite o Preço do Insumo: ");
-                if(recebePreco == null) menuEstoque();
+                if(recebePreco == null) menuEstoque(id);
                 estoque.setPrecoInsumo(Float.parseFloat(recebePreco));
                 break;
         }

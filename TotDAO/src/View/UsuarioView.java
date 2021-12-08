@@ -11,6 +11,7 @@ import DAO.*;
 import com.sun.security.auth.module.JndiLoginModule;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 public class UsuarioView {
     Usuario usuario = new Usuario();
@@ -24,7 +25,7 @@ public class UsuarioView {
     }
     public String exibeMenuFuncionario(){
         String[] escolhas = {"1", "2", "3","4","5"};
-        String menuTexto = "1 | Cadastrar Funcionario  |\n\n2 | Visualizar Funcionarios |\n\n3 | Visualizar Funcionario Por ID  |\n\n4 | Editar Funcionarios  |\n\n5 | Sair  |";
+        String menuTexto = "1 | Cadastrar Usuario |\n\n2 | Visualizar Usuarios |\n\n3 | Visualizar Usuario Por ID  |\n\n4 | Editar Usuarios  |\n\n5 | Sair  |";
         return (String) JOptionPane.showInputDialog(null,"Menu Usuario\n\n" + menuTexto,"MenuPermissões", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]);
     }
 
@@ -33,9 +34,9 @@ public class UsuarioView {
 
         JPasswordField password = new JPasswordField(10);
         password.setEchoChar('*');
-        JTextField User = new JTextField(10);
-        User.setSize(310,110);
-        JLabel rotulo1 = new JLabel("Usuario\n\n");
+        JTextField User = new JTextField(8);
+        User.setBorder(new LineBorder(Color.BLACK,1));
+        JLabel rotulo1 = new JLabel("\nUsuario\n");
         JLabel rotulo = new JLabel("\nSenha:\n");
         JPanel entUsuario = new JPanel();
         entUsuario.add(rotulo1);
@@ -103,15 +104,49 @@ public class UsuarioView {
     public Usuario inserirDadosUsuario(){
         String status;
         Usuario u = new Usuario();
+        Usuario u_temp = new Usuario();
+        u_temp = controleUsuario.carregaUsuario(usuario.getIdUsuario());
         UnidadeController unidadeController = new UnidadeController();
-        u.setNome((String) JOptionPane.showInputDialog(null, "Nome - > ").trim());
-        u.setCpf((String) JOptionPane.showInputDialog(null, "Cpf - > ").trim());
-        u.setEndereco((String) JOptionPane.showInputDialog(null, " Endereço - >").trim());
-        u.setNomeUsuario((String) JOptionPane.showInputDialog(null, " Nome do Usuario - >").trim());
-        u.setSenhaUsuario((String) JOptionPane.showInputDialog(null, "Senha do Usuario - >").trim());
-        u.setAcessoUsuario(exibeMenuAcesso());
-        u.setUnidadeUsuario(String.valueOf(unidadeController.listar().get(unidadeController.escolherUnidade()).getIdUnidade()));
-        System.out.println(u);
+
+        String nome = (String) JOptionPane.showInputDialog(null, "Nome - > ").trim();
+        String cpfUsuario = (String) JOptionPane.showInputDialog(null, "Cpf - > ").trim();
+        String enderecoUsuario = (String) JOptionPane.showInputDialog(null, " Endereço - >").trim();
+        String nomeUsuario = (String) JOptionPane.showInputDialog(null, " Nome do Usuario - >").trim();
+        String senhaUsuario = (String) JOptionPane.showInputDialog(null, "Senha do Usuario - >").trim();
+        String acessoUsuario = exibeMenuAcesso();
+        String unidadeUsuario = String.valueOf(unidadeController.listar().get(unidadeController.escolherUnidade()).getIdUnidade());
+
+        if (u_temp != null) {
+            if (nome.length() == 0) {
+                nome = u_temp.getNome();
+            }
+            if (cpfUsuario.length() == 0) {
+                cpfUsuario = u_temp.getCpf();
+            }
+            if (enderecoUsuario.length() == 0) {
+                enderecoUsuario = u_temp.getEndereco();
+            }
+            if (nomeUsuario.length() == 0) {
+                nomeUsuario = u_temp.getNomeUsuario();
+            }
+            if (senhaUsuario.length() == 0) {
+                senhaUsuario = u_temp.getSenhaUsuario();
+            }
+            if (acessoUsuario.length() == 0) {
+                acessoUsuario = u_temp.getAcessoUsuario();
+            }
+            if (unidadeUsuario.length() == 0) {
+                unidadeUsuario = u_temp.getUnidadeUsuario();
+            }
+        }
+
+        u.setNome(nome);
+        u.setCpf(cpfUsuario);
+        u.setEndereco(enderecoUsuario);
+        u.setNomeUsuario(nomeUsuario);
+        u.setSenhaUsuario(senhaUsuario);
+        u.setAcessoUsuario(acessoUsuario);
+        u.setUnidadeUsuario(unidadeUsuario);
         return u;
     }
 }
