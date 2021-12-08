@@ -1,7 +1,9 @@
 package View;
 
 import Controller.EstoqueController;
+import Controller.UnidadeController;
 import Model.Estoque;
+import Model.Unidade;
 
 import javax.swing.*;
 
@@ -35,6 +37,7 @@ public class EstoqueView {
 
 
         public void cadastrarEstoque(int id) {
+            UnidadeController unidadeController = new UnidadeController();
             EstoqueController estoqueController = new EstoqueController();
             Estoque estoque = new Estoque();
 
@@ -55,6 +58,9 @@ public class EstoqueView {
             String recebeValidade = showInputDialog("Digite a validade : ");
             if (recebeValidade == null) menuEstoque(id);
             estoque.setValidade(recebeValidade);
+            Unidade unidade = new Unidade();
+            unidade.setIdUnidade(id);
+            estoque.setUnidade(unidade);
             estoqueController.cadastrarEstoque(estoque);
             JOptionPane.showMessageDialog(null, "Insumo Cadastrado com sucesso !");
 
@@ -62,7 +68,7 @@ public class EstoqueView {
     public void listarEstoque(int id){
         EstoqueController estoqueController = new EstoqueController();
         String recebe = "";
-        for (Estoque estoque : estoqueController.listarEstoque()){
+        for (Estoque estoque : estoqueController.listarEstoque(id)){
             recebe = recebe + " " + "ID: " + estoque.getIdInsumo() +
                     " | NOME: " + estoque.getNomeInsumo() +
                     " | QUANTIDADE: " + estoque.getQntdInsumo() +
@@ -74,7 +80,7 @@ public class EstoqueView {
     public void editarEstoque(int id){
         EstoqueController estoqueController = new EstoqueController();
         String recebe = "";
-        Estoque estoque = estoqueController.listarEstoque().get(estoqueController.escolheInsumoEstoque());
+        Estoque estoque = estoqueController.listarEstoque(id).get(estoqueController.escolheInsumoEstoque(id));
         int escolhe= Integer.valueOf(showInputDialog("Digite o que Deseja Editar: " +
                 "\n1 - Nome" +
                 "\n2 - Quantidade" +

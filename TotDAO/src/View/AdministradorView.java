@@ -43,6 +43,8 @@ public class AdministradorView {
                     relatorioView.menuRelatorio();
                     break;
                 case "7":
+                    unidadeController = new UnidadeController();
+                    id = unidadeController.listar().get(unidadeController.escolherUnidade()).getIdUnidade();
                     EstoqueView estoqueView = new EstoqueView();
                     estoqueView.menuEstoque(id);
                 case "8":

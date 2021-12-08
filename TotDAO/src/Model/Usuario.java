@@ -30,6 +30,9 @@ public class Usuario {
         this.endereco = endereco;
     }
 
+    public Usuario(String nomeUsuario, String acessoUsuario) {
+    }
+
     public String getNome() {
         return nome;
     }

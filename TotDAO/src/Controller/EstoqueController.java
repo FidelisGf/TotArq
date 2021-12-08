@@ -7,18 +7,15 @@ import java.util.List;
 
 public class EstoqueController {
     EstoqueDAO estoqueDAO = new EstoqueDAO();
-    public int escolherInsumoEstoque(){
-        return estoqueDAO.escolheInsumoEstoque();
-    }
-    public List<Estoque> listarEstoque(){
-        return estoqueDAO.listarEstoque();
+    public List<Estoque> listarEstoque(int id){
+        return estoqueDAO.listarEstoque(id);
     }
     public void cadastrarEstoque(Estoque estoque){
         estoqueDAO.cadastrarEstoque(estoque);
     }
 
-    public int escolheInsumoEstoque(){
-        return estoqueDAO.escolheInsumoEstoque();
+    public int escolheInsumoEstoque(int id){
+        return estoqueDAO.escolheInsumoEstoque(id);
     }
     public void editarEstoque(Estoque estoque){
         estoqueDAO.editarEstoque(estoque);

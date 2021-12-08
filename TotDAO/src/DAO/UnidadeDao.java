@@ -129,6 +129,27 @@ public class UnidadeDao {
             throw new RuntimeException(e);
         }
     }
+    public List<String> visualizarFuncionariosDaUnidade(String id) {
+        String query = "SELECT * FROM usuarios WHERE unidadeUsuario = ?";
+        List<String> listaFuncs = new ArrayList<>();
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            int convertInt = Integer.parseInt(id);
+            stmt.setInt(1, convertInt);
+            ResultSet resultset = stmt.executeQuery();
+            Usuario usuario;
+            while (resultset.next()) {
+                usuario = new Usuario();
+                usuario.setNomeUsuario(resultset.getString("nomeUsuario"));
+                usuario.setAcessoUsuario(resultset.getString("acessoUsuario"));
+                listaFuncs.add("Nome do Funcionário: " + usuario.getNomeUsuario() + " | " + "Acesso: " +usuario.getAcessoUsuario());
+            }
+            return listaFuncs;
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public boolean verificaExiste(Unidade unidade){
         try {

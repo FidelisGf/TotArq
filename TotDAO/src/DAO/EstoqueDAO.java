@@ -38,13 +38,14 @@ public class EstoqueDAO {
     }
     public void cadastrarEstoque(Estoque estoque){
         try{
-            String sql = "INSERT INTO Estoque (nomeInsumo, qntInsumo, precoInsumo, dataValidade) VALUES(?, ?, ?, ?)";
+            String sql = "INSERT INTO Estoque (nomeInsumo, qntInsumo, precoInsumo, dataValidade,IdUnidade) VALUES(?, ?, ?, ?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
             preparedStatement.setString(1, estoque.getNomeInsumo());
             preparedStatement.setInt(2, estoque.getQntdInsumo());
             preparedStatement.setDouble(3, estoque.getPrecoInsumo());
             preparedStatement.setString(4, estoque.getValidade());
+            preparedStatement.setInt(5, estoque.getUnidade().getIdUnidade());
             preparedStatement.execute();
             preparedStatement.close();
 
@@ -52,20 +53,21 @@ public class EstoqueDAO {
             e.printStackTrace();
         }
     }
-    public List<Estoque> listarEstoque(){
-        String sql = "SELECT * FROM Estoque  ";
-        return listar(sql);
+    public List<Estoque> listarEstoque(int id){
+        String sql = "SELECT * FROM Estoque WHERE IdUnidade = ?";
+        return listar(sql, id);
     }
-    public List<Estoque> listarEstoqueEscolha(){
-        String sql = "SELECT * FROM Estoque WHERE qntInsumo > 0 ";
-        return listar(sql);
+    public List<Estoque> listarEstoqueEscolha(int id){
+        String sql = "SELECT * FROM Estoque WHERE qntInsumo > 0 AND IdUnidade = ?";
+        return listar(sql, id);
     }
-    public List<Estoque> listar(String sql){
+    public List<Estoque> listar(String sql, int id){
         List<Estoque> list = new ArrayList<>();
         Estoque estoque;
         Unidade unidade;
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
             statement.execute();
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
@@ -86,9 +88,9 @@ public class EstoqueDAO {
         }
     }
 
-    public int escolheInsumoEstoque(){
+    public int escolheInsumoEstoque(int id){
         int i = 0;
-        List<Estoque> list = listarEstoqueEscolha();
+        List<Estoque> list = listarEstoqueEscolha(id);
         if(list.isEmpty()){
             return -1;
         }

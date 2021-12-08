@@ -9,6 +9,7 @@ import Model.Estoque;
 import Model.Produto;
 
 import javax.swing.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -62,7 +63,7 @@ public class ProdutoView {
             Valor = Float.parseFloat(JOptionPane.showInputDialog(null, "Valor do Produto : "));
             Desc = (String) JOptionPane.showInputDialog(null, "De uma descrição para o produto : ");
             Produto produto = new Produto(nome, Valor, Desc, categoria);
-            produto.setInsumos(adicionarInsumoAoProduto());
+            produto.setInsumos(adicionarInsumoAoProduto(id));
             if(menu.menuConfirmar().contains("1")){
                 produtoController.insereProduto(produto);
             }else{
@@ -213,15 +214,15 @@ public class ProdutoView {
         }
 
     }
-    public List<Estoque> adicionarInsumoAoProduto(){
+    public List<Estoque> adicionarInsumoAoProduto(int id){
         List<Estoque> list = new ArrayList<>();
         Estoque estoque;
         String escolha = "";
         do {
-            int IdInsumo = estoqueController.escolherInsumoEstoque();
+            int IdInsumo = estoqueController.escolheInsumoEstoque(id);
             if(IdInsumo != -1){
                 estoque = new Estoque();
-                estoque = estoqueController.listarEstoque().get(IdInsumo);
+                estoque = estoqueController.listarEstoque(id).get(IdInsumo);
                 estoque.setQntdInsumo(Integer.valueOf(JOptionPane.showInputDialog(null, "Quantas unidades desse Insumo serão necessárias ? ")));
                 list.add(estoque);
                 JDialog.setDefaultLookAndFeelDecorated(true);
@@ -232,4 +233,5 @@ public class ProdutoView {
         }while (escolha.contains("Sim"));
         return list;
     }
+
 }

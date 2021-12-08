@@ -1,5 +1,6 @@
 package View;
 import Controller.UnidadeController;
+import Model.Administrador;
 import Model.Unidade;
 
 import javax.swing.*;
@@ -12,8 +13,8 @@ public class UnidadeView {
     Scanner scan = new Scanner(System.in);
     UnidadeController uc = new UnidadeController();
     public String exibeMenuUnidade(){
-        String[] escolhas = {"1", "2", "3", "4", "5", "6",};
-        String menuTexto = "1 | Cadastrar Unidade | " + "\n\n2 | Listar Unidades |" + "\n\n3 |  Buscar Unidade |\n\n4 | Editar Unidade |\n\n 5 | Excluir Unidade |\n\n 6 | Sair   |\n\n";
+        String[] escolhas = {"1", "2", "3", "4", "5", "6","7"};
+        String menuTexto = "1 | Cadastrar Unidade | " + "\n\n2 | Listar Unidades |" + "\n\n3 |  Buscar Unidade |\n\n4 | Editar Unidade |\n\n5 | Visualizar Funcionários da Unidade  |\n\n6 | Excluir Unidade |\n\n 7 | Sair   |\n\n";
         return (String) JOptionPane.showInputDialog(null,"Selecione uma opção :\n\n" + menuTexto,"MenuProdutos", JOptionPane.INFORMATION_MESSAGE, null,escolhas, escolhas[0]);
     }
     public void menuUnidade(){
@@ -39,10 +40,14 @@ public class UnidadeView {
                     editarUnidade();
                     break;
                 case "5":
-                    excluirUnidade();
+                    listarFuncUnidade();
                     break;
                 case "6":
-                    System.out.println("Xau!");
+                    excluirUnidade();
+                    break;
+                case "7":
+                    AdministradorView administradorView = new AdministradorView();
+                    administradorView.menu_Chefe();
                     break;
                 default:
                     System.out.println("Opção Inválida!");
@@ -88,5 +93,9 @@ public class UnidadeView {
     public void excluirUnidade(){
         int idSelect = uc.listar().get(uc.escolherUnidade()).getIdUnidade();
         uc.excluirUnidade(idSelect);
+    }
+    public void listarFuncUnidade(){
+        String pegaId = String.valueOf(uc.listar().get(uc.escolherUnidade()).getIdUnidade());
+        JOptionPane.showMessageDialog(null,uc.listaFuncDaUnd(pegaId));
     }
 }

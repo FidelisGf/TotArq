@@ -30,4 +30,12 @@ public class UnidadeController {
     public void editarUnidade(Unidade uni, int idSelec){
         undDAO.editarUnidade(uni, idSelec);
     }
+    public String listaFuncDaUnd(String id){
+        String concat = "";
+        List<String> lista = undDAO.visualizarFuncionariosDaUnidade(id);
+        for (int i = 0; i < lista.size(); i++){
+            concat += lista.get(i) + "\n";
+        }
+        return concat;
+    }
 }
